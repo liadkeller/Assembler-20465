@@ -1,7 +1,7 @@
 #define MAX_AS_LINE 100
 
-int findStart(char *)
-int isCode(char *) // boolean
+int findStart(char *);
+int isCode(char *); // boolean
 
 void firstLoop(FILE *);
 void secondLoop();
