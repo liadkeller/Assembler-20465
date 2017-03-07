@@ -18,8 +18,7 @@ int main(int argc, char *argv[])
 	{
 		f = fopen(strcat(argv[j], ".as") , "r");
 		if(!f)
-			\\error
-		
+			\\error		
 		firstLoop(f);
 		secondLoop(/* params */);
 		/* create files */
@@ -45,3 +44,27 @@ void firstLoop(FILE *f)
 		//will take care if its a data command
 	}
 }
+
+int findStart(char *str)
+{
+	int isSymbol = 0, i = 0;
+	
+	while(i < strlen(str))
+	{
+		if(str[i] == ':')
+		{
+			isSymbol = 1;
+			break;
+		}
+		i++;
+	}
+	
+	if(!isSymbol)
+		i = 0;
+	
+	while(i < strlen(str) && (str[i] == ' ' || str[i] == '\t'))
+	      i++;
+	      
+	return i;
+}
+	
