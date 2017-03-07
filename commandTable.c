@@ -1,30 +1,4 @@
-
-enum encode {NUMBER, ADDRESS, NUM2, ONE_REGISTER, TWO_REGISTER, MAIN_COMMAND}
-
-struct cmd {
-	int encode;
-	int opcode;
-	int group;
-	char *firstOperand; // source
-	char *secndOperand; // destniation
-	int firstAddressing;
-	int secndAddressing;
-	int wordsNum;	
-	int address;
-	int isSymbol;
-	char *symbol;
-	
-	int number;
-	int addressNumber;
-	
-	int reg1;
-	int reg2;
-	int whichReg; // SOURCE / DEST
-
-	int encodeType; // A R E
-
-	struct cmd *next;
-}
+// This file suppose to be fimiliar with "struct list *table"
 
 void addCmd(char *cmd, int address)
 {
@@ -70,6 +44,8 @@ void addCmd(char *cmd, int address)
 
 	else
 		new->wordsNum = group;
+	
+	
 
 	if(new->wordsNum = 1)
 		addCmdToList(makeNext(secndAddressing, address+1), table);
