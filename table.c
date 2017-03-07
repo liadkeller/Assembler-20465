@@ -1,3 +1,5 @@
+struct list *table;
+
 void addCmdToList(struct cmd *c, struct list *t)
 {
 	struct cmd *n;
