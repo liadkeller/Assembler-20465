@@ -1,5 +1,7 @@
 #define MAX_AS_LINE 100
 
+int findStart(char *)
+int isCode(char *) // boolean
 
 void firstLoop(FILE *);
 void secondLoop();
@@ -12,11 +14,12 @@ int main(int argc, char *argv[])
 	if(argc == 1)
 	\\ error 
 	
-	for(i = 1; i < argc; i++)
+	for(j = 1; j < argc; j++)
 	{
-		f = fopen(strcat(argv[i], ".as") , "r");
+		f = fopen(strcat(argv[j], ".as") , "r");
 		if(!f)
 			\\error
+		
 		firstLoop(f);
 		secondLoop(/* params */);
 		/* create files */
@@ -27,33 +30,18 @@ int main(int argc, char *argv[])
 
 void firstLoop(FILE *f)
 {
-	int IC, DC;
-	int isSymbol;
-	int type; // code or data
-	
-	
-	char asCommand[MAX_AS_LINE];
-	int i, c, cmdStart;
+	char assemblyCommand[MAX_AS_LINE];
+	int i, c;
 	
 	while(!feof(f))
 	{
-		for(i = 0, c = fgetc(f); c != '\n'; i++)
-			asCommand[i] = c;
+		for(i = 0, c = fgetc(f); c != '\n' && !feof(f); i++)
+			assemblyCommand[i] = c;
 		
-		type = findType(asCommand); \\ will find out ifits a code or a data command
-		
-		isSymbol = cmdStart = 0;
-		isSymbol = isSymbol(asCommand);
-		if(isSymbol)
-			cmdStart = addSymbol(asCommand, (type)?(IC):(DC)) \\ cmdStart gets the start of the *real* command
-		
-		i = cmdStart;
-		
-		/*
-			...
-			will take care of the command
-			...
-		*/
-		
+		i = findStart(assemblyCommand)
+		// to check: if its a blank/note command
+		if(isCode(assemblyCommand+i))
+			addCmd(assemblyCommand+i);
+		//will take care if its a data command
 	}
 }
