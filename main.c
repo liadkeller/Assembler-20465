@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <string.h>
 #define MAX_AS_LINE 100
 
 int findStart(char *);
