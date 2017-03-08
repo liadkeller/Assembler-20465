@@ -10,7 +10,7 @@ void secondLoop();
 
 int main(int argc, char *argv[])
 {
-	int i;
+	int j;
 	FILE *f;
 	
 	if(argc == 1)
@@ -39,10 +39,9 @@ void firstLoop(FILE *f)
 		for(i = 0, c = fgetc(f); c != '\n' && !feof(f); i++)
 			assemblyCommand[i] = c;
 		
-		i = findStart(assemblyCommand)
 		// to check: if its a blank/note command
-		if(isCode(assemblyCommand+i))
-			addCmd(assemblyCommand+i);
+		if(isCode(assemblyCommand))
+			addCmd(assemblyCommand);
 		//will take care if its a data command
 	}
 }
