@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#define MAX_AS_LINE 100
+#include "lim.h"
 
 int findStart(char *);
 int isCode(char *); // boolean
