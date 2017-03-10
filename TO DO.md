@@ -18,6 +18,8 @@
 
 * merge commandTable.c with table.c
 
+* to chec what 'NUM2' addressing is
+
 
 #analysis:
 
