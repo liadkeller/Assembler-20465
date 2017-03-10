@@ -1,14 +1,14 @@
-#include "table.h"
+// This file suppose to be fimiliar with "struct list *table"
 
-void addCmd(char *cmd)
+void addCmd(char *cmd, int address)
 {
 	int i;	
 	char inst[3];
 
-	struct cmd *new; // malloc needed; connection to the list needed;
-	// maybe will add command field
+	struct cmd *new;
 
-	new->encode = MAIN_COMMAND
+	new->encode = MAIN_COMMAND;
+	new->address = address;
 	new->isSymbol = isSymbol(cmd);
 	if(new->isSymbol)
 		new->symbol = getSymbol(cmd);
@@ -29,81 +29,40 @@ void addCmd(char *cmd)
 		new->secndOperand = getSecndOperand(cmd, i);
 		new->secndAddressing = getSecndAddressing(new->secndOperand)	
 	}
+	
+	new->encodeType = A; // will be defined as constant
+
+	addCmdToList(new, table);
+
+
 
 	if(new->group == 2 && new->firstAddressing = 3 && new->secndAddressing == 3) // 2 = TWO OPERANDS / 3 = ADRESSING MIUN
 	{
 		new->wordsNum = group-1;
-		new->next = addNext(TWO_REGISTER, getFirstOperandContent(new), getSecndOperandContent(new));
+		addCmdToList(makeNext(TWO_REGISTER, address+1), table);
 	}
 
 	else
 		new->wordsNum = group;
+	
+	
 
 	if(new->wordsNum = 1)
-		new->next = addNext(secndAddressing, getSecndOperandContent(new), DEST); // define DEST
+		addCmdToList(makeNext(secndAddressing, address+1), table);
 
 	if(new->wordsNum = 2)
 	{
-		new->next = addNext(firstAdressing, getFirstOperandContent(new), SOURCE);
-		new->next->next = addNextNext(secndAddressing, getSecndOperandContent(new), DEST);
+		addCmdToList(makeNext(firstAddressing, address+1), table);
+		addCmdToList(makeNext(secndAddressing, address+2), table);
 	}
-
-	new->address = incAdress();
-	new->encodeType = A; // will be defined as constant
 }
 
-struct cmd *addNext(int encode, int first, int secnd) // secnd - source or dest
+struct cmd *makeNext(int encode, int address)
 {
-	struct cmd *next; // malloc needed;
-	next->encode = encode;
-
-	switch(encode)
-	{
-		case NUMBER:
-			next->number = first;
-			next->encodeType = A;
-			break;
-		case ADDRESS:
-			next->addressNumber = first;
-			next->encodeType = R;
-			break;
-		case ONE_REGISTER:
-			next->r1 = first;
-			next->whichReg = secnd;
-			next->encodeType = A
-			break;
-		case TWO_REGISTER:
-			next->r1 = first;
-			next->r2 = secnd;
-			next->encodeType = A;
-			break;
-	}	
+	struct cmd *next; // malloc *check* needed;
+	next->encode = encode;	
+	next->address = address;
 
 	return next;
-}
-
-struct cmd *addNextNext(int encode, int num)
-{
-	struct cmd *nextNext; // malloc needed;
-	nextNext->encode = encode;
-
-	switch(encode)
-	{
-		case NUMBER:
-			nextNext->number = num;
-			nextNext->encodeType = A;
-			break;
-		case ADDRESS:
-			nextNext->addressNumber = num;
-			nextNext->encodeType = R;
-			break;
-		case ONE_REGISTER:
-			nextNext->r1 = num;
-			nextNext->whichReg = DEST;
-			nextNext->encodeType = A
-			break;
-	}
-
-	return nextNext;	
 }
 

@@ -10,7 +10,7 @@ void secondLoop();
 
 int main(int argc, char *argv[])
 {
-	int i;
+	int j;
 	FILE *f;
 	
 	if(argc == 1)
@@ -31,18 +31,24 @@ int main(int argc, char *argv[])
 
 void firstLoop(FILE *f)
 {
-	char assemblyCommand[MAX_AS_LINE];
+	char assemblyCommand[MAX_AS_LINE+1];
 	int i, c;
+	int IC = 100, DC = 0;
 	
 	while(!feof(f))
 	{
-		for(i = 0, c = fgetc(f); c != '\n' && !feof(f); i++)
+		for(i = 0, c = fgetc(f); i < MAX_AS_LINE && c != '\n' && c != EOF; i++)
 			assemblyCommand[i] = c;
+		assemblyCommand[i] = '\0';
 		
-		i = findStart(assemblyCommand)
 		// to check: if its a blank/note command
-		if(isCode(assemblyCommand+i))
-			addCmd(assemblyCommand+i);
+		
+		if(isCode(assemblyCommand))
+		{
+			addCmd(assemblyCommand, IC);
+			IC += getWordsNum(assemblyCommand);
+		}
+		
 		//will take care if its a data command
 	}
 }
@@ -69,4 +75,3 @@ int findStart(char *str)
 	      
 	return i;
 }
-	
