@@ -22,7 +22,7 @@ void addCmdToList(struct cmd *c, struct list *t)
 	n->reg2 = c->reg2;
 	n->whichReg = c->whichReg;
 	n->encodeType = c->encodeType;
-	n->next = t->dataHead
+	n->next = NULL;
 	
 	if(t->cmdHead == NULL)
 		cmdHead = n;
@@ -30,7 +30,7 @@ void addCmdToList(struct cmd *c, struct list *t)
 	else
 	{
 		c = cmdHead; // uses c as temp
-		while(c->next != t->dataHead)
+		while(c->next)
 			c = c->next;
 		c->next = n;
 	}
