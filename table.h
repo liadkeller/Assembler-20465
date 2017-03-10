@@ -1,4 +1,9 @@
 enum encode {NUMBER, ADDRESS, NUM2, ONE_REGISTER, TWO_REGISTER, MAIN_COMMAND}
+enum encodeType {A, R, E}
+
+void addCmdToList(struct cmd *c, struct list *t);
+void addCmd(char *cmd, int address);
+struct cmd *makeNext(int encode, int address);
 
 struct cmd {
 	int encode;
