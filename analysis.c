@@ -1,4 +1,4 @@
-#define op_num 16
+#include "lim.h"
 
 struct opcode {
         char *name;
@@ -24,7 +24,7 @@ int getOpcode(char *op)
 {
         int i;
         for(i = 0; i < op_num; i++)
-                if(strncmp(op, op[i].name, 3) == 0)
+                if(strncmp(op, op[i].name, op_name_size) == 0)
                         return i;
         // error
         return -1;
@@ -34,7 +34,7 @@ int getGroup(char *op)
 {
         int i;
         for(i = 0; i < op_num; i++)
-                if(strncmp(op, op[i].name, 3) == 0)
+                if(strncmp(op, op[i].name, op_name_size3) == 0)
                         return op[i].group;
         // error
         return -1;
