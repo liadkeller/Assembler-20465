@@ -1,4 +1,4 @@
-// This file suppose to be fimiliar with "struct list *table"
+#include "table.h"
 
 void addCmd(char *cmd, int address)
 {
