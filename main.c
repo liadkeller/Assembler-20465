@@ -31,13 +31,13 @@ int main(int argc, char *argv[])
 
 void firstLoop(FILE *f)
 {
-	char assemblyCommand[MAX_AS_LINE+1];
+	char assemblyCommand[assembly_line_max+1];
 	int i, c;
 	int IC = 100, DC = 0;
 	
 	while(!feof(f))
 	{
-		for(i = 0, c = fgetc(f); i < MAX_AS_LINE && c != '\n' && c != EOF; i++)
+		for(i = 0, c = fgetc(f); i < assembly_line_max && c != '\n' && c != EOF; i++)
 			assemblyCommand[i] = c;
 		assemblyCommand[i] = '\0';
 		
@@ -61,7 +61,7 @@ int findStart(char *str)
 	{
 		if(str[i] == ':')
 		{
-			isSymbol = 1;
+			isSymbol = TRUE;
 			break;
 		}
 		i++;
