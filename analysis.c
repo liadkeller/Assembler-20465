@@ -1,3 +1,5 @@
+#define op_num 16
+
 struct opcode {
         char *name;
         int group;
@@ -20,7 +22,8 @@ struct opcode {
           
 int getOpcode(char *op)
 {
-        for(i = 0; i < 16; i++)
+        int i;
+        for(i = 0; i < op_num; i++)
                 if(strncmp(op, op[i].name, 3) == 0)
                         return i;
         // error
@@ -29,7 +32,8 @@ int getOpcode(char *op)
 
 int getGroup(char *op)
 {
-        for(i = 0; i < 16; i++)
+        int i;
+        for(i = 0; i < op_num; i++)
                 if(strncmp(op, op[i].name, 3) == 0)
                         return op[i].group;
         // error
