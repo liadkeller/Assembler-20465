@@ -39,3 +39,55 @@ int getGroup(char *op)
         // error
         return -1;
 }          
+
+int isSymbol(char *cmd)
+{
+        int i = 0;
+        while(i < strlen(cmd))
+	{
+		if(cmd[i] == ':')
+		{
+			return TRUE;
+		}
+		i++;
+	}
+        return FALSE;
+}
+
+char *getSymbol(char *cmd)
+{
+        int i = 0;
+        char *new;
+        
+        while(i < strlen(cmd))
+        {
+		if(cmd[i] == ':')
+			break;
+		i++;
+        }
+        
+        new = (char *) malloc ((i+1)*sizeof(char));
+        strncpy(new, cmd, i) // copy i chars from 0 to i-1
+        new[i] = '\0';
+        
+        return new;
+}
+
+int getCmdStart(char *cmd)
+{
+        int i = 0;
+	
+        if(isSymbol(cmd))
+	        while(i < strlen(cmd))
+                {
+		        if(cmd[i] == ':')
+			        break;
+		        i++;
+                }
+	
+	while(i < strlen(cmd) && (cmd[i] == ' ' || cmd[i] == '\t'))
+	      i++;
+	      
+	return i;
+}
+
