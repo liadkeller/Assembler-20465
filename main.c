@@ -1,11 +1,5 @@
 #include "main.h"
 
-int findStart(char *);
-int isCode(char *); // boolean
-
-void firstLoop(FILE *);
-void secondLoop();
-
 int main(int argc, char *argv[])
 {
 	int j;
@@ -49,27 +43,4 @@ void firstLoop(FILE *f)
 		
 		//will take care if its a data command
 	}
-}
-
-int findStart(char *str)
-{
-	int isSymbol = 0, i = 0;
-	
-	while(i < strlen(str))
-	{
-		if(str[i] == ':')
-		{
-			isSymbol = TRUE;
-			break;
-		}
-		i++;
-	}
-	
-	if(!isSymbol)
-		i = 0;
-	
-	while(i < strlen(str) && (str[i] == ' ' || str[i] == '\t'))
-	      i++;
-	      
-	return i;
 }
