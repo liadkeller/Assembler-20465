@@ -70,6 +70,9 @@ char *getSymbol(char *cmd)
         strncpy(new, cmd, i) // copy i chars from 0 to i-1
         new[i] = '\0';
         
+	// !!! to check the symbol and report errors
+	// !!! to free the allocation
+	
         return new;
 }
 
@@ -103,4 +106,69 @@ int isCode(char *cmd)
                 if(strncmp(op, opr[i].name, op_name_size) == 0)
 			return TRUE;
 	return FALSE;
+}
+
+char *getFirstOperand(char *cmd)
+{
+	int i = getCmdStart(cmd), len = strlen(cmd);
+	int start, end, size;
+	char *operand;
+	
+	while(i < len && cmd[i] != ' ' && cmd[i] != '\t') // skip the first word (opr) until the first space
+		i++;
+	
+	while(i < len && cmd[i] == ' ' || cmd[i] == '\t') // skip spaces until the second word, first operand
+		i++;
+	
+	if(i == len)
+		// error - cmd is too short
+	
+	start = i;
+	
+	while(i < len && cmd[i] != ' ' && cmd[i] != '\t' && cmd[i] != ',') // skip first operand until the first space/comma
+		i++;
+	
+	end = i-1;
+	size = end-start+1;
+	operand = (char *) malloc ((size+1)*sizeof(char));
+        strncpy(operand, cmd+start, size)
+        operand[size] = '\0';
+	// !!! to free the allocation
+	return operand;
+}
+
+char *getSecondOperand(char *cmd)
+{
+	int i = getCmdStart(cmd);
+	int start, end, size;
+	char *operand;
+	
+	// to make sure i < len || i < len - 1 ('\0')
+	while(cmd[i] != ' ' && cmd[i] != '\t') // skip the first word (opr) until the first space
+		i++;
+	
+	while(cmd[i] == ' ' || cmd[i] == '\t') // skip spaces until the second word, first operand
+		i++;
+	
+	while(cmd[i] != ' ' && cmd[i] != '\t' && cmd[i] != ',') // skip first operand until the first space/comma
+		i++;
+	
+	while(cmd[i] == ' ' || cmd[i] == '\t') // skip spaces until the comma
+		i++;
+	
+	if(cmd[i] != ',')
+		// error - no comma
+	i++;
+	
+	while(cmd[i] == ' ' !! cmd[i] == '\t') // skip spaces until the second operand
+		i++;
+	
+	start = i;
+	end = len - 1;
+	size = end-start+1;
+	operand = (char *) malloc ((size+1)*sizeof(char));
+        strncpy(operand, cmd+start, size)
+        operand[size] = '\0';
+	// !!! to free the allocation
+	return operand;
 }
