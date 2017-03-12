@@ -42,7 +42,7 @@ void addCmdToList(struct cmd *c, struct list *t)
 void addCmd(char *cmd, int address)
 {
 	int i;	
-	char inst[op_name_size+1];
+	char inst[op_name_size+1]; // inst. = instruction
 
 	struct cmd *new;
 
