@@ -53,7 +53,7 @@ void addCmd(char *cmd, int address)
 		new->symbol = getSymbol(cmd);
 
 	i = getCmdStart(cmd);
-	strncpy(inst, cmd+i, op_name_size);
+	strcpy(inst, cmd+i);
 	new->opcode = getOpcode(inst);
 	new->group = getGroup(inst);
 
