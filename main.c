@@ -31,7 +31,7 @@ void firstLoop(FILE *f)
 {
 	char assemblyCommand[assembly_line_max+1];
 	int i, c;
-	int IC = 100, DC = 0;
+	int IC = IC_START, DC = 0;
 	
 	while(!feof(f))
 	{
