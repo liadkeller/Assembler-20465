@@ -53,19 +53,20 @@ void addCmd(char *cmd, int address)
 		new->symbol = getSymbol(cmd);
 
 	i = getCmdStart(cmd);
-	strcpy(inst, cmd+i);
+	strncpy(inst, cmd+i, op_name_size);
+	inst[op_name_size] = '\0';
 	new->opcode = getOpcode(inst);
 	new->group = getGroup(inst);
 
 	if(new->group > 0)
 	{
-		new->firstOperand = getFirstOperand(cmd, i);
+		new->firstOperand = getFirstOperand(cmd+i);
 		new->firstAddressing = getFirstAddressing(new->firstOperand)	
 	}
 
 	if(new->group > 1)
 	{
-		new->secndOperand = getSecndOperand(cmd, i);
+		new->secndOperand = getSecndOperand(cmd+i);
 		new->secndAddressing = getSecndAddressing(new->secndOperand)	
 	}
 	
