@@ -5,7 +5,7 @@
 
 #main:
 
-* functions 'isCode' and 'getWordsNum'
+* function 'getWordsNum'
 
 * taking care of BLANK or NOTE or DATA or STRING or EXTERN
 
@@ -20,12 +20,6 @@
 #analysis:
 
 functions -
-
-isSymbol
-
-getSymbol
-
-getCmdStart
 
 getFirst/secndOperand
 
