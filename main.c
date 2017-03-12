@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include "lim.h"
+#include "main.h"
 
 int findStart(char *);
 int isCode(char *); // boolean
