@@ -2,6 +2,8 @@
 
 * taking care of BLANK or NOTE or DATA or STRING or EXTERN
 
+* To organize - Error file, To fix & to check file
+
 
 #main:
 
@@ -20,7 +22,5 @@
 #analysis:
 
 functions -
-
-getFirst/secndOperand
 
 getFirst/secndAddressing
