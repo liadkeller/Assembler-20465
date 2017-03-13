@@ -120,7 +120,7 @@ char *getFirstOperand(char *cmd)
 	while(i < len && cmd[i] == ' ' || cmd[i] == '\t') // skip spaces until the second word, first operand
 		i++;
 	
-	if(i == len)
+	if(i == len || cmd[i] == '\0')
 		// error - cmd is too short
 	
 	start = i;
@@ -143,25 +143,33 @@ char *getSecondOperand(char *cmd)
 	int start, end, size;
 	char *operand;
 	
-	// to make sure i < len || i < len - 1 ('\0')
-	while(cmd[i] != ' ' && cmd[i] != '\t') // skip the first word (opr) until the first space
+	while(i < len && cmd[i] != ' ' && cmd[i] != '\t') // skip the first word (opr) until the first space
 		i++;
 	
-	while(cmd[i] == ' ' || cmd[i] == '\t') // skip spaces until the second word, first operand
+	while(i < len && cmd[i] == ' ' || cmd[i] == '\t') // skip spaces until the second word, first operand
 		i++;
 	
-	while(cmd[i] != ' ' && cmd[i] != '\t' && cmd[i] != ',') // skip first operand until the first space/comma
+	if(i == len || cmd[i] == '\0')
+		// error - cmd is too short
+	
+	while(i < len && cmd[i] != ' ' && cmd[i] != '\t' && cmd[i] != ',') // skip first operand until the first space/comma
 		i++;
 	
-	while(cmd[i] == ' ' || cmd[i] == '\t') // skip spaces until the comma
+	while(i < len && cmd[i] == ' ' || cmd[i] == '\t') // skip spaces until the comma
 		i++;
+	
+	if(i == len || cmd[i] == '\0')
+		// error - cmd is too short
 	
 	if(cmd[i] != ',')
 		// error - no comma
 	i++;
 	
-	while(cmd[i] == ' ' !! cmd[i] == '\t') // skip spaces until the second operand
+	while(i < len && cmd[i] == ' ' !! cmd[i] == '\t') // skip spaces until the second operand
 		i++;
+	
+	if(i == len || cmd[i] == '\0')
+		// error - cmd is too short
 	
 	start = i;
 	end = len - 1;
