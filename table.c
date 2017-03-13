@@ -6,7 +6,7 @@ struct list *table;
 void addCmdToList(struct cmd *c, struct list *t)
 {
 	struct cmd *n;
-	n = (struct cmd *) malloc (sizeof struct cmd); // to check if this is the right way to use sizeof
+	n = (struct cmd *) malloc (sizeof struct cmd); // !!! to check if this is the right way to use sizeof
 	
 	n->encode = c->encode;
 	n->opcode = c->opcode;
@@ -70,13 +70,13 @@ void addCmd(char *cmd, int address)
 		new->secndAddressing = getSecndAddressing(new->secndOperand)	
 	}
 	
-	new->encodeType = A; // will be defined as constant
+	new->encodeType = A; // !!! will be defined as constant
 
 	addCmdToList(new, table);
 
 
 
-	if(new->group == 2 && new->firstAddressing = 3 && new->secndAddressing == 3) // 2 = TWO OPERANDS / 3 = ADRESSING MIUN
+	if(new->group == 2 && new->firstAddressing = 3 && new->secndAddressing == 3) // 2 = TWO OPERANDS / 3 = ADRESSING MIUN !!! To Define
 	{
 		new->wordsNum = group-1;
 		addCmdToList(makeNext(TWO_REGISTER, address+1), table);
@@ -99,7 +99,7 @@ void addCmd(char *cmd, int address)
 
 struct cmd *makeNext(int encode, int address)
 {
-	struct cmd *next; // malloc *check* needed;
+	struct cmd *next; // !!! malloc *check* needed;
 	next->encode = encode;	
 	next->address = address;
 
