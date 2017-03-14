@@ -9,6 +9,8 @@
 
 * taking care of BLANK or NOTE or DATA or STRING or EXTERN
 
+* canceling 'getWordsNum' - to finish
+
 
 #table:
 
