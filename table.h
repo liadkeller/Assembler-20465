@@ -30,6 +30,16 @@ struct cmd {
 	struct cmd *next;
 }
 
+struct data {
+	int isFirst;
+	// int dataOrString (enum DtSt {DATA STR})
+	int wordsNum;
+	int address;
+	int content;
+	
+	struct data *next;
+}
+
 struct list {
 	struct cmd *cmdHead;
 	struct data *dataHead;
