@@ -146,7 +146,7 @@ char *getSecondOperand(char *cmd)
 	while(i < len && cmd[i] != ' ' && cmd[i] != '\t') // skip the first word (opr) until the first space
 		i++;
 	
-	while(i < len && cmd[i] == ' ' || cmd[i] == '\t') // skip spaces until the second word, first operand
+	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) // skip spaces until the second word, first operand
 		i++;
 	
 	if(i == len || cmd[i] == '\0')
@@ -155,7 +155,7 @@ char *getSecondOperand(char *cmd)
 	while(i < len && cmd[i] != ' ' && cmd[i] != '\t' && cmd[i] != ',') // skip first operand until the first space/comma
 		i++;
 	
-	while(i < len && cmd[i] == ' ' || cmd[i] == '\t') // skip spaces until the comma
+	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) // skip spaces until the comma
 		i++;
 	
 	if(i == len || cmd[i] == '\0')
@@ -165,7 +165,7 @@ char *getSecondOperand(char *cmd)
 		// error - no comma
 	i++;
 	
-	while(i < len && cmd[i] == ' ' !! cmd[i] == '\t') // skip spaces until the second operand
+	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) // skip spaces until the second operand
 		i++;
 	
 	if(i == len || cmd[i] == '\0')
