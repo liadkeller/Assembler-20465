@@ -2,19 +2,15 @@
 
 * taking care of BLANK or NOTE or DATA or STRING or EXTERN
 
-* To organize - Error file, To fix & to check file
+* Error file, To fix & to check file (EVERYTHING IS ALLOCATION FREE)
 
 
 #main:
-
-* function 'getWordsNum'
 
 * taking care of BLANK or NOTE or DATA or STRING or EXTERN
 
 
 #table:
-
-* check function 'makeNext'
 
 * check what 'NUM2' addressing is
 
