@@ -7,7 +7,7 @@ void addCmdToList(struct cmd *c, struct list *t)
 {
 	struct cmd *n;
 	n = (struct cmd *) malloc (sizeof struct cmd); // !!! to check if this is the right way to use sizeof
-	
+	// !!! malloc - to make sure to free the pointer
 	n->encode = c->encode;
 	n->opcode = c->opcode;
 	n->group = c->group;
@@ -45,6 +45,7 @@ void addCmd(char *cmd, int address)
 	char inst[op_name_size+1]; // inst. = instruction
 
 	struct cmd *new;
+	struct cmd *nextWord, *nextNextWord;
 
 	new->encode = MAIN_COMMAND;
 	new->address = address;
@@ -74,34 +75,34 @@ void addCmd(char *cmd, int address)
 
 	addCmdToList(new, table);
 
-
+	
+	nextWord->address = address+1;
+	nextNextWord->address = address+2;
 
 	if(new->group == 2 && new->firstAddressing = 3 && new->secndAddressing == 3) // 2 = TWO OPERANDS / 3 = ADRESSING MIUN !!! To Define
 	{
 		new->wordsNum = group-1;
-		addCmdToList(makeNext(TWO_REGISTER, address+1), table);
+		
+		nextWord->encode = TWO_REGISTER;
+		addCmdToList(nextWord, table);
 	}
 
 	else
 		new->wordsNum = group;
 	
-	
-
 	if(new->wordsNum = 1)
-		addCmdToList(makeNext(secndAddressing, address+1), table);
-
+	{
+		nextWord->encode = secndAddressing;
+		addCmdToList(nextWord, table);
+	}
+		
 	if(new->wordsNum = 2)
 	{
-		addCmdToList(makeNext(firstAddressing, address+1), table);
-		addCmdToList(makeNext(secndAddressing, address+2), table);
+		nextWord->encode = firstAddressing;
+		nextNextWord->encode = secndAddressing;
+		addCmdToList(nextWord, table);
+		addCmdToList(nextNextWord, table);
 	}
-}
-
-struct cmd *makeNext(int encode, int address)
-{
-	struct cmd *next; // !!! malloc *check* needed;
-	next->encode = encode;	
-	next->address = address;
-
-	return next;
+	
+	/*return wordsNum;*/
 }
