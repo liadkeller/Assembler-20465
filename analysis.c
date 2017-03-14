@@ -139,7 +139,7 @@ char *getFirstOperand(char *cmd)
 
 char *getSecondOperand(char *cmd)
 {
-	int i = getCmdStart(cmd);
+	int i = getCmdStart(cmd), len = strlen(cmd);
 	int start, end, size;
 	char *operand;
 	
