@@ -7,5 +7,8 @@ enum BOOL {FALSE , TRUE}
 
 int isCode(char *cmd); // from analysis.c
 
+int addCmd(char *cmd, int address);
+int addData(char *cmd, int address);
+
 void firstLoop(FILE *);
 void secondLoop();
