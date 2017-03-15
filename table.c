@@ -210,3 +210,14 @@ int addStr(char *cmd, int address)
 	
 	return wordsNum;
 }
+
+void fixAddresses(int add) // fix so the data addresses will come right agter the cmd addresses
+{
+	struct data *cur;
+	cur = dataHead;
+	while(cur->next)
+	{
+		cur->address += add; 
+		cur = cur->next;
+	}
+}
