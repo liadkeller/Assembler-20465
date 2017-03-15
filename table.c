@@ -113,7 +113,7 @@ int addCmd(char *cmd, int address)
 	nextWord->address = address+1;
 	nextNextWord->address = address+2;
 
-	if(new->group == 2 && new->firstAddressing = 3 && new->secndAddressing == 3) // 2 = TWO OPERANDS / 3 = ADRESSING MIUN !!! To Define
+	if(new->group == two_operands && new->firstAddressing = register_addressing && new->secndAddressing == register_addressing)
 	{
 		new->wordsNum = group-1;
 		
