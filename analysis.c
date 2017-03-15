@@ -19,26 +19,7 @@ struct opcode {
            {"jsr", 1},
            {"rts", 0},
            {"sto", 0}};
-          
-int getOpcode(char *op)
-{
-        int i;
-        for(i = 0; i < op_num; i++)
-                if(strncmp(op, opr[i].name, op_name_size) == 0)
-                        return i;
-        // error
-        return -1;
-}
-
-int getGroup(char *op)
-{
-        int i;
-        for(i = 0; i < op_num; i++)
-                if(strncmp(op, opr[i].name, op_name_size3) == 0)
-                        return op[i].group;
-        // error
-        return -1;
-}          
+     
 
 int isSymbol(char *cmd) // CMD = code OR data
 {
@@ -46,9 +27,7 @@ int isSymbol(char *cmd) // CMD = code OR data
         while(i < strlen(cmd))
 	{
 		if(cmd[i] == ':')
-		{
 			return TRUE;
-		}
 		i++;
 	}
         return FALSE;
@@ -107,6 +86,40 @@ int isCode(char *cmd)
 			return TRUE;
 	return FALSE;
 }
+
+int isData(char *cmd)
+{
+	if(strncmp(cmd, ".data", data_length) == 0)
+		return TRUE;
+	return FALSE;
+}
+
+int isStr(char *cmd)
+{
+	if(strncmp(cmd, ".string", string_length) == 0)
+		return TRUE;
+	return FALSE;
+}
+
+int getOpcode(char *op)
+{
+        int i;
+        for(i = 0; i < op_num; i++)
+                if(strncmp(op, opr[i].name, op_name_size) == 0)
+                        return i;
+        // error
+        return -1;
+}
+
+int getGroup(char *op)
+{
+        int i;
+        for(i = 0; i < op_num; i++)
+                if(strncmp(op, opr[i].name, op_name_size3) == 0)
+                        return op[i].group;
+        // error
+        return -1;
+}          
 
 char *getFirstOperand(char *cmd)
 {
