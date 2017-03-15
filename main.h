@@ -5,10 +5,15 @@
 #define IC_start 100
 enum BOOL {FALSE , TRUE}
 
-int isCode(char *cmd); // from analysis.c
+int isCode(char *cmd);
+int isData(char *cmd);
+int isStr(char *cmd);
 
 int addCmd(char *cmd, int address);
 int addData(char *cmd, int address);
+int addStr(char *cmd, int address);
+
+void fixAddresses(int add)
 
 void firstLoop(FILE *);
 void secondLoop();
