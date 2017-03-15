@@ -6,12 +6,17 @@ cmd - command - פקודה
 mov, inc, cmp, ...
 מצד שני משתמשים כדי לתאר פקודה כלשהי, באופן כללי, הן פקודות שהן משפטי פעולה והן פקודות שהן משפטי הוראה
 Code Command, Data Command, ...
+בכל פעם שנשתמש בפירוש השני - הכללי, נציין בהערה
+// CMD = code OR data
 
 data - נתונים
 מצד אחד משתמשים כדי לתאר משפטי הוראה של מספרים שלמים המתחילות ב
 .data
 מצד שני משתמשים כדי לתאר באופן כללי משפטי הוראה המכילים נתונים, גם מספרים שלמים וגם מחרוזות, כלומר
 .data and .string
+בכל פעם שנשתמש בפירוש השני - הכללי, נציין בהערה
+// DATA = data OR string
+
 */
 
 enum encode {NUMBER, ADDRESS, NUM2, ONE_REGISTER, TWO_REGISTER, MAIN_COMMAND}
@@ -48,7 +53,7 @@ struct cmd {
 	struct cmd *next;
 }
 
-struct data {
+struct data {	// DATA = data OR string
 	int isFirst;
 	int wordsNum;
 	int address;
