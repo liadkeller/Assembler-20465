@@ -1,24 +1,28 @@
 #First Loop
 
-* taking care of BLANK or NOTE or DATA or STRING or EXTERN
+* taking care of BLANK or NOTE or EXTERN
 
-* Error file, To fix & to check file (EVERYTHING IS ALLOCATION FREE)
+* Error file, To fix & to check file
 
 
-#main:
+#Functions
 
-* taking care of BLANK or NOTE or DATA or STRING or EXTERN
+getFirst/secndAddressing
 
-* canceling 'getWordsNum' - to finish
+isData
+
+isStr
+
+finish addData
+
+countWords
+
 
 
 #table:
 
 * check what 'NUM2' addressing is
 
+#symbolsTable
 
-#analysis:
-
-functions -
-
-getFirst/secndAddressing
+#binarycodeTable
