@@ -6,8 +6,10 @@ struct list *table;
 void addCmdToList(struct cmd *c, struct list *t)
 {
 	struct cmd *n;
-	n = (struct cmd *) malloc (sizeof struct cmd); // !!! to check if this is the right way to use sizeof
+	n = (struct cmd *) malloc (sizeof struct cmd);
+	// !!! to check if this is the right way to use sizeof
 	// !!! malloc - to make sure to free the pointer
+	// !!! to check - if a struct field is unintaliize or containing a garbage values - can it be copied?
 	n->encode = c->encode;
 	n->opcode = c->opcode;
 	n->group = c->group;
@@ -26,20 +28,50 @@ void addCmdToList(struct cmd *c, struct list *t)
 	n->whichReg = c->whichReg;
 	n->encodeType = c->encodeType;
 	n->next = NULL;
+	// !!! to check - if a struct field is unintaliize or containing a garbage values - can it be copied?
 	
 	if(t->cmdHead == NULL)
 		cmdHead = n;
 
 	else
 	{
-		c = cmdHead; // uses c as temp
-		while(c->next)
-			c = c->next;
-		c->next = n;
+		struct cmd *cur;
+		cur = cmdHead;
+		while(cur->next)
+			cur = cur->next;
+		cur->next = n;
 	}
 }
 
-void addDataToList(struct cmd *c, struct list *t);
+void addDataToList(struct data *d, struct list *t)
+{
+	struct data *n;
+	n = (struct data *) malloc (sizeof struct data); // !!! to check if this is the right way to use sizeof
+	// !!! to check if this is the right way to use sizeof
+	// !!! malloc - to make sure to free the pointer
+	
+	// !!! to check - if a struct field is unintaliize or containing a garbage values - can it be copied?
+	n->isFirst = d->isFirst;
+	n->wordsNum = d->wordsNum;
+	n->address = d->address;
+	n->content = d->content;
+	n->isSymbol = d->isSymbol;
+	n->symbol = d->symbol;
+	
+	
+	
+	if(t->dataHead == NULL)
+		dataHead = n;
+
+	else
+	{
+		struct data *cur;
+		cur = dataHead;
+		while(cur->next)
+			cur = cur->next;
+		cur->next = n;
+	}
+}
 
 int addCmd(char *cmd, int address)
 {	
