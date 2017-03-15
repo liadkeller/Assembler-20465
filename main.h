@@ -13,7 +13,7 @@ int addCmd(char *cmd, int address);
 int addData(char *cmd, int address);
 int addStr(char *cmd, int address);
 
-void fixAddresses(int add)
+void fixAddresses(int add);
 
 void firstLoop(FILE *);
 void secondLoop();
