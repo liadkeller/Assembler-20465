@@ -41,8 +41,8 @@ void addCmdToList(struct cmd *c, struct list *t)
 
 void addDataToList(struct cmd *c, struct list *t);
 
-void addCmd(char *cmd, int address)
-{	// we use the phrase cmd. (command) as a code command (mov, lee, inc, ...) or as a general command (code command, data command)
+int addCmd(char *cmd, int address)
+{	
 	int i;	
 	char inst[op_name_size+1]; // inst. = instruction
 
@@ -106,12 +106,12 @@ void addCmd(char *cmd, int address)
 		addCmdToList(nextNextWord, table);
 	}
 	
-	/*return wordsNum;*/
+	return wordsNum;
 }
 
 int addData(char *cmd, int address)
 {
-	int i, dataOrStr, len = strlen(cmd);
+	int i, len = strlen(cmd);
 	struct data *new;
 	int wordsNum;
 	
@@ -125,35 +125,56 @@ int addData(char *cmd, int address)
 	i = getCmdStart(cmd);
 	wordsNum = countWords(cmd+i);
 	new->wordsNum = wordsNum;
-	// add new to the list as the first word
+	addDataToList(new, table);
 	
-	if(i = isData(cmd, i)) // !!! to make sure isData is local function
+	/*
+	if(i = isData(cmd, i))
 	{
 		
 		
 		
 	}
+	*/
 	
-	if(i = isString(cmd, i)) 
+	
+	return wordsNum;
+}
+
+int addStr(char *cmd, int address)
+{
+	int i, len = strlen(cmd);
+	struct data *new;
+	int wordsNum;
+	
+	// first
+	new->isFirst = TRUE;
+	new->address = address;
+	new->isSymbol = isSymbol(cmd);
+	if(new->isSymbol)
+		new->symbol = getSymbol(cmd);
+	
+	i = getCmdStart(cmd);
+	wordsNum = countWords(cmd+i);
+	new->wordsNum = wordsNum;
+	addDataToList(new, table);
+	
+	if(cmd[i] != '"')
+		//error	
+	i++;
+		
+	while(cmd[i] != '\0')
 	{
-		if(cmd[i] != '"')
-			//error	
+		new->isFirst = FALSE;
+		new->address++; // !!! לבדוק תקינות של סדר קדימויות
+		new->content = cmd[i]; // !!! לבדוק המרה לאינטגר
+		addDataToList(new, table);
+		
 		i++;
-		
-		while(cmd[i] != '\0')
-		{
-			new->isFirst = FALSE;
-			new->address++; // !!! לבדוק תקינות של סדר קדימויות
-			new->content = cmd[i]; // !!! לבדוק המרה לאינטגר
-			// add new to the list
-			
-			i++;
-		}
-		// add zero to the end of the string
-		new->address++;
-		new->content = 0;
-		//add
 	}
+	// add zero to the end of the string
+	new->address++;
+	new->content = 0;
+	addDataToList(new, table);
 	
 	return wordsNum;
 }
