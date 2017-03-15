@@ -21,6 +21,8 @@ data - נתונים
 
 enum encode {NUMBER, ADDRESS, NUM2, ONE_REGISTER, TWO_REGISTER, MAIN_COMMAND}
 enum encodeType {A, R, E}
+#define two_operands 2
+#define register_addressing 3
 
 void addCmdToList(struct cmd *c, struct list *t);
 int addCmd(char *cmd, int address);
