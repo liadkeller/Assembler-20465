@@ -87,14 +87,14 @@ int isCode(char *cmd)
 	return FALSE;
 }
 
-int isData(char *cmd)
+int isData(char *cmd) // CMD = code OR data
 {
 	if(strncmp(cmd, ".data", data_length) == 0)
 		return TRUE;
 	return FALSE;
 }
 
-int isStr(char *cmd)
+int isStr(char *cmd) // CMD = code OR data
 {
 	if(strncmp(cmd, ".string", string_length) == 0)
 		return TRUE;
