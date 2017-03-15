@@ -1,11 +1,11 @@
-#First Loop
+# First Loop
 
 * taking care of BLANK or NOTE or EXTERN
 
 * Error file, To fix & to check file
 
 
-#Functions
+# Functions
 
 getFirst/secndAddressing
 
@@ -19,10 +19,10 @@ countWords
 
 
 
-#table:
+# table:
 
 * check what 'NUM2' addressing is
 
-#symbolsTable
+# symbolsTable
 
-#binarycodeTable
+# binarycodeTable
