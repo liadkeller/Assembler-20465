@@ -44,4 +44,6 @@ void firstLoop(FILE *f)
 		if(isStr(assemblyCommand))
 			ID += addStr(assemblyCommand, ID);
 	}
+	
+	fixAddresses(IC);
 }
