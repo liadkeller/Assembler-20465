@@ -40,7 +40,7 @@ int getGroup(char *op)
         return -1;
 }          
 
-int isSymbol(char *cmd)
+int isSymbol(char *cmd) // CMD = code OR data
 {
         int i = 0;
         while(i < strlen(cmd))
@@ -54,7 +54,7 @@ int isSymbol(char *cmd)
         return FALSE;
 }
 
-char *getSymbol(char *cmd)
+char *getSymbol(char *cmd) // CMD = code OR data
 {
         int i = 0;
         char *new;
@@ -76,7 +76,7 @@ char *getSymbol(char *cmd)
         return new;
 }
 
-int getCmdStart(char *cmd)
+int getCmdStart(char *cmd) // CMD = code OR data
 {
         int i = 0;
 	
