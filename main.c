@@ -36,11 +36,12 @@ void firstLoop(FILE *f)
 		// to check: if its a blank/note command
 		
 		if(isCode(assemblyCommand))
-		{
-			addCmd(assemblyCommand, IC);
-			IC += getWordsNum(assemblyCommand);
-		}
+			IC += addCmd(assemblyCommand, IC);
 		
-		//will take care if its a data command
+		if(isData(assemblyCommand))
+			ID += addData(assemblyCommand, ID);
+		
+		if(isStr(assemblyCommand))
+			ID += addStr(assemblyCommand, ID);
 	}
 }
