@@ -9,10 +9,6 @@
 
 getFirst/secndAddressing
 
-isData
-
-isStr
-
 finish addData
 
 countWords
