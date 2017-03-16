@@ -221,3 +221,25 @@ void fixAddresses(int add) // fix so the data addresses will come right after th
 		cur = cur->next;
 	}
 }
+
+void buildSymbolTable()
+{
+	struct cmd *cCur;
+	struct data *dCur;
+	struct ext *eCur;
+	
+	cCur = cmdHead;
+	while(cCur)
+		if(cCur->isSymbol) // !!! To check if isSymbol always TRUE or FALSE
+			addSymbol(cCur->symbol, CODE, cCur->address);
+
+	dCur = dataHead;
+	while(dCur)
+		if(dCur->isSymbol) // !!! To check if isSymbol always TRUE or FALSE
+			addSymbol(dCur->symbol, DtSt, dCur->address);
+	
+	eCur = extHead;
+	while(eCur)
+		if(eCur->isSymbol) // !!! To check if isSymbol always TRUE or FALSE
+			addSymbol(eCur->symbol, EXT, eCur->address);
+}
