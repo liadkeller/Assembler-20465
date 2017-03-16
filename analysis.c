@@ -72,6 +72,20 @@ int getCmdStart(char *cmd) // CMD = code OR data
 	      
 	return i;
 }
+int isBlankOrComment(char *cmd)
+{
+	int i=0;
+	if(cmd[i]==';')
+		return TRUE;
+	while(i<cmd.length)
+	{
+		if(cmd[i]!='' && cmd[i]!='\t' && cmd[i]!='\n')
+		   return FALSE;
+		 i++;
+ 	}
+	return TRUE;
+	}
+}
 
 int isCode(char *cmd)
 {
