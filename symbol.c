@@ -1,11 +1,4 @@
-enum symbolType {CODE , DtSt , EXT};
-
-struct symbol {
-        char *label;
-        int type;
-        int address;
-        struct symbol *next;
-} *symbolTable = NULL;
+struct symbol *symbolTable = NULL;
 
 addSymbol(char *label, int type, int address)
 {
