@@ -80,7 +80,6 @@ void addExtToList(struct data *e, struct list *t)
 	// !!! to check if this is the right way to use sizeof
 	// !!! malloc - to make sure to free the pointer
 	n->symbol = e->symbol;
-	n->address = e->address;
 	
 	if(t->extHead == NULL)
 		t->extHead = n;
@@ -233,8 +232,17 @@ int addStr(char *cmd, int address)
 	return wordsNum;
 }
 
-int addExt(char *cmd, int address)
+void addExt(char *cmd)
 {
+	struct ext *new;
+	char *symbol; // (*) check allocation
+	int i = getCmdStart(cmd) + extern_length; // !! TO CHECK while debugging
+	int len = strlen(cmd);
+	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t'))
+		i++;
+	strncpy(symbol, cmd+i, len-i);  // (*) check allocation
+	new->symbol = symbol;
+	addExtToList(new, table);
 }
 
 void fixAddresses(int add) // fix so the data addresses will come right after the cmd addresses
