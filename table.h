@@ -78,3 +78,15 @@ struct list {
 	struct data *dataHead;
 	struct ext *extHead;
 }
+
+
+enum symbolType {CODE , DtSt , EXT};
+
+void addSymbol(char *label, int type, int address);
+
+struct symbol {
+        char *label;
+        int type;
+        int address;
+        struct symbol *next;
+};
