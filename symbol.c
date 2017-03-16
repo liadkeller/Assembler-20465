@@ -7,7 +7,7 @@ struct symbol {
 addSymbol(char *label, int address)
 {
         struct symbol *new;
-        new = (struct symbol *) malloc (sizeof (struct symbol));
+        new = (struct symbol *) malloc (sizeof (struct symbol)); // malloc - requires to free the allocation
         new->label = label;
         new->address = address;
         new->next = NULL;
@@ -17,7 +17,8 @@ addSymbol(char *label, int address)
                 
         else
         {
-                struct symbol cur = symbolTable;
+                struct symbol *cur;
+                cur = symbolTable;
                 while(cur->next)
                         cur = cur->next;
                 cur->next = new;
