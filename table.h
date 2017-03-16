@@ -66,7 +66,13 @@ struct data {	// DATA = data OR string
 	struct data *next;
 }
 
+struct ext {
+	char *symbol;
+	struct ext *next;
+}
+
 struct list {
 	struct cmd *cmdHead;
 	struct data *dataHead;
+	struct ext *extHead;
 }
