@@ -2,6 +2,7 @@
 
 #define data_length 5 // .data
 #define string_length 7 // .string
+#define extern_length 7 // .extern
 
 #define op_name_size 3
 #define op_num 16
