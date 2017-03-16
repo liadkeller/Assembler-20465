@@ -275,5 +275,5 @@ void buildSymbolTable()
 	eCur = extHead;
 	while(eCur)
 		if(eCur->isSymbol) // !!! To check if isSymbol always TRUE or FALSE
-			addSymbol(eCur->symbol, EXT, eCur->address);
+			addSymbol(eCur->symbol, EXT, NULL);
 }
