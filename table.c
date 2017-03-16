@@ -31,12 +31,12 @@ void addCmdToList(struct cmd *c, struct list *t)
 	// !!! to check - if a struct field is unintaliize or containing a garbage values - can it be copied?
 	
 	if(t->cmdHead == NULL)
-		cmdHead = n;
+		t->cmdHead = n;
 
 	else
 	{
 		struct cmd *cur;
-		cur = cmdHead;
+		cur = t->cmdHead;
 		while(cur->next)
 			cur = cur->next;
 		cur->next = n;
@@ -46,7 +46,7 @@ void addCmdToList(struct cmd *c, struct list *t)
 void addDataToList(struct data *d, struct list *t)
 {
 	struct data *n;
-	n = (struct data *) malloc (sizeof struct data); // !!! to check if this is the right way to use sizeof
+	n = (struct data *) malloc (sizeof struct data);
 	// !!! to check if this is the right way to use sizeof
 	// !!! malloc - to make sure to free the pointer
 	
@@ -61,12 +61,34 @@ void addDataToList(struct data *d, struct list *t)
 	
 	
 	if(t->dataHead == NULL)
-		dataHead = n;
+		t->dataHead = n;
 
 	else
 	{
 		struct data *cur;
-		cur = dataHead;
+		cur = t->dataHead;
+		while(cur->next)
+			cur = cur->next;
+		cur->next = n;
+	}
+}
+
+void addExtToList(struct data *e, struct list *t)
+{
+	struct ext *n;
+	n = (struct ext *) malloc (sizeof (struct ext));
+	// !!! to check if this is the right way to use sizeof
+	// !!! malloc - to make sure to free the pointer
+	n->symbol = e->symbol;
+	n->address = e->address;
+	
+	if(t->extHead == NULL)
+		t->extHead = n;
+
+	else
+	{
+		struct ext *cur;
+		cur = t->extHead;
 		while(cur->next)
 			cur = cur->next;
 		cur->next = n;
@@ -209,6 +231,10 @@ int addStr(char *cmd, int address)
 	addDataToList(new, table);
 	
 	return wordsNum;
+}
+
+int addExt(char *cmd, int address)
+{
 }
 
 void fixAddresses(int add) // fix so the data addresses will come right after the cmd addresses
