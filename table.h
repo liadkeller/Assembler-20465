@@ -25,7 +25,7 @@ enum encodeType {A, R, E}
 #define register_addressing 3
 
 void addCmdToList(struct cmd *c, struct list *t);
-void addDataToList(struct cmd *d, struct list *t);
+void addDataToList(struct cmd *d, struct list *t); // DATA = data OR string
 void addExtToList(struct cmd *e, struct list *t);
 int addCmd(char *cmd, int address);
 int addData(char *cmd, int address);
