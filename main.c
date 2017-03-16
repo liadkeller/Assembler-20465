@@ -43,6 +43,11 @@ void firstLoop(FILE *f)
 		
 		if(isStr(assemblyCommand))
 			ID += addStr(assemblyCommand, ID);
+		
+		if(isExt(assemblyCommand))
+			ID += addExt(assemblyCommand, ID);
+		
+		// is isEntry, do nothing
 	}
 	
 	fixAddresses(IC);
