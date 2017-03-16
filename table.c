@@ -43,7 +43,7 @@ void addCmdToList(struct cmd *c, struct list *t)
 	}
 }
 
-void addDataToList(struct data *d, struct list *t)
+void addDataToList(struct data *d, struct list *t) // DATA = data OR string
 {
 	struct data *n;
 	n = (struct data *) malloc (sizeof struct data);
