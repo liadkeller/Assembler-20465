@@ -14,6 +14,7 @@ int getCmdStart(char *cmd); // CMD = code OR data
 int isCode(char *cmd);
 int isData(char *cmd); // CMD = code OR data
 int isStr(char *cmd); // CMD = code OR data
+int isExt(char *cmd);
 int getOpcode(char *op);
 int getGroup(char *op);
 char *getFirstOperand(char *cmd);
