@@ -45,10 +45,11 @@ void firstLoop(FILE *f)
 			ID += addStr(assemblyCommand, ID);
 		
 		if(isExt(assemblyCommand))
-			ID += addExt(assemblyCommand, ID);
+			addExt(assemblyCommand);
 		
 		// is isEntry, do nothing
 	}
 	
 	fixAddresses(IC);
+	buildSymbolTable();
 }
