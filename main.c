@@ -33,8 +33,8 @@ void firstLoop(FILE *f)
 			assemblyCommand[i] = c;
 		assemblyCommand[i] = '\0';
 		
-		// to check: if its a blank/note command
-		
+		if(isBlankOrComment)
+			continue;
 		if(isCode(assemblyCommand))
 			IC += addCmd(assemblyCommand, IC);
 		
