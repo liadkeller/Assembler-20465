@@ -14,6 +14,7 @@ int addData(char *cmd, int address);
 int addStr(char *cmd, int address);
 
 void fixAddresses(int add);
+void buildSymbolTable(void);
 
 void firstLoop(FILE *);
 void secondLoop();
