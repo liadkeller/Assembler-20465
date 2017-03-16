@@ -1,3 +1,5 @@
+enum symbolType {CODE , DtSt , EXT};
+
 struct symbol {
         char *label;
         int type;
