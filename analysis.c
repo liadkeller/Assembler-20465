@@ -101,6 +101,13 @@ int isStr(char *cmd) // CMD = code OR data
 	return FALSE;
 }
 
+int isExt(char *cmd)
+{
+	if(strncmp(cmd, ".extern", extern_length) == 0)
+		return TRUE;
+	return FALSE;
+}
+
 int getOpcode(char *op)
 {
         int i;
