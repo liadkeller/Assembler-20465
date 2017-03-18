@@ -186,7 +186,7 @@ int addData(char *cmd, int address)
 	i += data_length;
 	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) // skip spaces
 		i++;
-	//
+	
 	if(i == len || cmd[i] == '\0')
 		return 0; // !!! ERROR - To check if no num considered as an error
 	
