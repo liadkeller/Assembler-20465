@@ -168,6 +168,9 @@ int addData(char *cmd, int address)
 	struct data *new;
 	int wordsNum;
 	
+	int start, int end, num;
+	char *tempNum;
+	
 	// first
 	new->isFirst = TRUE;
 	new->address = address;
@@ -179,16 +182,51 @@ int addData(char *cmd, int address)
 	wordsNum = countWords(cmd+i);
 	new->wordsNum = wordsNum;
 	addDataToList(new, table);
+
+	i += data_length;
+	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) // skip spaces
+		i++;
+	//
+	if(i == len || cmd[i] == '\0')
+		return 0; // !!! ERROR - To check if no num considered as an error
 	
-	/*
-	if(i = isData(cmd, i))
+	start = i;
+	while(i < len && cmd[i] != ' ' && cmd[i] != '\t') // skip the number
+		i++;
+	end = i-1;
+	strncpy(tempNum, cmd+start, end-start+1);
+	num = atoi(tempNum);
+	
+	new->content = num;
+	addDataToList(new, table);
+	
+	new->isFirst = FALSE;
+	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) // skip spaces
+		i++;
+	
+	while(i != len && cmd[i] != '\0')
 	{
+		if(cmd[i] != ',')
+			// error - no comma
+		while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) // skip spaces
+			i++;
+		if(i == len || cmd[i] == '\0')
+			// error - number expected
+			
+		start = i;
+		while(i < len && cmd[i] != ' ' && cmd[i] != '\t') // skip the number
+			i++;
+		end = i-1;
+		strncpy(tempNum, cmd+start, end-start+1);
+		num = atoi(tempNum);
 		
+		new->address++;
+		new->content = num;
+		addDataToList(new, table);
 		
-		
+		while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) // skip spaces
+			i++;
 	}
-	*/
-	
 	
 	return wordsNum;
 }
@@ -209,19 +247,26 @@ int addStr(char *cmd, int address)
 	i = getCmdStart(cmd);
 	wordsNum = countWords(cmd+i);
 	new->wordsNum = wordsNum;
-	addDataToList(new, table);
+	
+	i += string_length;
+	
+	while(i < len && cmd[i] == ' ' || cmd[i] == '\t') // skip spaces
+		i++;
 	
 	if(cmd[i] != '"')
 		//error	
 	i++;
+	
+	new->content = cmd[i]; // !!! לבדוק המרה לאינטגר
+	addDataToList(new, table); // add the first char
+	i++;
+	new->isFirst = FALSE;
 		
 	while(cmd[i] != '\0')
 	{
-		new->isFirst = FALSE;
 		new->address++; // !!! לבדוק תקינות של סדר קדימויות
 		new->content = cmd[i]; // !!! לבדוק המרה לאינטגר
 		addDataToList(new, table);
-		
 		i++;
 	}
 	// add zero to the end of the string
@@ -264,16 +309,16 @@ void buildSymbolTable()
 	
 	cCur = cmdHead;
 	while(cCur)
-		if(cCur->isSymbol) // !!! To check if isSymbol always TRUE or FALSE
+		if(cCur->isSymbol)
 			addSymbol(cCur->symbol, CODE, cCur->address);
 
 	dCur = dataHead;
 	while(dCur)
-		if(dCur->isSymbol) // !!! To check if isSymbol always TRUE or FALSE
+		if(dCur->isSymbol)
 			addSymbol(dCur->symbol, DtSt, dCur->address);
 	
 	eCur = extHead;
 	while(eCur)
-		if(eCur->isSymbol) // !!! To check if isSymbol always TRUE or FALSE
+		if(eCur->isSymbol)
 			addSymbol(eCur->symbol, EXT, NULL);
 }
