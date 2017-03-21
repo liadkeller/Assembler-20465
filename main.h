@@ -3,6 +3,7 @@
 
 #define assembly_line_max 100
 #define IC_start 100
+#define file_name_max 100
 enum BOOL {FALSE , TRUE}
 
 int isCode(char *cmd);
