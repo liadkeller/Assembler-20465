@@ -19,25 +19,18 @@ data - נתונים
 
 */
 
-enum encode {NUMBER, ADDRESS, NUM2, ONE_REGISTER, TWO_REGISTER, MAIN_COMMAND}
-enum encodeType {A, R, E}
+
 #define two_operands 2
 #define register_addressing 3
-
-void addCmdToList(struct cmd *c, struct list *t);
-void addDataToList(struct cmd *d, struct list *t); // DATA = data OR string
-void addExtToList(struct cmd *e, struct list *t);
-int addCmd(char *cmd, int address);
-int addData(char *cmd, int address);
-int addStr(char *cmd, int address);
-void addExt(char *cmd)
+enum encode {NUMBER, ADDRESS, NUM2, ONE_REGISTER, TWO_REGISTER, MAIN_COMMAND};
+enum encodeType {A, R, E};
 
 struct cmd {
 	int encode;
 	int opcode;
 	int group;
-	char *firstOperand; // source
-	char *secndOperand; // destniation
+	char *firstOperand; /* source*/
+	char *secndOperand; /* destniation*/
 	int firstAddressing;
 	int secndAddressing;
 	int wordsNum;	
@@ -50,14 +43,14 @@ struct cmd {
 	
 	int reg1;
 	int reg2;
-	int whichReg; // SOURCE / DEST
+	int whichReg; /* SOURCE  DEST*/
 
-	int encodeType; // A R E
+	int encodeType; /*A R E*/
 
 	struct cmd *next;
-}
+};
 
-struct data {	// DATA = data OR string
+struct data {	/* DATA = data OR string*/
 	int isFirst;
 	int wordsNum;
 	int address;
@@ -66,20 +59,26 @@ struct data {	// DATA = data OR string
 	char *symbol;
 	
 	struct data *next;
-}
+};
 
 struct ext {
 	char *symbol;
 	struct ext *next;
-}
+};
 
 struct list {
 	struct cmd *cmdHead;
 	struct data *dataHead;
 	struct ext *extHead;
-}
+};
 
-
+void addCmdToList(struct cmd *c, struct list *t);
+void addDataToList(struct data *d, struct list *t); /* DATA = data OR string*/
+void addExtToList(struct ext *e, struct list *t);
+int addCmd(char *cmd, int address);
+int addData(char *cmd, int address);
+int addStr(char *cmd, int address);
+void addExt(char *cmd);
 enum symbolType {CODE , DtSt , EXT};
 
 void addSymbol(char *label, int type, int address);
