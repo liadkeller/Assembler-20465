@@ -4,18 +4,25 @@ int main(int argc, char *argv[])
 {
 	int j;
 	FILE *f;
-	
+	char* fileName;
 	if(argc == 1)
-	\\ error 
-	
+    {
+       	printf("No files to compile\n");
+        return 0;
+    }
+
 	for(j = 1; j < argc; j++)
 	{
-		f = fopen(strcat(argv[j], ".as") , "r");
+		fileName=argv[j];
+		f = fopen(strcat(fileName, ".as") , "r");
 		if(!f)
-			\\error		
+        {
+            printf("File %s doesn't exist!\n",fileName);
+            return 0;
+        }	
 		firstLoop(f);
-		secondLoop(/* params */);
-		/* create files */
+		/*	secondLoop( params );  */
+	  /*  create files */
 	}
 	
 	return 0;
@@ -33,21 +40,21 @@ void firstLoop(FILE *f)
 			assemblyCommand[i] = c;
 		assemblyCommand[i] = '\0';
 		
-		if(isBlankOrComment)
+		if(isBlankOrComment(assemblyCommand))
 			continue;
 		if(isCode(assemblyCommand))
 			IC += addCmd(assemblyCommand, IC);
 		
 		if(isData(assemblyCommand))
-			ID += addData(assemblyCommand, ID);
+		  DC += addData(assemblyCommand, DC);
 		
 		if(isStr(assemblyCommand))
-			ID += addStr(assemblyCommand, ID);
+		  DC += addStr(assemblyCommand,DC);
 		
-		if(isExt(assemblyCommand))
-			addExt(assemblyCommand);
+		/*	if(isExt(assemblyCommand))
+		  	addExt(assemblyCommand);
 		
-		// is isEntry, do nothing
+			is isEntry, do nothing  */
 	}
 	
 	fixAddresses(IC);
