@@ -3,9 +3,9 @@
 
 #define assembly_line_max 100
 #define IC_start 100
-#define file_name_max 100
-enum BOOL {FALSE , TRUE}
+enum BOOL {FALSE , TRUE};
 
+int isBlankOrComment(char *cmd);
 int isCode(char *cmd);
 int isData(char *cmd);
 int isStr(char *cmd);
