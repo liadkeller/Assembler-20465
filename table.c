@@ -6,10 +6,9 @@ struct list *table;
 void addCmdToList(struct cmd *c, struct list *t)
 {
 	struct cmd *n;
-	n = (struct cmd *) malloc (sizeof struct cmd);
-	// !!! to check if this is the right way to use sizeof
-	// !!! malloc - to make sure to free the pointer
-	// !!! to check - if a struct field is unintaliize or containing a garbage values - can it be copied?
+	n = (struct cmd*) malloc(sizeof(struct cmd));
+	/* !!! malloc - to make sure to free the pointer*/
+	/* !!! to check - if a struct field is unintaliize or containing a garbage values - can it be copied?*/
 	n->encode = c->encode;
 	n->opcode = c->opcode;
 	n->group = c->group;
@@ -28,7 +27,7 @@ void addCmdToList(struct cmd *c, struct list *t)
 	n->whichReg = c->whichReg;
 	n->encodeType = c->encodeType;
 	n->next = NULL;
-	// !!! to check - if a struct field is unintaliize or containing a garbage values - can it be copied?
+	/* !!! to check - if a struct field is unintaliize or containing a garbage values - can it be copied?*/
 	
 	if(t->cmdHead == NULL)
 		t->cmdHead = n;
@@ -43,14 +42,12 @@ void addCmdToList(struct cmd *c, struct list *t)
 	}
 }
 
-void addDataToList(struct data *d, struct list *t) // DATA = data OR string
+void addDataToList(struct data *d, struct list *t) /* DATA = data OR string*/
 {
 	struct data *n;
-	n = (struct data *) malloc (sizeof struct data);
-	// !!! to check if this is the right way to use sizeof
-	// !!! malloc - to make sure to free the pointer
-	
-	// !!! to check - if a struct field is unintaliize or containing a garbage values - can it be copied?
+	n = (struct data*) malloc (sizeof(struct data));
+	/* !!! malloc - to make sure to free the pointer*/	
+	/* !!! to check - if a struct field is unintaliize or containing a garbage values - can it be copied?*/
 	n->isFirst = d->isFirst;
 	n->wordsNum = d->wordsNum;
 	n->address = d->address;
@@ -73,12 +70,11 @@ void addDataToList(struct data *d, struct list *t) // DATA = data OR string
 	}
 }
 
-void addExtToList(struct data *e, struct list *t)
+void addExtToList(struct ext *e, struct list *t)
 {
 	struct ext *n;
-	n = (struct ext *) malloc (sizeof (struct ext));
-	// !!! to check if this is the right way to use sizeof
-	// !!! malloc - to make sure to free the pointer
+	n = (struct ext*) malloc(sizeof(struct ext));
+	/* !!! malloc - to make sure to free the pointer*/
 	n->symbol = e->symbol;
 	
 	if(t->extHead == NULL)
@@ -97,7 +93,7 @@ void addExtToList(struct data *e, struct list *t)
 int addCmd(char *cmd, int address)
 {	
 	int i;	
-	char inst[op_name_size+1]; // inst. = instruction
+	char inst[op_name_size+1]; /* inst. = instruction*/
 
 	struct cmd *new;
 	struct cmd *nextWord, *nextNextWord;
@@ -116,17 +112,17 @@ int addCmd(char *cmd, int address)
 
 	if(new->group > 0)
 	{
-		new->firstOperand = getFirstOperand(cmd+i);
-		new->firstAddressing = getFirstAddressing(new->firstOperand)	
-	}
+		/*new->firstOperand = getFirstOperand(cmd+i);
+             	new->firstAddressing = getFirstAddressing(new->firstOperand) לסיים!!*/	
+        }
 
 	if(new->group > 1)
 	{
-		new->secndOperand = getSecndOperand(cmd+i);
-		new->secndAddressing = getSecndAddressing(new->secndOperand)	
+		/*new->secndOperand = getSecndOperand(cmd+i);
+		new->secndAddressing = getSecndAddressing(new->secndOperand)	לסיים!!*/
 	}
 	
-	new->encodeType = A; // !!! will be defined as constant
+	new->encodeType = A; /* !!! will be defined as constant*/
 
 	addCmdToList(new, table);
 
@@ -134,32 +130,32 @@ int addCmd(char *cmd, int address)
 	nextWord->address = address+1;
 	nextNextWord->address = address+2;
 
-	if(new->group == two_operands && new->firstAddressing = register_addressing && new->secndAddressing == register_addressing)
+	if(new->group == two_operands && new->firstAddressing == register_addressing && new->secndAddressing == register_addressing)
 	{
-		new->wordsNum = group-1;
+		new->wordsNum = new->group-1;
 		
 		nextWord->encode = TWO_REGISTER;
 		addCmdToList(nextWord, table);
 	}
 
 	else
-		new->wordsNum = group;
+		new->wordsNum = new->group;
 	
-	if(new->wordsNum = 1)
+	if(new->wordsNum == 1)
 	{
-		nextWord->encode = secndAddressing;
+		nextWord->encode = new->secndAddressing;
 		addCmdToList(nextWord, table);
 	}
 		
-	if(new->wordsNum = 2)
+	if(new->wordsNum == 2)
 	{
-		nextWord->encode = firstAddressing;
-		nextNextWord->encode = secndAddressing;
+		nextWord->encode = new->firstAddressing;
+		nextNextWord->encode = new->secndAddressing;
 		addCmdToList(nextWord, table);
 		addCmdToList(nextNextWord, table);
 	}
 	
-	return wordsNum;
+	return new->wordsNum;
 }
 
 int addData(char *cmd, int address)
@@ -168,10 +164,10 @@ int addData(char *cmd, int address)
 	struct data *new;
 	int wordsNum;
 	
-	int start, int end, num;
+	int start, end, num;
 	char *tempNum;
 	
-	// first
+	/* first*/
 	new->isFirst = TRUE;
 	new->address = address;
 	new->isSymbol = isSymbol(cmd);
@@ -179,19 +175,19 @@ int addData(char *cmd, int address)
 		new->symbol = getSymbol(cmd);
 	
 	i = getCmdStart(cmd);
-	wordsNum = countWords(cmd+i);
+	/*wordsNum = countWords(cmd+i);לסיים!*/
 	new->wordsNum = wordsNum;
 	addDataToList(new, table);
 
 	i += data_length;
-	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) // skip spaces
+	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces*/
 		i++;
 	
 	if(i == len || cmd[i] == '\0')
-		return 0; // !!! ERROR - To check if no num considered as an error
+		return 0; /* !!! ERROR - To check if no num considered as an error*/
 	
 	start = i;
-	while(i < len && cmd[i] != ' ' && cmd[i] != '\t') // skip the number
+	while(i < len && cmd[i] != ' ' && cmd[i] != '\t') /* skip the number*/
 		i++;
 	end = i-1;
 	strncpy(tempNum, cmd+start, end-start+1);
@@ -201,20 +197,20 @@ int addData(char *cmd, int address)
 	addDataToList(new, table);
 	
 	new->isFirst = FALSE;
-	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) // skip spaces
+	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces*/
 		i++;
 	
 	while(i != len && cmd[i] != '\0')
 	{
 		if(cmd[i] != ',')
-			// error - no comma
-		while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) // skip spaces
+			/* error - no comma*/
+		while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces*/
 			i++;
 		if(i == len || cmd[i] == '\0')
-			// error - number expected
+			/* error - number expected*/
 			
 		start = i;
-		while(i < len && cmd[i] != ' ' && cmd[i] != '\t') // skip the number
+		while(i < len && cmd[i] != ' ' && cmd[i] != '\t') /* skip the number*/
 			i++;
 		end = i-1;
 		strncpy(tempNum, cmd+start, end-start+1);
@@ -224,7 +220,7 @@ int addData(char *cmd, int address)
 		new->content = num;
 		addDataToList(new, table);
 		
-		while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) // skip spaces
+		while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces*/
 			i++;
 	}
 	
@@ -237,7 +233,7 @@ int addStr(char *cmd, int address)
 	struct data *new;
 	int wordsNum;
 	
-	// first
+	/* first*/
 	new->isFirst = TRUE;
 	new->address = address;
 	new->isSymbol = isSymbol(cmd);
@@ -245,31 +241,31 @@ int addStr(char *cmd, int address)
 		new->symbol = getSymbol(cmd);
 	
 	i = getCmdStart(cmd);
-	wordsNum = countWords(cmd+i);
+	/*wordsNum = countWords(cmd+i); לסיים!!*/
 	new->wordsNum = wordsNum;
 	
 	i += string_length;
 	
-	while(i < len && cmd[i] == ' ' || cmd[i] == '\t') // skip spaces
+	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces*/
 		i++;
 	
 	if(cmd[i] != '"')
-		//error	
+		/*error*/
 	i++;
 	
-	new->content = cmd[i]; // !!! לבדוק המרה לאינטגר
-	addDataToList(new, table); // add the first char
+ 	new->content = cmd[i]; /* !!! לבדוק המרה לאינטגר*/
+ 	addDataToList(new, table); /* add the first char*/
 	i++;
 	new->isFirst = FALSE;
 		
 	while(cmd[i] != '\0')
 	{
-		new->address++; // !!! לבדוק תקינות של סדר קדימויות
-		new->content = cmd[i]; // !!! לבדוק המרה לאינטגר
-		addDataToList(new, table);
-		i++;
+	new->address++; /* !!! לבדוק תקינות של סדר קדימויות*/
+	new->content = cmd[i]; /* !!! לבדוק המרה לאינטגר*/
+	addDataToList(new, table);
+	i++;
 	}
-	// add zero to the end of the string
+	/* add zero to the end of the string*/
 	new->address++;
 	new->content = 0;
 	addDataToList(new, table);
@@ -277,21 +273,23 @@ int addStr(char *cmd, int address)
 	return wordsNum;
 }
 
+
 void addExt(char *cmd)
 {
 	struct ext *new;
-	char *symbol; // (*) check allocation
-	int i = getCmdStart(cmd) + extern_length; // !! TO CHECK while debugging
+	char *symbol; /* (*) check allocation*/
+	int i = getCmdStart(cmd) + extern_length; /* !! TO CHECK while debugging*/
 	int len = strlen(cmd);
 	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t'))
 		i++;
-	strncpy(symbol, cmd+i, len-i);  // (*) check allocation
+	strncpy(symbol, cmd+i, len-i);  /* (*) check allocation*/
 	new->symbol = symbol;
 	addExtToList(new, table);
 }
 
-void fixAddresses(int add) // fix so the data addresses will come right after the cmd addresses
+void fixAddresses(int add) /* fix so the data addresses will come right after the cmd addresses*/
 {
+/*
 	struct data *cur;
 	cur = dataHead;
 	while(cur->next)
@@ -299,10 +297,12 @@ void fixAddresses(int add) // fix so the data addresses will come right after th
 		cur->address += add; 
 		cur = cur->next;
 	}
+*/
 }
 
 void buildSymbolTable()
 {
+/*
 	struct cmd *cCur;
 	struct data *dCur;
 	struct ext *eCur;
@@ -321,4 +321,5 @@ void buildSymbolTable()
 	while(eCur)
 		if(eCur->isSymbol)
 			addSymbol(eCur->symbol, EXT, NULL);
+*/
 }
