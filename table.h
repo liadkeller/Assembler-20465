@@ -22,8 +22,9 @@ data - נתונים
 
 #define two_operands 2
 #define register_addressing 3
-enum encode {NUMBER, ADDRESS, NUM2, ONE_REGISTER, TWO_REGISTER, MAIN_COMMAND};
+enum encode {NUMBER, ADDRESS, INDEX_REGISTER, ONE_REGISTER, TWO_REGISTER, MAIN_COMMAND};
 enum encodeType {A, R, E};
+enum regType {SOURCE, DEST};
 
 struct cmd {
 	int encode;
