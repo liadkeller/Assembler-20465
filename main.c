@@ -42,19 +42,20 @@ void firstLoop(FILE *f)
 		
 		if(isBlankOrComment(assemblyCommand))
 			continue;
+		
 		if(isCode(assemblyCommand))
 			IC += addCmd(assemblyCommand, IC);
 		
 		if(isData(assemblyCommand))
-		  DC += addData(assemblyCommand, DC);
+		 	DC += addData(assemblyCommand, DC);
 		
 		if(isStr(assemblyCommand))
-		  DC += addStr(assemblyCommand,DC);
+		 	DC += addStr(assemblyCommand,DC);
 		
 		/*	if(isExt(assemblyCommand))
-		  	addExt(assemblyCommand);
+		  		addExt(assemblyCommand);
 		
-			is isEntry, do nothing  */
+			if isEntry, do nothing  */
 	}
 	
 	fixAddresses(IC);
