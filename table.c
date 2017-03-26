@@ -200,7 +200,7 @@ int addData(char *cmd, int address)
 	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces*/
 		i++;
 	
-	while(i != len && cmd[i] != '\0')
+	while(i < len && cmd[i] != '\0')
 	{
 		if(cmd[i] != ',')
 			/* error - no comma*/
