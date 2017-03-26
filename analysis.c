@@ -213,3 +213,44 @@ char *getSecondOperand(char *cmd)
 	/* !!! to free the allocation*/
 	return operand;
 }
+
+int countWords(char *cmd)
+{
+	int i = 0, num = 0, len = strlen(cmd);
+	
+	if(isStr(cmd))
+	{
+		i += string_length;
+	
+		while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces*/
+			i++;
+	
+		if(cmd[i] != '"')
+			return num;
+		i++;
+		
+		while(cmd[i] != '\0')
+			num++;
+	}
+	
+	if(isData(cmd))
+	{
+		i += data_length;
+		
+		while(i < len && (cmd[i] == ' ' || cmd[i] == '\t' || cmd[i] == ',')
+			      i++;
+		// skips first space
+		
+		while(i < len && cmd[i] != '\0')
+		{
+			while(i < len && cmd[i] != ' ' && cmd[i] != '\t' && cmd[i] != ',')
+			      i++;
+			num++;
+			
+			while(i < len && (cmd[i] == ' ' || cmd[i] == '\t' || cmd[i] == ',')
+			      i++;   // skips space   
+		}
+	}
+	
+	return num;
+}
