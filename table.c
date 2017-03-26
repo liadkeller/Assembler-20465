@@ -258,7 +258,7 @@ int addStr(char *cmd, int address)
 	i++;
 	new->isFirst = FALSE;
 		
-	while(cmd[i] != '\0')
+	while(cmd[i] != '"')
 	{
 	new->address++; /* !!! לבדוק תקינות של סדר קדימויות*/
 	new->content = cmd[i]; /* !!! לבדוק המרה לאינטגר*/
