@@ -1,4 +1,4 @@
-#include "main.h"
+#include "main.h"  
 
 int main(int argc, char *argv[])
 {
@@ -6,8 +6,8 @@ int main(int argc, char *argv[])
 	FILE *f;
 	char* fileName;
 	if(argc == 1)
-    {
-       	printf("No files to compile\n");
+	{		
+        printf("No files to compile\n");
         return 0;
     }
 
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 		firstLoop(f);
 		/*	secondLoop( params );  */
 	  /*  create files */
-		fclose(f);
+		 fclose(f);
 	}
 	
 	return 0;
@@ -32,29 +32,28 @@ int main(int argc, char *argv[])
 void firstLoop(FILE *f)
 {
 	char assemblyCommand[assembly_line_max+1];
-	int i, c;
 	int IC = IC_start, DC = 0;
 	
 	while(fgets(assemblyCommand,assembly_line_max,f))
 	{		
-		if(isBlankOrComment(assemblyCommand))
+		if(isBlankOrComment(assemblyCommand)||isEnt(assemblyCommand))
 			continue;
+
+		else if(isCode(assemblyCommand))
+			IC += addCmd(assemblyCommand, IC);	
+
+		else if(isData(assemblyCommand))
+		  	DC += addData(assemblyCommand, DC);
 		
-		if(isCode(assemblyCommand))
-			IC += addCmd(assemblyCommand, IC);
-		
-		if(isData(assemblyCommand))
-		 	DC += addData(assemblyCommand, DC);
-		
-		if(isStr(assemblyCommand))
-		 	DC += addStr(assemblyCommand,DC);
-		
-		/*	if(isExt(assemblyCommand))
-		  		addExt(assemblyCommand);
-		
-			if isEntry, do nothing  */
-	}
+		else if(isStr(assemblyCommand))
+		  	DC += addStr(assemblyCommand,DC);
 	
+		else if(isExt(assemblyCommand))
+		  	addExt(assemblyCommand);
+		else
+			printf("%s","error");
+		
+	}
 	fixAddresses(IC);
 	buildSymbolTable();
 }
