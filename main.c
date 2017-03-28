@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
 		firstLoop(f);
 		/*	secondLoop( params );  */
 	  /*  create files */
+		fclose(f);
 	}
 	
 	return 0;
@@ -34,12 +35,8 @@ void firstLoop(FILE *f)
 	int i, c;
 	int IC = IC_start, DC = 0;
 	
-	while(!feof(f))
-	{
-		for(i = 0, c = fgetc(f); i < assembly_line_max && c != '\n' && c != EOF; i++)
-			assemblyCommand[i] = c;
-		assemblyCommand[i] = '\0';
-		
+	while(fgets(assemblyCommand,assembly_line_max,f))
+	{		
 		if(isBlankOrComment(assemblyCommand))
 			continue;
 		
