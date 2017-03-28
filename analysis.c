@@ -47,14 +47,35 @@ char *getSymbol(char *cmd) /* CMD = code OR data*/
         
         new = (char *) malloc ((i+1)*sizeof(char));
         strncpy(new, cmd, i); /* copy i chars from 0 to i-1*/
-        new[i] = '\0';
-        
-	/* !!! to check the symbol and report errors*/
+        new[i] = '\0';/* the ':' sign*/	
+				
 	/* !!! to free the allocation*/
-	
-        return new;
+		if(checkSymbol(cmd))
+      	  return new;
+		else
+			return NULL;
 }
-
+int checkSymbol(char *cmd)
+{
+	int i=0;
+	int length=strlen(cmd);
+	if(!length)
+		return FALSE;
+	if(cmd[i]<'A' || cmd[i]>'z' || (cmd[i]<'a' && cmd[i]>'Z'))/* first char isn't letter*/
+		return FALSE;
+	if(cmd[i]=='r' && length==2)/* the symbol have a name of register*/ 
+		for(i=0;i<8;i++)
+			if((cmd[1]-'0')==i)
+				return FALSE;
+	for(i=1;i<length;i++)
+		if(cmd[i]<'0' || (cmd[i]>'9' && cmd[i]<'A') || ((cmd[i]<'a' && cmd[i]>'Z')) || cmd[i]>'z')/* cmd[i] isn't a char or a letter*/
+			return FALSE;
+	for(i = 0; i < op_num; i++)
+	    if(strcmp(opr[i].name, cmd) == 0)
+			return FALSE;
+	return TRUE;
+	
+}
 int getCmdStart(char *cmd) /* CMD = code OR data*/
 {
         int i = 0;
@@ -66,9 +87,7 @@ int getCmdStart(char *cmd) /* CMD = code OR data*/
 			        break;
 		        i++;
                 }
-	
-	while(i < strlen(cmd) && (cmd[i] == ' ' || cmd[i] == '\t'))
-	      i++;
+	i=skipSpaces(i,cmd);
 	      
 	return i;
 }
@@ -120,6 +139,12 @@ int isExt(char *cmd)
 		return TRUE;
 	return FALSE;
 }
+int isEnt(char *cmd)
+{
+	if(strncmp(cmd, ".entry", entry_length) == 0)
+		return TRUE;
+	return FALSE;
+}
 
 int getOpcode(char *op)
 {
@@ -150,8 +175,7 @@ char *getFirstOperand(char *cmd)
 	while(i < len && cmd[i] != ' ' && cmd[i] != '\t') /* skip the first word (opr) until the first space*/
 		i++;
 	
-	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces until the second word, first operand*/
-		i++;
+	i=skipSpaces(i,cmd);
 	
 	if(i == len || cmd[i] == '\0')
 		/* error - cmd is too short*/
@@ -179,8 +203,7 @@ char *getSecondOperand(char *cmd)
 	while(i < len && cmd[i] != ' ' && cmd[i] != '\t') /* skip the first word (opr) until the first space*/
 		i++;
 	
-	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces until the second word, first operand*/
-		i++;
+	i=skipSpaces(i,cmd);
 	
 	if(i == len || cmd[i] == '\0')
 		/* error - cmd is too short*/
@@ -213,44 +236,44 @@ char *getSecondOperand(char *cmd)
 	/* !!! to free the allocation*/
 	return operand;
 }
-
 int countWords(char *cmd)
-{
+ {
 	int i = 0, num = 0, len = strlen(cmd);
-	
-	if(isStr(cmd))
-	{
-		i += string_length;
-	
-		while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces*/
-			i++;
-	
-		if(cmd[i] != '"')
-			return num;
-		i++;
-		
-		while(cmd[i] != '\0')
-			num++;
+ 	
+ 	if(isStr(cmd))
+ 	{
+ 		i += string_length;
+ 	
+ 		while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces*/
+ 			i++;
+ 	
+ 		if(cmd[i] != '"')
+ 			return num;
+ 		i++;
+ 		
+ 		while(cmd[i] != '\0')
+ 			num++;
+ 	}
+ 	
+ 	if(isData(cmd))
+ 	{
+ 		i += data_length;
+ 		
+ 		while(i < len && (cmd[i] == ' ' || cmd[i] == '\t' || cmd[i] == ','))
+ 			      i++;
+ 		/* skips first space*/
+ 		
+ 		while(i < len && cmd[i] != '\0')
+ 		{
+ 			while(i < len && cmd[i] != ' ' && cmd[i] != '\t' && cmd[i] != ',')
+ 			      i++;
+ 			num++;
+ 		}
 	}
-	
-	if(isData(cmd))
-	{
-		i += data_length;
-		
-		while(i < len && (cmd[i] == ' ' || cmd[i] == '\t' || cmd[i] == ',')
-			      i++;
-		// skips first space
-		
-		while(i < len && cmd[i] != '\0')
-		{
-			while(i < len && cmd[i] != ' ' && cmd[i] != '\t' && cmd[i] != ',')
-			      i++;
-			num++;
-			
-			while(i < len && (cmd[i] == ' ' || cmd[i] == '\t' || cmd[i] == ',')
-			      i++;   // skips space   
-		}
-	}
-	
-	return num;
+ 		return num;
+}
+int skipSpaces(int i,char *str)
+{
+	for(;(str[i]!=0)&&(str[i]==' ' || str[i]== '\t' );i++);
+	return i;
 }
