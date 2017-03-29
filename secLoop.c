@@ -34,7 +34,7 @@ void secondLoop()
 {
         struct cmd *codeCur;
         struct data *dataCur;
-        int curGroup;
+        int curWords;
         int curAddress;
         int bin;
         
@@ -45,22 +45,22 @@ void secondLoop()
         {
                 if(codeCur->encode == MAIN_COMMAND)
                 {
-                        curGroup = codeCur->group;
+                        curWords = codeCur->wordsNum;
                         curAddress = codeCur->address;
                         
                         bin = encode(codeCur, codeCur->encode);
                         addBinary(curAddress, bin);
                         
-                        if(curGroup > 0)
+                        if(curWords > 0)
                         {
-                                buildOperand(codeCur->next, codeCur->firstOperand, codeCur->firstAddressing, codeCur->encodeType)
+                                buildOperand(codeCur->next, codeCur->firstOperand, codeCur->encodeType)
                                 bin = encode(codeCur->next, codeCur->next->encode);
                                 addBinary(curAddress+1, bin);
                         }
                         
-                        if(curGroup > 1)
+                        if(curWords > 1)
                         {
-                                buildOperand(codeCur->next->next, codeCur->secndOperand, codeCur->secndAddressing, codeCur->encodeType)
+                                buildOperand(codeCur->next->next, codeCur->secndOperand, codeCur->encodeType)
                                 bin = encode(codeCur->next->next, codeCur->next->next->encode);
                                 addBinary(curAddress+2, bin);
                         }
@@ -77,18 +77,17 @@ void secondLoop()
 
 }
 
-void buildOperand(struct cmd *c, char *operand, int addressing, int encodeType)
+void buildOperand(struct cmd *c, char *operand, int encodeType)
 {
-	c->encode = addressing;
 	c->encodeType = encodeType;
 	
 	switch(c->encode)
 	{
-		case NUMBER:
-			first->number = atoi(++operand); /* copies the number without the # */
+		case NUMBER: /* #a */
+			c->number = atoi(++operand); /* copies the number without the # */
 			break;
 			
-		case ADDRESS:
+		case ADDRESS: /* LABEL */
 			{
 				struct symbol *symbolCur = symbolTable;
 				int isFound = FALSE;
@@ -105,9 +104,24 @@ void buildOperand(struct cmd *c, char *operand, int addressing, int encodeType)
 				}
 			}
 			break;
+			
+		case INDEX_REGISTER: /* ra[rb] */
+			c->reg1 = atoi(operand[1]);
+			c->reg2 = atoi(operand[4]);
+			break;
+			
+		case ONE_REGISTER: /* ra */
+			c->reg1 = atoi(operand[1]);
+			break;
+			
+		case TWO_REGISTER:
+			/* In the special case of two register addressing we build the operand word in the first loop */
+			break;
+		
+		case MAIN_COMMAND: /* Built in the first loop */
+			break;
 	}
-	
-	
 }
 
-
+int encode(struct cmd *code, int encode);
+int intToBinary(int num);
