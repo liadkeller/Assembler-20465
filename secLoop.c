@@ -7,40 +7,72 @@ struct binarycode
 
 struct binarycode binaryTable = NULL;
 
+void addBinary(int address, int bin)
+{
+	struct binarycode *n;
+	n = (struct binarycode*) malloc(sizeof(struct binarycode));
+	/* !!! malloc - to make sure to free the pointer*/
+	n->address = address;
+        n->binary = bin;
+        n->next = NULL;
+	
+	if(binaryTable == NULL)
+		binaryTable = n;
+
+	else
+	{
+		struct binarycode *cur;
+		cur = binaryTable;
+		while(cur->next)
+			cur = cur->next;
+		cur->next = n;
+	}
+}
+
 
 void secondLoop()
 {
-        struct cmd *cur;
-        struct cmd *next;
-        struct cmd *nextNext;
+        struct cmd *codeCur;
+        struct data *dataCur;
         int curGroup;
         int curAddress;
+        int bin;
         
-        cur = table->cmdHead;
+        codeCur = table->cmdHead;
+        dataCur = table->dataHead;
         
-        while(cur->next)
+        while(codeCur->next)
         {
-                if(cur->encode == MAIN_COMMAND)
+                if(codeCur->encode == MAIN_COMMAND)
                 {
-                        curGroup = cur->group;
-                        curAddress = cur->address;
+                        curGroup = codeCur->group;
+                        curAddress = codeCur->address;
                         
-                        int bin = encode(/*par*/);
+                        bin = encode(codeCur, codeCur->encode);
                         addBinary(curAddress, bin);
                         
                         if(curGroup > 0)
                         {
-                                bin = encode(/*curNextOperand, curNextAddressing, curNextEncodeType, curNextEncode(A/R/E)*/);
+                                buildFirstOperand(codeCur, codeCur->firstOperand, codeCur->firstAddressing, codeCur->encodeType)
+                                bin = encode(codeCur->next, codeCur->next->encode);
                                 addBinary(curAddress+1, bin);
                         }
                         
                         if(curGroup > 1)
                         {
-                                bin = encode(/*curNextOperand, curNextAddressing, curNextEncodeType, curNextEncode(A/R/E)*/);
+                                buildSecndOperand(codeCur, codeCur->secndOperand, codeCur->secndAddressing, codeCur->encodeType)
+                                bin = encode(codeCur->next->next, codeCur->next->next->encode);
                                 addBinary(curAddress+2, bin);
                         }
                 }
-                cur = cur->next;
+                codeCur = codeCur->next;
+        }
+        
+        while(dataCur->next)
+        {
+                curAddress = dataCur->address;
+                bin = intToBinary(dataCur->content);
+                addBinary(curAddress, bin);
         }
 
 }
