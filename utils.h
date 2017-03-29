@@ -6,7 +6,7 @@
 #define extern_length 7 /* .extern*/
 #define entry_length 6 /* .entry*/
 
-#define op_name_size 3
+#define op_name_size 4 /* maximum is 'stop' - 4 */
 #define op_num 16
 
 enum BOOL {FALSE , TRUE};
