@@ -112,17 +112,17 @@ int addCmd(char *cmd, int address)
 
 	if(new->group > 0)
 	{
-		/*new->firstOperand = getFirstOperand(cmd+i);
-             	new->firstAddressing = getFirstAddressing(new->firstOperand) לסיים!!*/	
+		new->firstOperand = getFirstOperand(cmd+i);
+             	/*new->firstAddressing = getFirstAddressing(new->firstOperand) לסיים!!*/	
         }
 
 	if(new->group > 1)
 	{
-		/*new->secndOperand = getSecndOperand(cmd+i);
-		new->secndAddressing = getSecndAddressing(new->secndOperand)	לסיים!!*/
+		new->secndOperand = getSecndOperand(cmd+i);
+		/*new->secndAddressing = getSecndAddressing(new->secndOperand)	לסיים!!!*/
 	}
 	
-	new->encodeType = A; /* !!! will be defined as constant*/
+	new->encodeType = A;
 
 	addCmdToList(new, table);
 
@@ -183,7 +183,7 @@ int addData(char *cmd, int address)
 		new->symbol = getSymbol(cmd);
 	
 	i = getCmdStart(cmd);
-	/*wordsNum = countWords(cmd+i);לסיים!*/
+	wordsNum = countWords(cmd+i);
 	new->wordsNum = wordsNum;
 	addDataToList(new, table);
 
@@ -249,7 +249,7 @@ int addStr(char *cmd, int address)
 		new->symbol = getSymbol(cmd);
 	
 	i = getCmdStart(cmd);
-	/*wordsNum = countWords(cmd+i); לסיים!!*/
+	wordsNum = countWords(cmd+i);
 	new->wordsNum = wordsNum;
 	
 	i += string_length;
@@ -258,18 +258,18 @@ int addStr(char *cmd, int address)
 		i++;
 	
 	if(cmd[i] != '"')
-		/*error*/
+		/* error */
 	i++;
 	
- 	new->content = cmd[i]; /* !!! לבדוק המרה לאינטגר*/
+ 	new->content = cmd[i];
  	addDataToList(new, table); /* add the first char*/
 	i++;
 	new->isFirst = FALSE;
 		
 	while(cmd[i] != '"')
 	{
-	new->address++; /* !!! לבדוק תקינות של סדר קדימויות*/
-	new->content = cmd[i]; /* !!! לבדוק המרה לאינטגר*/
+	new->address++;
+	new->content = cmd[i];
 	addDataToList(new, table);
 	i++;
 	}
@@ -297,37 +297,33 @@ void addExt(char *cmd)
 
 void fixAddresses(int add) /* fix so the data addresses will come right after the cmd addresses*/
 {
-/*
 	struct data *cur;
-	cur = dataHead;
+	cur = table->dataHead;
 	while(cur->next)
 	{
 		cur->address += add; 
 		cur = cur->next;
 	}
-*/
 }
 
 void buildSymbolTable()
 {
-/*
 	struct cmd *cCur;
 	struct data *dCur;
 	struct ext *eCur;
 	
-	cCur = cmdHead;
+	cCur = table->cmdHead;
 	while(cCur)
 		if(cCur->isSymbol)
 			addSymbol(cCur->symbol, CODE, cCur->address);
 
-	dCur = dataHead;
+	dCur = table->dataHead;
 	while(dCur)
 		if(dCur->isSymbol)
 			addSymbol(dCur->symbol, DtSt, dCur->address);
 	
-	eCur = extHead;
+	eCur = table->extHead;
 	while(eCur)
 		if(eCur->isSymbol)
 			addSymbol(eCur->symbol, EXT, NULL);
-*/
 }
