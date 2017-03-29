@@ -3,21 +3,21 @@
 struct opcode {
         char *name;
         int group;
-} opr[] = {{"mov ", 2},
-           {"cmp ", 2},
-           {"add ", 2},
-           {"sub ", 2},
-           {"not ", 1},
-           {"clr ", 1},
-           {"lea ", 2},
-           {"inc ", 1},
-           {"dec ", 1},
-           {"jmp ", 1},
-           {"bne ", 1},
-           {"red ", 1},
-           {"prn ", 1},
-           {"jsr ", 1},
-           {"rts ", 0},
+} opr[] = {{"mov", 2},
+           {"cmp", 2},
+           {"add", 2},
+           {"sub", 2},
+           {"not", 1},
+           {"clr", 1},
+           {"lea", 2},
+           {"inc", 1},
+           {"dec", 1},
+           {"jmp", 1},
+           {"bne", 1},
+           {"red", 1},
+           {"prn", 1},
+           {"jsr", 1},
+           {"rts", 0},
            {"stop", 0}};
      
 
@@ -55,21 +55,26 @@ char *getSymbol(char *cmd) /* CMD = code OR data*/
 		else
 			return NULL;
 }
+
 int checkSymbol(char *cmd)
 {
-	int i=0;
-	int length=strlen(cmd);
+	int i = 0;
+	int length = strlen(cmd);
 	if(!length)
 		return FALSE;
-	if(cmd[i]<'A' || cmd[i]>'z' || (cmd[i]<'a' && cmd[i]>'Z'))/* first char isn't letter*/
+	
+	if(cmd[i] < 'A' || cmd[i] > 'z' || (cmd[i] < 'a' && cmd[i] > 'Z')) /* first char isn't letter*/
 		return FALSE;
-	if(cmd[i]=='r' && length==2)/* the symbol have a name of register*/ 
-		for(i=0;i<8;i++)
-			if((cmd[1]-'0')==i)
+	
+	if(cmd[i] == 'r' && length == 2)/* the symbol have a name of register*/ 
+		for(i = 0; i < 8; i++)
+			if((cmd[1] - '0') == i)
 				return FALSE;
-	for(i=1;i<length;i++)
-		if(cmd[i]<'0' || (cmd[i]>'9' && cmd[i]<'A') || ((cmd[i]<'a' && cmd[i]>'Z')) || cmd[i]>'z')/* cmd[i] isn't a char or a letter*/
+	
+	for(i = 1; i < length; i++)
+		if(cmd[i] < '0' || (cmd[i] > '9' && cmd[i] < 'A') || ((cmd[i] < 'a' && cmd[i] > 'Z')) || cmd[i] > 'z') /* cmd[i] isn't a char or a letter*/
 			return FALSE;
+	
 	for(i = 0; i < op_num; i++)
 	    if(strcmp(opr[i].name, cmd) == 0)
 			return FALSE;
@@ -87,7 +92,7 @@ int getCmdStart(char *cmd) /* CMD = code OR data*/
 			        break;
 		        i++;
                 }
-	i=skipSpaces(i,cmd);
+	i = skipSpaces(i,cmd);
 	      
 	return i;
 }
@@ -114,7 +119,7 @@ int isCode(char *cmd)
 	op[op_name_size] = '\0';
 	
 	for(i = 0; i < op_num; i++)
-                if(strncmp(op, opr[i].name, op_name_size) == 0)
+                if(strncmp(op, opr[i].name, strlen(opr[i].name)) == 0)
 			return TRUE;
 	return FALSE;
 }
@@ -150,7 +155,7 @@ int getOpcode(char *op)
 {
         int i;
         for(i = 0; i < op_num; i++)
-                if(strcmp(op, opr[i].name) == 0)
+                if(strncmp(op, opr[i].name, strlen(opr[i].name)) == 0)
                         return i;
         /* error*/
         return -1;
@@ -160,7 +165,7 @@ int getGroup(char *op)
 {
         int i;
         for(i = 0; i < op_num; i++)
-                if(strcmp(op, opr[i].name) == 0)
+                if(strncmp(op, opr[i].name, strlen(opr[i].name)) == 0)
                         return opr[i].group;
         /* error*/
         return -1;
@@ -236,6 +241,7 @@ char *getSecondOperand(char *cmd)
 	/* !!! to free the allocation*/
 	return operand;
 }
+
 int countWords(char *cmd)
  {
 	int i = 0, num = 0, len = strlen(cmd);
@@ -272,6 +278,7 @@ int countWords(char *cmd)
 	}
  		return num;
 }
+
 int skipSpaces(int i,char *str)
 {
 	for(;(str[i]!=0)&&(str[i]==' ' || str[i]== '\t' );i++);
