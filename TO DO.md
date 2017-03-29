@@ -4,4 +4,8 @@
 
 * Function getFirst/secndAddressing
 
+* function getOpcode/getGroup - 'sto'
+
+* External / Global variables
+
 # binarycodeTable
