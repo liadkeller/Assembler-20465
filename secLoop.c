@@ -53,14 +53,14 @@ void secondLoop()
                         
                         if(curGroup > 0)
                         {
-                                buildFirstOperand(codeCur, codeCur->firstOperand, codeCur->firstAddressing, codeCur->encodeType)
+                                buildOperand(codeCur->next, codeCur->firstOperand, codeCur->firstAddressing, codeCur->encodeType)
                                 bin = encode(codeCur->next, codeCur->next->encode);
                                 addBinary(curAddress+1, bin);
                         }
                         
                         if(curGroup > 1)
                         {
-                                buildSecndOperand(codeCur, codeCur->secndOperand, codeCur->secndAddressing, codeCur->encodeType)
+                                buildOperand(codeCur->next->next, codeCur->secndOperand, codeCur->secndAddressing, codeCur->encodeType)
                                 bin = encode(codeCur->next->next, codeCur->next->next->encode);
                                 addBinary(curAddress+2, bin);
                         }
@@ -75,6 +75,39 @@ void secondLoop()
                 addBinary(curAddress, bin);
         }
 
+}
+
+void buildOperand(struct cmd *c, char *operand, int addressing, int encodeType)
+{
+	c->encode = addressing;
+	c->encodeType = encodeType;
+	
+	switch(c->encode)
+	{
+		case NUMBER:
+			first->number = atoi(++operand); /* copies the number without the # */
+			break;
+			
+		case ADDRESS:
+			{
+				struct symbol *symbolCur = symbolTable;
+				int isFound = FALSE;
+			
+				while(symbolCur->next && (!isFound))
+				{
+					if(strcmp(symbolCur->label, operand))
+					{
+						c->addressNumber = symbolCur->address;
+						isFound = TRUE;
+					}
+	
+					symbolCur = symbolCur->next;
+				}
+			}
+			break;
+	}
+	
+	
 }
 
 
