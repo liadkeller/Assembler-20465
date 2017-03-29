@@ -134,6 +134,14 @@ int addCmd(char *cmd, int address)
 	{
 		new->wordsNum = new->group-1;
 		
+		earlyBuild(/*pars*/);
+		/*
+			Usually we build at the first loop only the main commands words,
+			And we build the operands words only at the second loop.
+			In the special case of two register addressing, we will build the operand word
+			in the first loop with the function earlyBuild
+		*/
+		
 		nextWord->encode = TWO_REGISTER;
 		addCmdToList(nextWord, table);
 	}
