@@ -199,7 +199,8 @@ int addData(char *cmd, int address)
 		i++;
 	end = i-1;
 	strncpy(tempNum, cmd+start, end-start+1);
-	num = atoi(tempNum);
+	num = fixedAtoi(tempNum);
+	// IF fixedATOI == -1 then it is not a number, print an error
 	
 	new->content = num;
 	addDataToList(new, table);
@@ -223,6 +224,7 @@ int addData(char *cmd, int address)
 		end = i-1;
 		strncpy(tempNum, cmd+start, end-start+1);
 		num = atoi(tempNum);
+		// IF fixedATOI == -1 then it is not a number, print an error
 		
 		new->address++;
 		new->content = num;
