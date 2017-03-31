@@ -50,8 +50,8 @@ void firstLoop(FILE *f)
 		  	addExt(assemblyCommand);
 		
 		else
-			;/* error - illegal command */
-		
+			;/* error - illegal command */	
 	}
+	
 	fixAddresses(IC);
 }
