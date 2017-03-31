@@ -199,8 +199,12 @@ int addData(char *cmd, int address)
 		i++;
 	end = i-1;
 	strncpy(tempNum, cmd+start, end-start+1);
-	num = fixedAtoi(tempNum);
-	// IF fixedATOI == -1 then it is not a number, print an error
+	num = atoi(tempNum);
+	if(strlen(tempNum) == 1 && tempNum[0] == '0');
+		// num is 0
+	else if(num == 0)
+		;// ERROR - tempNum is not "0" but num = 0. tempNum is not a number and atoi returned 0 to notify an error
+		
 	
 	new->content = num;
 	addDataToList(new, table);
@@ -224,7 +228,10 @@ int addData(char *cmd, int address)
 		end = i-1;
 		strncpy(tempNum, cmd+start, end-start+1);
 		num = atoi(tempNum);
-		// IF fixedATOI == -1 then it is not a number, print an error
+		if(strlen(tempNum) == 1 && tempNum[0] == '0');
+			// num is 0
+		else if(num == 0)
+			;// ERROR - tempNum is not "0" but num = 0. tempNum is not a number and atoi returned 0 to notify an error
 		
 		new->address++;
 		new->content = num;
@@ -316,16 +323,25 @@ void buildSymbolTable()
 	
 	cCur = table->cmdHead;
 	while(cCur)
+	{
 		if(cCur->isSymbol)
 			addSymbol(cCur->symbol, CODE, cCur->address);
+		cCur = cCur->next;
+	}
 
 	dCur = table->dataHead;
 	while(dCur)
+	{
 		if(dCur->isSymbol)
 			addSymbol(dCur->symbol, DtSt, dCur->address);
+		dCur = dCur->next;
+	}
 	
 	eCur = table->extHead;
 	while(eCur)
-		if(eCur->isSymbol)
-			addSymbol(eCur->symbol, EXT, NULL);
+	{
+		addSymbol(eCur->symbol, EXT, NULL);
+		eCur = eCur->next;
+	}
+	
 }
