@@ -2,28 +2,26 @@
 
 int main(int argc, char *argv[])
 {
-	int j;
+	int i;
+	char *fileName;
 	FILE *f;
-	char* fileName;
+	
 	if(argc == 1)
-	{		
-        printf("No files to compile\n");
-        return 0;
-    }
+		;/* Error - No files */
 
-	for(j = 1; j < argc; j++)
+	for(i = 1; i < argc; j++)
 	{
-		fileName=argv[j];
+		fileName = argv[j];
 		f = fopen(strcat(fileName, ".as") , "r");
+		
 		if(!f)
-        {
-            printf("File %s doesn't exist!\n",fileName);
-            return 0;
-        }	
+        		/* Error - File doesn't exist */
+		
 		firstLoop(f);
-		/*	secondLoop( params );  */
-	  /*  create files */
-		 fclose(f);
+		buildSymbolTable();
+		/* secondLoop(); */
+	  	/* create files */
+		fclose(f);
 	}
 	
 	return 0;
@@ -50,10 +48,10 @@ void firstLoop(FILE *f)
 	
 		else if(isExt(assemblyCommand))
 		  	addExt(assemblyCommand);
+		
 		else
-			printf("%s","error");
+			;/* error - illegal command */
 		
 	}
 	fixAddresses(IC);
-	buildSymbolTable();
 }
