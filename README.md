@@ -5,8 +5,8 @@
 
 2 .md files
 
-3 .c files
+5 .c files
 
 3 .h files
 
-total - 8 files
+total - 10 files
