@@ -46,14 +46,14 @@ char *getSymbol(char *cmd) /* CMD = code OR data*/
         }
         
         new = (char *) malloc ((i+1)*sizeof(char));
-        strncpy(new, cmd, i); /* copy i chars from 0 to i-1*/
-        new[i] = '\0';/* the ':' sign*/	
+        strncpy(new, cmd, i); /* copy i chars from 0 to i-1 */
+        new[i] = '\0'; /* the ':' sign*/	
 				
-	/* !!! to free the allocation*/
-		if(checkSymbol(cmd))
-      	  return new;
-		else
-			return NULL;
+	/* !!! to free the allocation */
+	if(checkSymbol(new))
+      		return new;
+	else
+		/* error */
 }
 
 int checkSymbol(char *cmd)
@@ -244,6 +244,35 @@ char *getSecondOperand(char *cmd)
 
 int getAddressing(char *operand)
 {
+	if(operand[0] == '#')
+	{
+		if(strlen(operand) == 2 && operand[1] == '0')
+			return NUMBER;
+		
+		else if(atoi(operand+1) == 0)
+			// ERROR - operand isnt "#0" but atoi returns 0 - isnt a number
+			
+		else
+			return NUMBER;
+	}
+	
+	
+	if(strlen(operand) == 2 && operand[0] == 'r')
+	{
+		if(operand[1] >= '0' && operand[1] <= '7')
+			return ONE_REGISTER;
+		
+		else
+			;// no such register - might be a label
+	}
+	
+	if(strlen(operand) == 6 && operand[0] == 'r' && operand[2] == '[' && operand[3] == 'r' && operand[5] == ']')
+	{
+		if(operand[1] >= '0' && operand[1] <= '7' && operand[4] >= '0' && operand[4] <= '7')
+			return INDEX_REGISTER;
+		
+			;// Error - one of the registers "r%c, r%c" is not exist
+	}
 	
 	
 }
@@ -285,8 +314,8 @@ int countWords(char *cmd)
  		return num;
 }
 
-int skipSpaces(int i,char *str)
+int skipSpaces(int i, char *str)
 {
-	for(;(str[i]!=0)&&(str[i]==' ' || str[i]== '\t' );i++);
+	for(; (str[i] != 0) && (str[i] == ' ' || str[i] == '\t' ); i++);
 	return i;
 }
