@@ -242,6 +242,12 @@ char *getSecondOperand(char *cmd)
 	return operand;
 }
 
+int getAddressing(char *operand)
+{
+	
+	
+}
+
 int countWords(char *cmd)
  {
 	int i = 0, num = 0, len = strlen(cmd);
