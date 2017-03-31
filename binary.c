@@ -1,5 +1,26 @@
 int encode(struct cmd *code, int encode);
-int intToBinary(int num, int size);
+int intToBinary(int num, int size) /* returns the binary presentation of the first "size" digits of num */
+{
+        int arr[size];
+        int i, bin;
+        
+        for(i = 0; num > 0 && i < size; i++)
+        {
+                arr[i] = num % 2;
+                num = num / 2;
+        }
+        
+        if(i == size)
+                i--;
+        
+        for(bin = 0; i >= 0; i--)
+        {
+                if(arr[i])
+                        bin += pow(10, i);
+        }
+        
+        return bin;
+}
 
 /* adds num to bin from the start bit
 if bin = 011100000 and num = 11 and start = 2
