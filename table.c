@@ -2,6 +2,7 @@
 #include "utils.h"
 
 struct list *table;
+struct symbol *symbolTable = NULL;
 
 void addCmdToList(struct cmd *c, struct list *t)
 {
@@ -289,7 +290,29 @@ int addStr(char *cmd, int address)
 	
 	return wordsNum;
 }
-
+int addSymbol(char *label, int type, int address)
+{
+        struct symbol *new;
+        new = (struct symbol *) malloc (sizeof (struct symbol)); /* malloc - requires to free the allocation*/
+        new->label = label;
+        new->type = type;
+        new->address = address;
+        new->next = NULL;
+        
+        if(symbolTable == NULL)
+                symbolTable = new;                
+        else
+        {
+                struct symbol *cur;
+                for(cur=symbolTable;cur->next;cur = cur->next)
+                        if(strcmp(cur->name,new->name)==0)
+				return FALSE;
+                if(strcmp(cur->name,new->name)==0)
+			return FALSE;		
+                cur->next = new;
+        }
+	return TRUE;
+}
 
 void addExt(char *cmd)
 {
@@ -325,7 +348,8 @@ void buildSymbolTable()
 	while(cCur)
 	{
 		if(cCur->isSymbol)
-			addSymbol(cCur->symbol, CODE, cCur->address);
+			if(addSymbol(cCur->symbol, CODE, cCur->address)==FALSE)
+				/* error*/
 		cCur = cCur->next;
 	}
 
@@ -333,14 +357,16 @@ void buildSymbolTable()
 	while(dCur)
 	{
 		if(dCur->isSymbol)
-			addSymbol(dCur->symbol, DtSt, dCur->address);
+			if(addSymbol(dCur->symbol, DtSt, dCur->address)==FALSE)
+				/* error*/
 		dCur = dCur->next;
 	}
 	
 	eCur = table->extHead;
 	while(eCur)
 	{
-		addSymbol(eCur->symbol, EXT, NULL);
+		if(addSymbol(eCur->symbol, EXT, NULL)==FALSE)
+			/* error*/
 		eCur = eCur->next;
 	}
 	
