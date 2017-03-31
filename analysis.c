@@ -274,7 +274,17 @@ int getAddressing(char *operand)
 			;// Error - one of the registers "r%c, r%c" is not exist
 	}
 	
+	struct symbol *symbolCur = symbolTable;
+			
+	while(symbolCur->next)
+	{
+		if(strcmp(symbolCur->label, operand))
+			return ADDRESS;
+					
+		symbolCur = symbolCur->next;
+	}
 	
+	// error - isnt an exist lable or anything else
 }
 
 int countWords(char *cmd)
