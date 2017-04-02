@@ -3,25 +3,31 @@ char *encode(struct cmd *code, int encode)
         char bin[15]; /* malloc */
         
         switch(encode)
-        {
-                        
+        {        
                 case NUMBER:
-                        makeBin(bin, intToBinary(code->encodeType, 2), 0, 2);
-                        makeBin(bin, intToBinary(code->number, 13), 2, 13);
+                        addBin(bin, intToBinary(code->encodeType, 2), 0, 2);
+                        addBin(bin, intToBinary(code->number, 13), 2, 13);
                         
                 case ADDRESS:
-                        makeBin(bin, intToBinary(code->encodeType, 2), 0, 2);
-                        makeBin(bin, intToBinary(code->addressNumber, 13), 2, 13);
+                        addBin(bin, intToBinary(code->encodeType, 2), 0, 2);
+                        addBin(bin, intToBinary(code->addressNumber, 13), 2, 13);
                         
                 case INDEX_REGISTER:
-                        makeBin(bin, intToBinary(code->encodeType, 2), 0, 2);
-                        makeBin(bin, intToBinary(code->addressNumber, 6), 2, 6);
-                        makeBin(bin, intToBinary(code->addressNumber, 6), 8, 6);
+                        addBin(bin, intToBinary(code->encodeType, 2), 0, 2);
+                        addBin(bin, intToBinary(code->reg1, 6), 2, 6);
+                        addBin(bin, intToBinary(code->reg2, 6), 8, 6);
                         
                 case ONE_REGISTER:
-                        makeBin(bin, intToBinary(code->encodeType, 2), 0, 2);
+                        addBin(bin, intToBinary(code->encodeType, 2), 0, 2);
+                        if(code->whichReg == DEST)
+                                addBin(bin, intToBinary(code->reg1, 6), 2, 6);
+                        if(code->whichReg == SOURCE)
+                                addBin(bin, intToBinary(code->reg1, 6), 8, 6);
                         
-                        
+                case TWO_REGISTER:
+                        addBin(bin, intToBinary(code->encodeType, 2), 0, 2);
+                        addBin(bin, intToBinary(code->reg1, 6), 2, 6);
+                        addBin(bin, intToBinary(code->reg2, 6), 8, 6);
         }
         
 }
@@ -55,7 +61,7 @@ int intToBinary(int num, int size) /* returns the binary presentation of the fir
 /* adds num to bin from the start bit
 if bin = 011100000 and num = 11 and start = 2
 then bin will be 011101100 */
-int makeBin(char *bin, char *num, int start, int size)
+void *addBin(char *bin, char *num, int start, int size)
 {
         int i = start;
         int j = 0;
@@ -69,8 +75,6 @@ int makeBin(char *bin, char *num, int start, int size)
                 i++;
                 j++;
         }
-        
-        return bin;
 }
 
 /*int getSize(char *num) // return the number of digits of num
