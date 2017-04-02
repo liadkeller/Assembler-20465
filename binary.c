@@ -58,7 +58,7 @@ char *intToBinary(int num, int size) /* returns the binary presentation of the f
         
         int arr[size];
         int i;
-        char bin[size];
+        char bin[size];  /* malloc */
         
         for(i = 0; num > 0 && i < size; i++)
         {
@@ -88,7 +88,6 @@ void addBin(char *bin, char *num, int start, int size)
         int i = start;
         int j = 0;
         
-        int size = getSize(num);
         while(j < size)
         {
                 if(num[j] == '1')
