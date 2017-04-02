@@ -1,9 +1,36 @@
-int encode(struct cmd *code, int encode);
+char *encode(struct cmd *code, int encode)
+{
+        char bin[15]; /* malloc */
+        
+        switch(encode)
+        {
+                        
+                case NUMBER:
+                        makeBin(bin, intToBinary(code->encodeType, 2), 0, 2);
+                        makeBin(bin, intToBinary(code->number, 13), 2, 13);
+                        
+                case ADDRESS:
+                        makeBin(bin, intToBinary(code->encodeType, 2), 0, 2);
+                        makeBin(bin, intToBinary(code->addressNumber, 13), 2, 13);
+                        
+                case INDEX_REGISTER:
+                        makeBin(bin, intToBinary(code->encodeType, 2), 0, 2);
+                        makeBin(bin, intToBinary(code->addressNumber, 6), 2, 6);
+                        makeBin(bin, intToBinary(code->addressNumber, 6), 8, 6);
+                        
+                case ONE_REGISTER:
+                        makeBin(bin, intToBinary(code->encodeType, 2), 0, 2);
+                        
+                        
+        }
+        
+}
 
 int intToBinary(int num, int size) /* returns the binary presentation of the first "size" digits of num */
 {
         int arr[size];
-        int i, bin;
+        int i;
+        char bin[size];
         
         for(i = 0; num > 0 && i < size; i++)
         {
@@ -14,10 +41,12 @@ int intToBinary(int num, int size) /* returns the binary presentation of the fir
         if(i == size)
                 i--;
         
-        for(bin = 0; i >= 0; i--)
+        for(; i >= 0; i--)
         {
                 if(arr[i])
-                        bin += pow(10, i);
+                        bin[i] = '1';
+                else
+                        bin[i] = '0';
         }
         
         return bin;
@@ -26,7 +55,7 @@ int intToBinary(int num, int size) /* returns the binary presentation of the fir
 /* adds num to bin from the start bit
 if bin = 011100000 and num = 11 and start = 2
 then bin will be 011101100 */
-int makeBin(int bin, int num, int start)
+int makeBin(char *bin, char *num, int start, int size)
 {
         int i = start;
         int j = 0;
@@ -34,8 +63,8 @@ int makeBin(int bin, int num, int start)
         int size = getSize(num);
         while(j < size)
         {
-                if(getBit(num, j))
-                        bin += pow(10, i);
+                if(num[j] == '1')
+                        bin[i] = '1';
 
                 i++;
                 j++;
@@ -44,7 +73,7 @@ int makeBin(int bin, int num, int start)
         return bin;
 }
 
-int getSize(int num) /* return the number of digits of num */
+/*int getSize(char *num) // return the number of digits of num
 {
         int i = 0;
         int x = num;
@@ -58,18 +87,12 @@ int getSize(int num) /* return the number of digits of num */
         return i;
 }
 
-int getDig(int num, int dig) /* return the digit of the number */
-{
-        num = num / pow(10, dig);
-        return num % 10;
-}
-
 int pow(int a, int b)
 {
         int i, res;
         for(i = 0, res = 1; i < b; i++, res *= a);
         return res;
-}
+}*/
 
 /* ==================== 
       HEXADECIMAL
