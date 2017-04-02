@@ -17,6 +17,7 @@ void addCmdToList(struct cmd *c, struct list *t)
 	n->secndOperand = c->secndOperand;
 	n->firstAddressing = c->firstAddressing;
 	n->secndAddressing = c->secndAddressing;
+	n->operandNumber = c->operandNumber;
 	n->wordsNum = c->wordsNum;
 	n->address = c->address;
 	n->isSymbol = c->isSymbol;
@@ -124,6 +125,7 @@ int addCmd(char *cmd, int address)
 		new->secndAddressing = getAddressing(new->secndOperand)
 	}
 	
+	new->operandNumber = CMD;
 	new->encodeType = A;
 
 	addCmdToList(new, table);
@@ -162,9 +164,10 @@ int addCmd(char *cmd, int address)
 	{
 		nextWord->encode = new->firstAddressing;
 		nextWord->operandNumber = FIRST;
+		addCmdToList(nextWord, table);
+		
 		nextNextWord->encode = new->secndAddressing;
 		nextNextWord->operandNumber = LAST;
-		addCmdToList(nextWord, table);
 		addCmdToList(nextNextWord, table);
 	}
 	
