@@ -1,21 +1,24 @@
 char *encode(struct cmd *code, int encode)
 {
-        char bin[15]; /* malloc */
+        char bin[BINARY_WORD]; /* malloc */
         
         switch(encode)
         {        
                 case NUMBER:
                         addBin(bin, intToBinary(code->encodeType, 2), 0, 2);
                         addBin(bin, intToBinary(code->number, 13), 2, 13);
+                        break;
                         
                 case ADDRESS:
                         addBin(bin, intToBinary(code->encodeType, 2), 0, 2);
                         addBin(bin, intToBinary(code->addressNumber, 13), 2, 13);
+                        break;
                         
                 case INDEX_REGISTER:
                         addBin(bin, intToBinary(code->encodeType, 2), 0, 2);
                         addBin(bin, intToBinary(code->reg1, 6), 2, 6);
                         addBin(bin, intToBinary(code->reg2, 6), 8, 6);
+                        break;
                         
                 case ONE_REGISTER:
                         addBin(bin, intToBinary(code->encodeType, 2), 0, 2);
@@ -23,17 +26,36 @@ char *encode(struct cmd *code, int encode)
                                 addBin(bin, intToBinary(code->reg1, 6), 2, 6);
                         if(code->whichReg == SOURCE)
                                 addBin(bin, intToBinary(code->reg1, 6), 8, 6);
+                        break;
                         
                 case TWO_REGISTER:
                         addBin(bin, intToBinary(code->encodeType, 2), 0, 2);
                         addBin(bin, intToBinary(code->reg1, 6), 2, 6);
                         addBin(bin, intToBinary(code->reg2, 6), 8, 6);
+                        break;
+                        
+                case MAIN_COMMAND:
+                        addBin(bin, intToBinary(code->encodeType, 2), 0, 2);
+                        if(code->group > 0)
+                                addBin(bin, intToBinary(code->firstAddressing, 2), 2, 2);
+                        if(code->group > 1)
+                                addBin(bin, intToBinary(code->secndAddressing, 2), 4, 2);
+                        addBin(bin, intToBinary(code->opcode, 4), 6, 4);
+                        addBin(bin, intToBinary(code->opcode, 2), 10, 2);
+                        addBin(bin, "111", 12, 3);
+                        break;
         }
         
 }
 
-int intToBinary(int num, int size) /* returns the binary presentation of the first "size" digits of num */
+char *intToBinary(int num, int size) /* returns the binary presentation of the first "size" digits of num */
 {
+        /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        !!!!! REQIRES TREATMENT OF NEGATIVE NUMBERS !!!!!
+        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+        
         int arr[size];
         int i;
         char bin[size];
@@ -61,7 +83,7 @@ int intToBinary(int num, int size) /* returns the binary presentation of the fir
 /* adds num to bin from the start bit
 if bin = 011100000 and num = 11 and start = 2
 then bin will be 011101100 */
-void *addBin(char *bin, char *num, int start, int size)
+void addBin(char *bin, char *num, int start, int size)
 {
         int i = start;
         int j = 0;
@@ -75,87 +97,4 @@ void *addBin(char *bin, char *num, int start, int size)
                 i++;
                 j++;
         }
-}
-
-/*int getSize(char *num) // return the number of digits of num
-{
-        int i = 0;
-        int x = num;
-        
-        while(x > 0)
-        {
-               x = x/10;
-               i++;
-        }
-
-        return i;
-}
-
-int pow(int a, int b)
-{
-        int i, res;
-        for(i = 0, res = 1; i < b; i++, res *= a);
-        return res;
-}*/
-
-/* ==================== 
-      HEXADECIMAL
-===================== */
-
-char *codeToHexa(int bin) /* gets 15-digits binary num and returns hexa string */
-{
-        int i;
-        char hex[4];
-        char ans[5]; /* !!! requires allocation */
-        
-        int t;
-        
-        for(i = 0; i < 4; i++)
-        {
-                t = (i / pow(10, 4*i)) % pow(10, 4);
-                hex[i] = singleHex(t);
-        }
-        
-        for(i = 0; i < 4; i++)
-                ans[i] = hex[4-i];
-        ans[i] = '\0';
-        
-        return ans;
-}
-
-char singleHexa(int bin) /* gets 4-digits binary num and returns hexa char */
-{
-        int num = 0;
-        
-        for(i = 0; i < 4; i++)
-        {
-                if(bin % 10)
-                        num += pow(2, i);
-        }   
-        
-        if(num >= 0 && num <= 9)
-                return '0' + num;
-        
-        if(num >= 10 && num <= 15)
-                return 'A' + num - 10;
-}
-
-char *addressToHexa(int num) /* gets decimal num smaller ehan 256 and returns hexa string */
-{
-        char hex[3]; /* !!! requires allocation */
-        
-        hex[2] = '\0';
-        hex[1] = intToHexa(num % 16);
-        hex[0] = intToHexa(num / 16);
-        
-        return hex;
-}
-
-char intToHexa(int num)
-{
-        if(num >= 0 && num <= 9)
-                return '0' + num;
-        
-        if(num >= 10 && num <= 15)
-                return 'A' + num - 10;
 }
