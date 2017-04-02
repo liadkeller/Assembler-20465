@@ -22,5 +22,5 @@ int isExt(char *cmd);
 int getOpcode(char *op);
 int getGroup(char *op);
 char *getFirstOperand(char *cmd);
-char *getSecondOperand(char *cmd);
+char *getSecndOperand(char *cmd);
 int skipSpaces(int i,char *str);
