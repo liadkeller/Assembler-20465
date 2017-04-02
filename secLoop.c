@@ -1,7 +1,9 @@
+#define BINARY_WORD 15
+
 struct binarycode
 {
         int address;
-        char binary[15];
+        char binary[BINARY_WORD];
         struct binarycode *next;
 }
 
