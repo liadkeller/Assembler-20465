@@ -1,5 +1,7 @@
 #include "utils.h"
+#include "table.h"
 
+struct symbol *symbolTable;
 struct opcode {
         char *name;
         int group;
@@ -53,7 +55,7 @@ char *getSymbol(char *cmd) /* CMD = code OR data*/
 	if(checkSymbol(new))
       		return new;
 	else
-		/* error */
+		/* error */return new;/*Temporary! */
 }
 
 int checkSymbol(char *cmd)
@@ -244,14 +246,14 @@ char *getSecndOperand(char *cmd)
 
 int getAddressing(char *operand)
 {
+	struct symbol *symbolCur = symbolTable;
 	if(operand[0] == '#')
 	{
 		if(strlen(operand) == 2 && operand[1] == '0')
 			return NUMBER;
 		
 		else if(atoi(operand+1) == 0)
-			// ERROR - operand isnt "#0" but atoi returns 0 - isnt a number
-			
+			/* ERROR - operand isnt "#0" but atoi returns 0 - isnt a number*/	;	
 		else
 			return NUMBER;
 	}
@@ -263,7 +265,7 @@ int getAddressing(char *operand)
 			return ONE_REGISTER;
 		
 		else
-			;// no such register - might be a label
+			;/* no such register - might be a label*/
 	}
 	
 	if(strlen(operand) == 6 && operand[0] == 'r' && operand[2] == '[' && operand[3] == 'r' && operand[5] == ']')
@@ -271,20 +273,18 @@ int getAddressing(char *operand)
 		if(operand[1] >= '0' && operand[1] <= '7' && operand[4] >= '0' && operand[4] <= '7')
 			return INDEX_REGISTER;
 		
-			;// Error - one of the registers "r%c, r%c" is not exist
+			;/* Error - one of the registers "r%c, r%c" is not exist*/
 	}
-	
-	struct symbol *symbolCur = symbolTable;
-			
+				
 	while(symbolCur->next)
 	{
-		if(strcmp(symbolCur->label, operand))
+		if(strcmp(symbolCur->name, operand))
 			return ADDRESS;
 					
 		symbolCur = symbolCur->next;
 	}
-	
-	// error - isnt an exist lable or anything else
+	return 0;/*!!!Temporary */
+	/* error - isnt an exist lable or anything else*/
 }
 
 int countWords(char *cmd)
