@@ -114,7 +114,8 @@ int addCmd(char *cmd, int address)
 	if(new->group > 0)
 	{
 		new->firstOperand = getFirstOperand(cmd+i);
-             	new->firstAddressing = getAddressing(new->firstOperand)	
+             	new->firstAddressing = getAddressing(new->firstOperand)
+			
         }
 
 	if(new->group > 1)
@@ -152,14 +153,17 @@ int addCmd(char *cmd, int address)
 	
 	if(new->wordsNum == 1)
 	{
-		nextWord->encode = new->secndAddressing;
+		nextWord->encode = new->firstAddressing;
+		nextWord->operandNumber = LAST;
 		addCmdToList(nextWord, table);
 	}
 		
 	if(new->wordsNum == 2)
 	{
 		nextWord->encode = new->firstAddressing;
+		nextWord->operandNumber = FIRST;
 		nextNextWord->encode = new->secndAddressing;
+		nextNextWord->operandNumber = LAST;
 		addCmdToList(nextWord, table);
 		addCmdToList(nextNextWord, table);
 	}
