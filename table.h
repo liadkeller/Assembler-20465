@@ -25,7 +25,7 @@ data - נתונים
 enum encode {NUMBER, ADDRESS, INDEX_REGISTER, ONE_REGISTER, TWO_REGISTER, MAIN_COMMAND};
 enum encodeType {A, R, E};
 enum regType {SOURCE, DEST};
-enum operandNumber {CMD, FIRST, LAST} /* FIRST - 1/2, LAST - 1/1 or 2/2 */
+enum operandNumber {CMD, FIRST, LAST}; /* FIRST - 1/2, LAST - 1/1 or 2/2 */
 
 struct cmd {
 	int encode;
@@ -41,7 +41,6 @@ struct cmd {
 	char *symbol;
 	
 	int operandNumber;
-	
 	int number;
 	int addressNumber;
 	
@@ -83,12 +82,14 @@ int addCmd(char *cmd, int address);
 int addData(char *cmd, int address);
 int addStr(char *cmd, int address);
 void addExt(char *cmd);
+int countWords(char *cmd);
+int addSymbol(char *name, int type, int address);
 enum symbolType {CODE , DtSt , EXT};
+extern struct symbol *symbolTable;
 
-void addSymbol(char *label, int type, int address);
 
 struct symbol {
-        char *label;
+        char *name;
         int type;
         int address;
         struct symbol *next;
