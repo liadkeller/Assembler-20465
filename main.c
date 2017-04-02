@@ -7,15 +7,15 @@ int main(int argc, char *argv[])
 	FILE *f;
 	
 	if(argc == 1)
-		;/* Error - No files */
+		return 0;/* Error - No files */
 
-	for(i = 1; i < argc; j++)
+	 for(i = 1; i < argc; i++)
 	{
-		fileName = argv[j];
+		fileName = argv[i];
 		f = fopen(strcat(fileName, ".as") , "r");
 		
 		if(!f)
-        		/* Error - File doesn't exist */
+        		/* Error - File doesn't exist */;
 		
 		firstLoop(f);
 		buildSymbolTable();
