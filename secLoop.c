@@ -1,13 +1,13 @@
 struct binarycode
 {
         int address;
-        int binary;
+        char binary[15];
         struct binarycode *next;
 }
 
 struct binarycode binaryTable = NULL;
 
-void addBinary(int address, int bin)
+void addBinary(int address, char *bin)
 {
 	struct binarycode *n;
 	n = (struct binarycode*) malloc(sizeof(struct binarycode));
@@ -36,7 +36,7 @@ void secondLoop()
         struct data *dataCur;
         int curWords;
         int curAddress;
-        int bin;
+        char *bin;
         
         codeCur = table->cmdHead;
         dataCur = table->dataHead;
@@ -50,12 +50,14 @@ void secondLoop()
                         
                         bin = encode(codeCur, codeCur->encode);
                         addBinary(curAddress, bin);
+			free(bin);
                         
                         if(curWords > 0)
                         {
                                 buildOperand(codeCur->next, codeCur->firstOperand, codeCur->encodeType)
                                 bin = encode(codeCur->next, codeCur->next->encode);
                                 addBinary(curAddress+1, bin);
+				free(bin);
                         }
                         
                         if(curWords > 1)
@@ -63,6 +65,7 @@ void secondLoop()
                                 buildOperand(codeCur->next->next, codeCur->secndOperand, codeCur->encodeType)
                                 bin = encode(codeCur->next->next, codeCur->next->next->encode);
                                 addBinary(curAddress+2, bin);
+				free(bin);
                         }
                 }
                 codeCur = codeCur->next;
@@ -73,6 +76,7 @@ void secondLoop()
                 curAddress = dataCur->address;
                 bin = intToBinary(dataCur->content);
                 addBinary(curAddress, bin);
+		// !!! free(bin);
         }
 
 }
