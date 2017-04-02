@@ -23,5 +23,5 @@ int getOpcode(char *op);
 int getGroup(char *op);
 char *getFirstOperand(char *cmd);
 char *getSecndOperand(char *cmd);
-int getAddressing(char *operand)
+int getAddressing(char *operand);
 int skipSpaces(int i,char *str);
