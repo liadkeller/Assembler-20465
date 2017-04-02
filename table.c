@@ -96,10 +96,12 @@ int addCmd(char *cmd, int address)
 {	
 	int i;	
 	char inst[op_name_size+1]; /* inst. = instruction*/
-
 	struct cmd *new;
 	struct cmd *nextWord, *nextNextWord;
 
+	new = (struct cmd*) malloc(sizeof(struct cmd));
+	nextWord = (struct cmd*) malloc(sizeof(struct cmd));
+	nextNextWord = (struct cmd*) malloc(sizeof(struct cmd));
 	new->encode = MAIN_COMMAND;
 	new->address = address;
 	new->isSymbol = isSymbol(cmd);
@@ -115,16 +117,14 @@ int addCmd(char *cmd, int address)
 	if(new->group > 0)
 	{
 		new->firstOperand = getFirstOperand(cmd+i);
-             	new->firstAddressing = getAddressing(new->firstOperand)
-			
+             	new->firstAddressing = getAddressing(new->firstOperand);	
         }
 
 	if(new->group > 1)
 	{
 		new->secndOperand = getSecndOperand(cmd+i);
-		new->secndAddressing = getAddressing(new->secndOperand)
+		new->secndAddressing = getAddressing(new->secndOperand);
 	}
-	
 	new->operandNumber = CMD;
 	new->encodeType = A;
 
@@ -138,7 +138,7 @@ int addCmd(char *cmd, int address)
 	{
 		new->wordsNum = new->group-1;
 		
-		earlyBuild(/*pars*/);
+		/*earlyBuild(pars);*/
 		/*
 			Usually we build at the first loop only the main commands words,
 			And we build the operands words only at the second loop.
@@ -155,7 +155,7 @@ int addCmd(char *cmd, int address)
 	
 	if(new->wordsNum == 1)
 	{
-		nextWord->encode = new->firstAddressing;
+		nextWord->encode = new->secndAddressing;
 		nextWord->operandNumber = LAST;
 		addCmdToList(nextWord, table);
 	}
@@ -164,13 +164,14 @@ int addCmd(char *cmd, int address)
 	{
 		nextWord->encode = new->firstAddressing;
 		nextWord->operandNumber = FIRST;
-		addCmdToList(nextWord, table);
-		
 		nextNextWord->encode = new->secndAddressing;
+		addCmdToList(nextWord, table);
 		nextNextWord->operandNumber = LAST;
 		addCmdToList(nextNextWord, table);
 	}
-	
+	free(new);
+	free(nextWord);
+	free(nextNextWord);
 	return new->wordsNum;
 }
 
@@ -209,9 +210,9 @@ int addData(char *cmd, int address)
 	strncpy(tempNum, cmd+start, end-start+1);
 	num = atoi(tempNum);
 	if(strlen(tempNum) == 1 && tempNum[0] == '0');
-		// num is 0
+		/* num is 0*/
 	else if(num == 0)
-		;// ERROR - tempNum is not "0" but num = 0. tempNum is not a number and atoi returned 0 to notify an error
+		;/* ERROR - tempNum is not "0" but num = 0. tempNum is not a number and atoi returned 0 to notify an error*/
 		
 	
 	new->content = num;
@@ -237,9 +238,9 @@ int addData(char *cmd, int address)
 		strncpy(tempNum, cmd+start, end-start+1);
 		num = atoi(tempNum);
 		if(strlen(tempNum) == 1 && tempNum[0] == '0');
-			// num is 0
+			/* num is 0*/
 		else if(num == 0)
-			;// ERROR - tempNum is not "0" but num = 0. tempNum is not a number and atoi returned 0 to notify an error
+			;/* ERROR - tempNum is not "0" but num = 0. tempNum is not a number and atoi returned 0 to notify an error*/
 		
 		new->address++;
 		new->content = num;
@@ -297,11 +298,11 @@ int addStr(char *cmd, int address)
 	
 	return wordsNum;
 }
-int addSymbol(char *label, int type, int address)
+int addSymbol(char *name, int type, int address)
 {
         struct symbol *new;
         new = (struct symbol *) malloc (sizeof (struct symbol)); /* malloc - requires to free the allocation*/
-        new->label = label;
+        new->name = name;
         new->type = type;
         new->address = address;
         new->next = NULL;
@@ -372,7 +373,7 @@ void buildSymbolTable()
 	eCur = table->extHead;
 	while(eCur)
 	{
-		if(addSymbol(eCur->symbol, EXT, NULL)==FALSE)
+		if(addSymbol(eCur->symbol, EXT, 0)==FALSE)
 			/* error*/
 		eCur = eCur->next;
 	}
