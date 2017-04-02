@@ -155,7 +155,7 @@ int addCmd(char *cmd, int address)
 	
 	if(new->wordsNum == 1)
 	{
-		nextWord->encode = new->secndAddressing;
+		nextWord->encode = new->firstAddressing;
 		nextWord->operandNumber = LAST;
 		addCmdToList(nextWord, table);
 	}
@@ -164,8 +164,9 @@ int addCmd(char *cmd, int address)
 	{
 		nextWord->encode = new->firstAddressing;
 		nextWord->operandNumber = FIRST;
-		nextNextWord->encode = new->secndAddressing;
 		addCmdToList(nextWord, table);
+		
+		nextNextWord->encode = new->secndAddressing;
 		nextNextWord->operandNumber = LAST;
 		addCmdToList(nextNextWord, table);
 	}
