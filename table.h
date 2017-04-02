@@ -25,7 +25,7 @@ data - נתונים
 enum encode {NUMBER, ADDRESS, INDEX_REGISTER, ONE_REGISTER, TWO_REGISTER, MAIN_COMMAND};
 enum encodeType {A, R, E};
 enum regType {SOURCE, DEST};
-enum operandNumber {CMD, FIRST, SECND}
+enum operandNumber {CMD, FIRST, LAST} /* FIRST - 1/2, LAST - 1/1 or 2/2 */
 
 struct cmd {
 	int encode;
@@ -40,7 +40,7 @@ struct cmd {
 	int isSymbol;
 	char *symbol;
 	
-	int operandNumber; /* whether it is the first operand, secnd operand or its not an operand */
+	int operandNumber;
 	
 	int number;
 	int addressNumber;
