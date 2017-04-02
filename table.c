@@ -114,13 +114,13 @@ int addCmd(char *cmd, int address)
 	if(new->group > 0)
 	{
 		new->firstOperand = getFirstOperand(cmd+i);
-             	new->firstAddressing = findAddressing(new->firstOperand)	
+             	new->firstAddressing = getAddressing(new->firstOperand)	
         }
 
 	if(new->group > 1)
 	{
 		new->secndOperand = getSecndOperand(cmd+i);
-		new->secndAddressing = findAddressing(new->secndOperand)
+		new->secndAddressing = getAddressing(new->secndOperand)
 	}
 	
 	new->encodeType = A;
