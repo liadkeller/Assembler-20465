@@ -76,9 +76,9 @@ void secondLoop()
         while(dataCur->next)
         {
                 curAddress = dataCur->address;
-                bin = intToBinary(dataCur->content);
+                bin = intToBinary(dataCur->content, BINARY_WORD);
                 addBinary(curAddress, bin);
-		// !!! free(bin);
+		free(bin);
         }
 
 }
@@ -134,6 +134,3 @@ void buildOperand(struct cmd *c, char *operand, int encodeType)
 			break;
 	}
 }
-
-int encode(struct cmd *code, int encode);
-int intToBinary(int num);
