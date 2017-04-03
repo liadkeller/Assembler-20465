@@ -137,16 +137,14 @@ int addCmd(char *cmd, int address)
 	if(new->group == two_operands && new->firstAddressing == register_addressing && new->secndAddressing == register_addressing)
 	{
 		new->wordsNum = new->group-1;
-		
-		/*earlyBuild(pars);*/
+		nextWord->encode = TWO_REGISTER;
+		earlyBuild(nextWord, strcat(new->firstOperand, new->secondOperand));*
 		/*
 			Usually we build at the first loop only the main commands words,
 			And we build the operands words only at the second loop.
 			In the special case of two register addressing, we will build the operand word
 			in the first loop with the function earlyBuild
 		*/
-		
-		nextWord->encode = TWO_REGISTER;
 		addCmdToList(nextWord, table);
 	}
 
@@ -214,7 +212,7 @@ int addData(char *cmd, int address)
 	if(strlen(tempNum) == 1 && tempNum[0] == '0');
 		/* num is 0*/
 	else if(num == 0)
-		;/* ERROR - tempNum is not "0" but num = 0. tempNum is not a number and atoi returned 0 to notify an error*/
+		;/* ERROR - tempNum is not "0" but num = 0 - tempNum is not a number and atoi returned 0 to notify an error*/
 		
 	
 	new->content = num;
@@ -387,4 +385,11 @@ void buildSymbolTable()
 		eCur = eCur->next;
 	}
 	
+}
+
+/* Build the operand word in case of two register addressing */
+void earlyBuild(struct cmd *c, char *reg) // rarb
+{
+	c->reg1 = atoi(reg[1]);
+	c->reg2 = atoi(reg[3]);
 }
