@@ -1,7 +1,7 @@
 #include "utils.h"
 #include "table.h"
 
-struct symbol *symbolTable;
+extern struct symbol *symbolTable;
 struct opcode {
         char *name;
         int group;
@@ -213,7 +213,7 @@ char *getSecndOperand(char *cmd)
 	i=skipSpaces(i,cmd);
 	
 	if(i == len || cmd[i] == '\0')
-		/* error - cmd is too short*/
+		/* error - cmd is too short*/;
 	
 	while(i < len && cmd[i] != ' ' && cmd[i] != '\t' && cmd[i] != ',') /* skip first operand until the first space/comma*/
 		i++;
@@ -222,17 +222,17 @@ char *getSecndOperand(char *cmd)
 		i++;
 	
 	if(i == len || cmd[i] == '\0')
-		/* error - cmd is too short*/
+		/* error - cmd is too short*/;
 	
 	if(cmd[i] != ',')
-		/* error - no comma*/
+		/* error - no comma*/;
 	i++;
 	
 	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces until the second operand*/
 		i++;
 	
 	if(i == len || cmd[i] == '\0')
-		/* error - cmd is too short*/
+		/* error - cmd is too short*/;
 	
 	start = i;
 	end = len - 1;
@@ -265,7 +265,7 @@ int getAddressing(char *operand)
 			return ONE_REGISTER;
 		
 		else
-			;/* no such register - might be a label*/
+			;/* no such register - might be a label*/;
 	}
 	
 	if(strlen(operand) == 6 && operand[0] == 'r' && operand[2] == '[' && operand[3] == 'r' && operand[5] == ']')
@@ -276,7 +276,7 @@ int getAddressing(char *operand)
 			;/* Error - one of the registers "r%c, r%c" is not exist*/
 	}
 				
-	while(symbolCur->next)
+	while(symbolCur && symbolCur->next)
 	{
 		if(strcmp(symbolCur->name, operand))
 			return ADDRESS;
