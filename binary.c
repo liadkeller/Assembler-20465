@@ -30,8 +30,8 @@ char *encode(struct cmd *code, int encode)
                         
                 case TWO_REGISTER:
                         addBin(bin, intToBinary(code->encodeType, 2), 0, 2);
-                        addBin(bin, intToBinary(code->reg1, 6), 2, 6);
-                        addBin(bin, intToBinary(code->reg2, 6), 8, 6);
+                        addBin(bin, intToBinary(code->reg2, 6), 2, 6);
+                        addBin(bin, intToBinary(code->reg1, 6), 8, 6);
                         break;
                         
                 case MAIN_COMMAND:
