@@ -15,7 +15,10 @@ int main(int argc, char *argv[])
 		f = fopen(strcat(fileName, ".as") , "r");
 		
 		if(!f)
-        		/* Error - File doesn't exist */;
+		{
+        		printf("%s %s %s","Error - File","fileName", "doesn't exist");
+			continue;
+		}
 		
 		firstLoop(f);
 		buildSymbolTable();
