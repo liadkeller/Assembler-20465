@@ -1,7 +1,7 @@
 #include "table.h"
 #include "utils.h"
 
-struct list *table;
+struct list *table;/*need to be struct and not pointer or malloc somewhere */
 struct symbol *symbolTable = NULL;
 
 void addCmdToList(struct cmd *c, struct list *t)
@@ -31,8 +31,8 @@ void addCmdToList(struct cmd *c, struct list *t)
 	n->next = NULL;
 	/* !!! to check - if a struct field is unintaliize or containing a garbage values - can it be copied?*/
 	
-	if(t->cmdHead == NULL)
-		t->cmdHead = n;
+	if(table->cmdHead == NULL)
+		table->cmdHead = n;
 
 	else
 	{
@@ -155,7 +155,7 @@ int addCmd(char *cmd, int address)
 	
 	if(new->wordsNum == 1)
 	{
-		nextWord->encode = new->firstAddressing;
+		nextWord->encode = new->secndAddressing;
 		nextWord->operandNumber = LAST;
 		addCmdToList(nextWord, table);
 	}
@@ -164,9 +164,8 @@ int addCmd(char *cmd, int address)
 	{
 		nextWord->encode = new->firstAddressing;
 		nextWord->operandNumber = FIRST;
-		addCmdToList(nextWord, table);
-		
 		nextNextWord->encode = new->secndAddressing;
+		addCmdToList(nextWord, table);
 		nextNextWord->operandNumber = LAST;
 		addCmdToList(nextNextWord, table);
 	}
@@ -181,9 +180,9 @@ int addData(char *cmd, int address)
 	int i, len = strlen(cmd);
 	struct data *new;
 	int wordsNum;
-	
 	int start, end, num;
 	char *tempNum;
+	new = (struct data *) malloc (sizeof (struct data)); 
 	
 	/* first*/
 	new->isFirst = TRUE;
@@ -208,6 +207,8 @@ int addData(char *cmd, int address)
 	while(i < len && cmd[i] != ' ' && cmd[i] != '\t') /* skip the number*/
 		i++;
 	end = i-1;
+
+	tempNum= (char *) malloc((end-start+1)* sizeof(char));
 	strncpy(tempNum, cmd+start, end-start+1);
 	num = atoi(tempNum);
 	if(strlen(tempNum) == 1 && tempNum[0] == '0');
@@ -226,7 +227,7 @@ int addData(char *cmd, int address)
 	while(i < len && cmd[i] != '\0')
 	{
 		if(cmd[i] != ',')
-			/* error - no comma*/
+			/* error - no comma*/;
 		while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces*/
 			i++;
 		if(i == len || cmd[i] == '\0')
@@ -250,7 +251,7 @@ int addData(char *cmd, int address)
 		while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces*/
 			i++;
 	}
-	
+	free(new);
 	return wordsNum;
 }
 
@@ -260,6 +261,7 @@ int addStr(char *cmd, int address)
 	struct data *new;
 	int wordsNum;
 	
+	new = (struct data *) malloc (sizeof (struct data)); 
 	/* first*/
 	new->isFirst = TRUE;
 	new->address = address;
@@ -329,11 +331,17 @@ void addExt(char *cmd)
 	char *symbol; /* (*) check allocation*/
 	int i = getCmdStart(cmd) + extern_length; /* !! TO CHECK while debugging*/
 	int len = strlen(cmd);
+
+	new = (struct ext *) malloc (sizeof (struct ext)); 
 	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t'))
 		i++;
+	
+	symbol = (char *)malloc((len-i) * sizeof(char));
+
 	strncpy(symbol, cmd+i, len-i);  /* (*) check allocation*/
 	new->symbol = symbol;
 	addExtToList(new, table);
+	free(new);
 }
 
 void fixAddresses(int add) /* fix so the data addresses will come right after the cmd addresses*/
@@ -358,7 +366,7 @@ void buildSymbolTable()
 	{
 		if(cCur->isSymbol)
 			if(addSymbol(cCur->symbol, CODE, cCur->address)==FALSE)
-				/* error*/
+				/* error*/;
 		cCur = cCur->next;
 	}
 
@@ -367,7 +375,7 @@ void buildSymbolTable()
 	{
 		if(dCur->isSymbol)
 			if(addSymbol(dCur->symbol, DtSt, dCur->address)==FALSE)
-				/* error*/
+				/* error*/;
 		dCur = dCur->next;
 	}
 	
@@ -375,7 +383,7 @@ void buildSymbolTable()
 	while(eCur)
 	{
 		if(addSymbol(eCur->symbol, EXT, 0)==FALSE)
-			/* error*/
+			/* error*/;
 		eCur = eCur->next;
 	}
 	
