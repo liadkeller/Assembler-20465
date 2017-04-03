@@ -85,7 +85,6 @@ void addExt(char *cmd);
 int countWords(char *cmd);
 int addSymbol(char *name, int type, int address);
 enum symbolType {CODE , DtSt , EXT};
-extern struct symbol *symbolTable;
 
 
 struct symbol {
