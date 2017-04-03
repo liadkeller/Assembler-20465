@@ -127,7 +127,7 @@ void buildOperand(struct cmd *c, char *operand, int encodeType)
 			break;
 			
 		case TWO_REGISTER:
-			/* In the special case of two register addressing we build the operand word in the first loop */
+			/* In the special case of two register addressing we built the operand word in the first loop */
 			break;
 		
 		case MAIN_COMMAND: /* Built in the first loop */
