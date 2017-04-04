@@ -50,15 +50,15 @@ char *encode(struct cmd *code, int encode)
 
 char *intToBinary(int num, int size) /* returns the binary presentation of the first "size" digits of num */
 {
-        /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        !!!!! REQIRES TREATMENT OF NEGATIVE NUMBERS !!!!!
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+        if(num > pow(2, size-1) - 1 || num < -1 * pow(2, size-1)) /* i is not in the range 2^(size-1) <= i <= 2^(size-1) - 1 */
+                fprintf(stderr, "Error - number is too large");
         
         int arr[size];
-        int i;
         char bin[size];  /* malloc */
+        int i, sign;
+        
+        sign = (num >= 0)? 1 : -1;
+        num = sign * num; /* num = |num| */
         
         for(i = 0; num > 0 && i < size; i++)
         {
@@ -75,6 +75,22 @@ char *intToBinary(int num, int size) /* returns the binary presentation of the f
                         bin[i] = '1';
                 else
                         bin[i] = '0';
+        }
+        
+        if(sign < 0)
+        {
+                i = 0;
+                while(i < size && bin[i] != '1')
+                        i++;
+                i++;
+                while(i < size)
+                {
+                        if(bin[i] == '1')
+                                bin[i] = '0';
+                        
+                        if(bin[i] == '0')
+                                bin[i] = '1';
+                } 
         }
         
         return bin;
