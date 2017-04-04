@@ -10,8 +10,10 @@
 #define op_name_size 4 /* maximum is 'stop' - 4 */
 #define op_num 16
 
-enum BOOL {FALSE , TRUE};
+#define assembly_line_max 100
+#define IC_start 100
 
+enum BOOL {FALSE , TRUE};
 
 #define two_operands 2
 #define register_addressing 3
