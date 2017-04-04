@@ -1,37 +1,3 @@
-
-void addCmdToList(struct cmd *c, struct list *t);
-void addDataToList(struct data *d, struct list *t); /* DATA = data OR string*/
-void addExtToList(struct ext *e, struct list *t);
-int addCmd(char *cmd, int address);
-int addData(char *cmd, int address);
-int addStr(char *cmd, int address);
-void addExt(char *cmd);
-int addSymbol(char *name, int type, int address);
-
-void fixAddresses(int add)
-void buildSymbolTable()
-void earlyBuild(struct cmd *c, char *reg)
-	
-
-int isSymbol(char *cmd); /* CMD = code OR data*/
-char *getSymbol(char *cmd); /* CMD = code OR data*/
-int checkSymbol(char *cmd);
-int getCmdStart(char *cmd); /* CMD = code OR data*/
-int isBlankOrComment(char *cmd)
-int isCode(char *cmd);
-int isData(char *cmd); /* CMD = code OR data*/
-int isStr(char *cmd); /* CMD = code OR data*/
-int isExt(char *cmd);
-int isEnt(char *cmd)
-int getOpcode(char *op);
-int getGroup(char *op);
-char *getFirstOperand(char *cmd);
-char *getSecndOperand(char *cmd);
-int getAddressing(char *operand);
-int countWords(char *cmd);
-int skipSpaces(int i,char *str);
-
-
 struct cmd {
 	int encode;
 	int opcode;
@@ -86,3 +52,37 @@ struct symbol {
         int address;
         struct symbol *next;
 };
+
+void addCmdToList(struct cmd *c);
+void addDataToList(struct data *d); /* DATA = data OR string*/
+void addExtToList(struct ext *e);
+int addCmd(char *cmd, int address);
+int addData(char *cmd, int address);
+int addStr(char *cmd, int address);
+void addExt(char *cmd);
+int addSymbol(char *name, int type, int address);
+
+void fixAddresses(int add);
+void buildSymbolTable();
+void earlyBuild(struct cmd *c, char *reg);
+	
+
+int isSymbol(char *cmd); /* CMD = code OR data*/
+char *getSymbol(char *cmd); /* CMD = code OR data*/
+int checkSymbol(char *cmd);
+int getCmdStart(char *cmd); /* CMD = code OR data*/
+int isBlankOrComment(char *cmd);
+int isCode(char *cmd);
+int isData(char *cmd); /* CMD = code OR data*/
+int isStr(char *cmd); /* CMD = code OR data*/
+int isExt(char *cmd);
+int isEnt(char *cmd);
+int getOpcode(char *op);
+int getGroup(char *op);
+char *getFirstOperand(char *cmd);
+char *getSecndOperand(char *cmd);
+int getAddressing(char *operand);
+int countWords(char *cmd);
+int skipSpaces(int i,char *str);
+
+
