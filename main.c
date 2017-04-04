@@ -25,8 +25,17 @@ int main(int argc, char *argv[])
 		
 		firstLoop(f);
 		buildSymbolTable();
-		/* secondLoop(); */
-	  	/* create files */
+		secondLoop();
+		
+		f = fopen(strcat(fileName, ".ob") , "w");
+		createObject(f);
+		 
+		f = fopen(strcat(fileName, ".ext") , "w"); 
+		createExtern(f);
+		
+		f = fopen(strcat(fileName, ".ent") , "w");  
+		createEntry(f);
+		 
 		fclose(f);
 	}
 	
