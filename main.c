@@ -1,12 +1,5 @@
 #include "main.h"
 
-#define FILE_ERROR(x)  									  \
-if(!f)											  \
-	{										  \
-        	fprintf(stderr, "Error - Can't create #x file for %s", fileName); 	  \
-		continue;				  				  \
-	}
-
 int main(int argc, char *argv[])
 {
 	int i;
