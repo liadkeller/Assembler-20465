@@ -7,7 +7,10 @@ int main(int argc, char *argv[])
 	FILE *f;
 	
 	if(argc == 1)
-		return 0;/* Error - No files */
+	{
+		fprintf(stderr, "Error - No files entered");
+		return 0;
+	}
 
 	 for(i = 1; i < argc; i++)
 	{
@@ -16,7 +19,7 @@ int main(int argc, char *argv[])
 		
 		if(!f)
 		{
-        		printf("%s %s %s","Error - File","fileName", "doesn't exist");
+        		fprintf(stderr, "%s %s %s","Error - File", fileName, "doesn't exist");
 			continue;
 		}
 		
@@ -53,7 +56,7 @@ void firstLoop(FILE *f)
 		  	addExt(assemblyCommand);
 		
 		else
-			;/* error - illegal command */	
+			fprintf(stderr, "Error - Illegal Command");
 	}
 	
 	fixAddresses(IC);
