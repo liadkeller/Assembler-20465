@@ -1,4 +1,11 @@
-#include "main.h"  
+#include "main.h"
+
+#define FILE_ERROR(x)  									  \
+if(!f)											  \
+	{										  \
+        	fprintf(stderr, "Error - Can't create #x file for %s", fileName); 	  \
+		continue;				  				  \
+	}
 
 int main(int argc, char *argv[])
 {
@@ -12,14 +19,14 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
-	 for(i = 1; i < argc; i++)
-	{
+	for(i = 1; i < argc; i++)
+	{	
 		fileName = argv[i];
 		f = fopen(strcat(fileName, ".as") , "r");
 		
 		if(!f)
 		{
-        		fprintf(stderr, "%s %s %s","Error - File", fileName, "doesn't exist");
+        		fprintf(stderr, "Error - File %s doesn't exist", fileName);
 			continue;
 		}
 		
@@ -27,13 +34,17 @@ int main(int argc, char *argv[])
 		buildSymbolTable();
 		secondLoop();
 		
+		/* !!! if there is no error */
 		f = fopen(strcat(fileName, ".ob") , "w");
+		FILE_ERROR(object)
 		createObject(f);
 		 
 		f = fopen(strcat(fileName, ".ext") , "w"); 
+		FILE_ERROR(extern)
 		createExtern(f);
 		
 		f = fopen(strcat(fileName, ".ent") , "w");  
+		FILE_ERROR(entry)
 		createEntry(f);
 		 
 		fclose(f);
