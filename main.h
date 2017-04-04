@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <string.h>
+
 int isBlankOrComment(char *cmd);
 int isCode(char *cmd);
 int isData(char *cmd);
@@ -15,3 +18,10 @@ void buildSymbolTable(void);
 
 void firstLoop(FILE *);
 void secondLoop();
+
+#define FILE_ERROR(x)  							  \
+if(!f)									  \
+{								          \
+        fprintf(stderr, "Error - Can't create #x file for %s", fileName); \
+        continue;				  		          \
+}
