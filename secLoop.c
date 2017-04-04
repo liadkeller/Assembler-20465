@@ -1,3 +1,6 @@
+#include "utils.h"
+#include "binary.h"
+
 #define BINARY_WORD 15
 
 struct binarycode
