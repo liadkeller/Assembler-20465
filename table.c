@@ -392,6 +392,7 @@ void buildSymbolTable()
 /* Build the operand word in case of two register addressing */
 void earlyBuild(struct cmd *c, char *reg) // rarb
 {
+	c->encodeType = A;
 	c->reg1 = atoi(reg[1]);
 	c->reg2 = atoi(reg[3]);
 }
