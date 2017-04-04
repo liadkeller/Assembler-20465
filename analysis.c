@@ -118,7 +118,7 @@ int isCode(char *cmd)
 	int i = getCmdStart(cmd);
 	int j = i;
 	
-	while(j < strlen(cmd) && cmd[j] != '\0' cmd[j] != ' ' && cmd[j] != '\t' && cmd[j] != '\t')
+	while(j < strlen(cmd) && cmd[j] != '\0' && cmd[j] != ' ' && cmd[j] != '\t' && cmd[j] != '\t')
 		j++;
 	
 	if(j-i > op_name_max) /* the first word (op) is bigger than an op */
@@ -259,7 +259,7 @@ int getAddressing(char *operand)
 		if(strlen(operand) == 2 && operand[1] == '0');
 		
 		else if(atoi(operand+1) == 0)
-			fprintf(stderr, "Error - Operand is not a number"); 
+			fprintf(stderr, "\n Error - Operand is not a number"); 
 			/* operand isnt "#0" but atoi returns 0
 			-> the operand isnt a number */		
 		
@@ -276,7 +276,7 @@ int getAddressing(char *operand)
 	if(strlen(operand) == 6 && operand[0] == 'r' && operand[2] == '[' && operand[3] == 'r' && operand[5] == ']')
 	{
 		if(!(operand[1] >= '0' && operand[1] <= '7' && operand[4] >= '0' && operand[4] <= '7'))
-			fprintf(stderr, "Error - Operand is not an exist lable/illegal operand"); 
+			fprintf(stderr, "\n Error - Operand is not an exist lable/illegal operand"); 
 		return INDEX_REGISTER;
 	}
 				
@@ -288,7 +288,7 @@ int getAddressing(char *operand)
 		symbolCur = symbolCur->next;
 	}
 	/* label wasnt found */
-	fprintf(stderr, "Error - Operand is not an exist lable/illegal operand"); 
+	fprintf(stderr, "\n Error - Operand is not an exist lable/illegal operand"); 
 	return ADDRESS;
 }
 
