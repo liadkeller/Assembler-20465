@@ -393,6 +393,6 @@ void buildSymbolTable()
 void earlyBuild(struct cmd *c, char *reg) // rarb
 {
 	c->encodeType = A;
-	c->reg1 = atoi(reg[1]);
-	c->reg2 = atoi(reg[3]);
+	c->reg1 = reg[1] - '0';
+	c->reg2 = reg[3] - '0';
 }
