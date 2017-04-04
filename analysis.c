@@ -114,11 +114,18 @@ int isBlankOrComment(char *cmd)
 
 int isCode(char *cmd)
 {
-	char op[op_name_size+1];
+	char op[op_name_max+1];
 	int i = getCmdStart(cmd);
+	int j = i;
 	
-	strncpy(op, cmd+i, op_name_size);
-	op[op_name_size] = '\0';
+	while(j < strlen(cmd) && cmd[j] != '\0' cmd[j] != ' ' && cmd[j] != '\t' && cmd[j] != '\t')
+		j++;
+	
+	if(j-i > op_name_max) /* the first word (op) is bigger than an op */
+		return FALSE;
+	
+	strncpy(op, cmd+i, j-i);
+	op[j-i] = '\0';
 	
 	for(i = 0; i < op_num; i++)
                 if(strncmp(op, opr[i].name, strlen(opr[i].name)) == 0)
