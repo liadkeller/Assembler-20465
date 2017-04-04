@@ -99,12 +99,12 @@ void buildOperand(struct cmd *c, char *operand)
 			
 				while(symbolCur->next && (!isFound))
 				{
-					if(strcmp(symbolCur->label, operand))
+					if(strcmp(symbolCur->name, operand))
 					{
-						c->addressNumber = symbolCur->address;
 						isFound = TRUE;
+						c->addressNumber = symbolCur->address;
+						c->encodeType = (symbolCur->type == EXT && symbolCur->address == 0) ? (E) : (R);
 					}
-	
 					symbolCur = symbolCur->next;
 				}
 			}
