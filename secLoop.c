@@ -112,15 +112,15 @@ void buildOperand(struct cmd *c, char *operand)
 			
 		case INDEX_REGISTER: /* ra[rb] */
 			c->encodeType = A;
-			c->reg1 = atoi(operand[1]);
-			c->reg2 = atoi(operand[4]);
+			c->reg1 = operand[1]-'0';
+			c->reg2 = operand[4]-'0';
 			if((c->reg1) % 2 == 0 || (c->reg2) % 2 == 1)
 				fprintf(stderr, "Error - First register should be odd and second register should be even");
 			break;
 			
 		case ONE_REGISTER: /* ra */
 			c->encodeType = A;
-			c->reg1 = atoi(operand[1]);
+			c->reg1 = operand[1]-'0';
 			if(c->operandNumber == FIRST)
 				c->whichReg = SOURCE;
 			else
