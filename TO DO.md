@@ -4,12 +4,21 @@
 
 # Second Loop
 
-* funcion encode
-
-* take care binary negatives
 
 * take care hexa-decimal conversion
 
-* take care allocations (hexa-decimal functions)
-
 # File Creation
+
+
+
+
+
+Errors
+
+Allocation
+
+Constants Declare
+
+Project Summary
+
+Bugs
