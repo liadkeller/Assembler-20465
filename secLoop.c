@@ -56,7 +56,7 @@ void secondLoop()
                         
                         if(curWords > 0)
                         {
-                                buildOperand(codeCur->next, codeCur->firstOperand, codeCur->encodeType)
+                                buildOperand(codeCur->next, codeCur->firstOperand)
                                 bin = encode(codeCur->next, codeCur->next->encode);
                                 addBinary(curAddress+1, bin);
 				free(bin);
@@ -64,7 +64,7 @@ void secondLoop()
                         
                         if(curWords > 1)
                         {
-                                buildOperand(codeCur->next->next, codeCur->secndOperand, codeCur->encodeType)
+                                buildOperand(codeCur->next->next, codeCur->secndOperand)
                                 bin = encode(codeCur->next->next, codeCur->next->next->encode);
                                 addBinary(curAddress+2, bin);
 				free(bin);
@@ -83,13 +83,12 @@ void secondLoop()
 
 }
 
-void buildOperand(struct cmd *c, char *operand, int encodeType)
+void buildOperand(struct cmd *c, char *operand)
 {
-	c->encodeType = encodeType;
-	
 	switch(c->encode)
 	{
 		case NUMBER: /* #a */
+			c->encodeType = A;
 			c->number = atoi(++operand); /* copies the number without the # */
 			break;
 			
@@ -112,6 +111,7 @@ void buildOperand(struct cmd *c, char *operand, int encodeType)
 			break;
 			
 		case INDEX_REGISTER: /* ra[rb] */
+			c->encodeType = A;
 			c->reg1 = atoi(operand[1]);
 			c->reg2 = atoi(operand[4]);
 			if((c->reg1) % 2 == 0 || (c->reg2) % 2 == 1)
@@ -119,6 +119,7 @@ void buildOperand(struct cmd *c, char *operand, int encodeType)
 			break;
 			
 		case ONE_REGISTER: /* ra */
+			c->encodeType = A;
 			c->reg1 = atoi(operand[1]);
 			if(c->operandNumber == FIRST)
 				c->whichReg = SOURCE;
@@ -128,9 +129,6 @@ void buildOperand(struct cmd *c, char *operand, int encodeType)
 			
 		case TWO_REGISTER:
 			/* In the special case of two register addressing we built the operand word in the first loop */
-			break;
-		
-		case MAIN_COMMAND: /* Built in the first loop */
 			break;
 	}
 }
