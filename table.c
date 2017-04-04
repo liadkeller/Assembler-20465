@@ -1,10 +1,10 @@
 #include "table.h"
 #include "utils.h"
 
-struct list *table;/*need to be struct and not pointer or malloc somewhere */
+struct list table;
 struct symbol *symbolTable = NULL;
 
-void addCmdToList(struct cmd *c, struct list *t)
+void addCmdToList(struct cmd *c)
 {
 	struct cmd *n;
 	n = (struct cmd*) malloc(sizeof(struct cmd));
@@ -31,20 +31,20 @@ void addCmdToList(struct cmd *c, struct list *t)
 	n->next = NULL;
 	/* !!! to check - if a struct field is unintaliize or containing a garbage values - can it be copied?*/
 	
-	if(table->cmdHead == NULL)
-		table->cmdHead = n;
+	if(table.cmdHead == NULL)
+		table.cmdHead = n;
 
 	else
 	{
 		struct cmd *cur;
-		cur = t->cmdHead;
+		cur = table.cmdHead;
 		while(cur->next)
 			cur = cur->next;
 		cur->next = n;
 	}
 }
 
-void addDataToList(struct data *d, struct list *t) /* DATA = data OR string*/
+void addDataToList(struct data *d) /* DATA = data OR string*/
 {
 	struct data *n;
 	n = (struct data*) malloc (sizeof(struct data));
@@ -59,33 +59,33 @@ void addDataToList(struct data *d, struct list *t) /* DATA = data OR string*/
 	
 	
 	
-	if(t->dataHead == NULL)
-		t->dataHead = n;
+	if(table.dataHead == NULL)
+		table.dataHead = n;
 
 	else
 	{
 		struct data *cur;
-		cur = t->dataHead;
+		cur = table.dataHead;
 		while(cur->next)
 			cur = cur->next;
 		cur->next = n;
 	}
 }
 
-void addExtToList(struct ext *e, struct list *t)
+void addExtToList(struct ext *e)
 {
 	struct ext *n;
 	n = (struct ext*) malloc(sizeof(struct ext));
 	/* !!! malloc - to make sure to free the pointer*/
 	n->symbol = e->symbol;
 	
-	if(t->extHead == NULL)
-		t->extHead = n;
+	if(table.extHead == NULL)
+		table.extHead = n;
 
 	else
 	{
 		struct ext *cur;
-		cur = t->extHead;
+		cur = table.extHead;
 		while(cur->next)
 			cur = cur->next;
 		cur->next = n;
@@ -95,7 +95,7 @@ void addExtToList(struct ext *e, struct list *t)
 int addCmd(char *cmd, int address)
 {	
 	int i;	
-	char inst[op_name_size+1]; /* inst. = instruction*/
+	char inst[op_name_max+1]; /* inst. = instruction*/
 	struct cmd *new;
 	struct cmd *nextWord, *nextNextWord;
 
@@ -113,8 +113,8 @@ int addCmd(char *cmd, int address)
 		new->symbol = getSymbol(cmd);
 
 	i = getCmdStart(cmd);
-	strncpy(inst, cmd+i, op_name_size);
-	inst[op_name_size] = '\0';
+	strncpy(inst, cmd+i, op_name_max);
+	inst[op_name_max] = '\0';
 	new->opcode = getOpcode(inst);
 	new->group = getGroup(inst);
 
@@ -130,7 +130,7 @@ int addCmd(char *cmd, int address)
 		new->secndAddressing = getAddressing(new->secndOperand);
 	}
 
-	addCmdToList(new, table);
+	addCmdToList(new);
 
 	nextWord->address = address+1;
 	nextNextWord->address = address+2;
@@ -139,14 +139,14 @@ int addCmd(char *cmd, int address)
 	{
 		new->wordsNum = new->group-1;
 		nextWord->encode = TWO_REGISTER;
-		earlyBuild(nextWord, strcat(new->firstOperand, new->secondOperand));*
+		earlyBuild(nextWord, strcat(new->firstOperand, new->secndOperand));
 		/*
 			Usually we build at the first loop only the main commands words,
 			And we build the operands words only at the second loop.
 			In the special case of two register addressing, we will build the operand word
 			in the first loop with the function earlyBuild
 		*/
-		addCmdToList(nextWord, table);
+		addCmdToList(nextWord);
 	}
 
 	else
@@ -156,18 +156,18 @@ int addCmd(char *cmd, int address)
 	{
 		nextWord->encode = new->firstAddressing;
 		nextWord->operandNumber = LAST;
-		addCmdToList(nextWord, table);
+		addCmdToList(nextWord);
 	}
 		
 	if(new->wordsNum == 2)
 	{
 		nextWord->encode = new->firstAddressing;
 		nextWord->operandNumber = FIRST;
-		addCmdToList(nextWord, table);
+		addCmdToList(nextWord);
 		
 		nextNextWord->encode = new->secndAddressing;
 		nextNextWord->operandNumber = LAST;
-		addCmdToList(nextNextWord, table);
+		addCmdToList(nextNextWord);
 	}
 	free(new);
 	free(nextWord);
@@ -194,7 +194,7 @@ int addData(char *cmd, int address)
 	i = getCmdStart(cmd);
 	wordsNum = countWords(cmd+i);
 	new->wordsNum = wordsNum;
-	addDataToList(new, table);
+	addDataToList(new);
 
 	i += data_length;
 	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces*/
@@ -218,7 +218,7 @@ int addData(char *cmd, int address)
 		
 	
 	new->content = num;
-	addDataToList(new, table);
+	addDataToList(new);
 	
 	new->isFirst = FALSE;
 	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces*/
@@ -246,7 +246,7 @@ int addData(char *cmd, int address)
 		
 		new->address++;
 		new->content = num;
-		addDataToList(new, table);
+		addDataToList(new);
 		
 		while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces*/
 			i++;
@@ -283,7 +283,7 @@ int addStr(char *cmd, int address)
 	i++;
 	
  	new->content = cmd[i];
- 	addDataToList(new, table); /* add the first char*/
+ 	addDataToList(new); /* add the first char*/
 	i++;
 	new->isFirst = FALSE;
 		
@@ -291,13 +291,13 @@ int addStr(char *cmd, int address)
 	{
 	new->address++;
 	new->content = cmd[i];
-	addDataToList(new, table);
+	addDataToList(new);
 	i++;
 	}
 	/* add zero to the end of the string*/
 	new->address++;
 	new->content = 0;
-	addDataToList(new, table);
+	addDataToList(new);
 	
 	return wordsNum;
 }
@@ -340,15 +340,15 @@ void addExt(char *cmd)
 
 	strncpy(symbol, cmd+i, len-i);  /* (*) check allocation*/
 	new->symbol = symbol;
-	addExtToList(new, table);
+	addExtToList(new);
 	free(new);
 }
 
 void fixAddresses(int add) /* fix so the data addresses will come right after the cmd addresses*/
 {
 	struct data *cur;
-	cur = table->dataHead;
-	while(cur->next)
+	cur = table.dataHead;
+	while(cur && cur->next)
 	{
 		cur->address += add; 
 		cur = cur->next;
@@ -361,7 +361,7 @@ void buildSymbolTable()
 	struct data *dCur;
 	struct ext *eCur;
 	
-	cCur = table->cmdHead;
+	cCur = table.cmdHead;
 	while(cCur)
 	{
 		if(cCur->isSymbol)
@@ -370,7 +370,7 @@ void buildSymbolTable()
 		cCur = cCur->next;
 	}
 
-	dCur = table->dataHead;
+	dCur = table.dataHead;
 	while(dCur)
 	{
 		if(dCur->isSymbol)
@@ -379,7 +379,7 @@ void buildSymbolTable()
 		dCur = dCur->next;
 	}
 	
-	eCur = table->extHead;
+	eCur = table.extHead;
 	while(eCur)
 	{
 		if(addSymbol(eCur->symbol, EXT, 0)==FALSE)
@@ -390,9 +390,9 @@ void buildSymbolTable()
 }
 
 /* Build the operand word in case of two register addressing */
-void earlyBuild(struct cmd *c, char *reg) // rarb
+void earlyBuild(struct cmd *c, char *reg) /* rarb*/
 {
 	c->encodeType = A;
-	c->reg1 = reg[1] - '0';
-	c->reg2 = reg[3] - '0';
+	c->reg1 = reg[1]-'0';
+	c->reg2 = reg[3]-'0';
 }
