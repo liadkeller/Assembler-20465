@@ -102,8 +102,12 @@ int addCmd(char *cmd, int address)
 	new = (struct cmd*) malloc(sizeof(struct cmd));
 	nextWord = (struct cmd*) malloc(sizeof(struct cmd));
 	nextNextWord = (struct cmd*) malloc(sizeof(struct cmd));
+	
 	new->encode = MAIN_COMMAND;
+	new->operandNumber = CMD;
+	new->encodeType = A;
 	new->address = address;
+	
 	new->isSymbol = isSymbol(cmd);
 	if(new->isSymbol)
 		new->symbol = getSymbol(cmd);
@@ -125,12 +129,9 @@ int addCmd(char *cmd, int address)
 		new->secndOperand = getSecndOperand(cmd+i);
 		new->secndAddressing = getAddressing(new->secndOperand);
 	}
-	new->operandNumber = CMD;
-	new->encodeType = A;
 
 	addCmdToList(new, table);
 
-	
 	nextWord->address = address+1;
 	nextNextWord->address = address+2;
 
