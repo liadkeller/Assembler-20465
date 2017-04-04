@@ -25,9 +25,10 @@ int main(int argc, char *argv[])
 		
 		firstLoop(f);
 		buildSymbolTable();
+		/*
 		secondLoop();
-		
-		/* !!! if there is no error */
+		if there is no error
+
 		f = fopen(strcat(fileName, ".ob") , "w");
 		FILE_ERROR(object)
 		createObject(f);
@@ -39,7 +40,7 @@ int main(int argc, char *argv[])
 		f = fopen(strcat(fileName, ".ent") , "w");  
 		FILE_ERROR(entry)
 		createEntry(f);
-		 
+		*/
 		fclose(f);
 	}
 	
@@ -71,6 +72,7 @@ void firstLoop(FILE *f)
 		else
 			fprintf(stderr, "Error - Illegal Command");
 	}
+	printf("\n %d,%d",IC,DC);
 	
 	fixAddresses(IC);
 }
