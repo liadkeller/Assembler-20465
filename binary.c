@@ -113,3 +113,43 @@ void addBin(char *bin, char *num, int start, int size)
                 j++;
         }
 }
+
+int pow(int a, int b)
+{
+        int i, pow;
+        for(i = 0, pow = 1; i < b; i++, pow *= a);
+        return pow;
+}
+
+char *binaryToHexa(char *bin)
+{
+        int i;
+        char fixedBin[16]; /* bin has 15 bits, we will fix it to 16 bits */
+        char hexa[4]; /* !!! requires malloc */
+        
+        for(i = 0; i < BINARY_WORD; i++)
+                fixedBin[i] = bin[i];
+        /* i = BINARY_WORD = 15 */
+        fixedBin[i] = fixedBin[i-1];
+        
+        for(i = 0; i < 4; i++)
+        {
+                int sum = 0;
+                for(j = 0; j < 4; j++)
+                {
+                        if(fixedBin[4*i+j])
+                                sum += pow(2, j);
+                }
+                
+                hexa[i] = getHexa(sum);
+        }
+        
+        return hexa;
+}
+
+int getHexa(int num)
+{
+        if (num >= 10 || num <= 15)
+                return 'A' + num - 10;
+        return '0' + num; /* if num >= 0 || num <= 9 */
+}
