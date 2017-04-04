@@ -1,31 +1,37 @@
-/*
-נסביר את השימוש בקיצורים הבאים
 
-cmd - command - פקודה
-מצד אחד משתמשים כדי לתאר משפטי פקודה/משפטי פעולה המורכבים ממהוראה ואופרנדים, לדוגמה
-mov, inc, cmp, ...
-מצד שני משתמשים כדי לתאר פקודה כלשהי, באופן כללי, הן פקודות שהן משפטי פעולה והן פקודות שהן משפטי הוראה
-Code Command, Data Command, ...
-בכל פעם שנשתמש בפירוש השני - הכללי, נציין בהערה
-// CMD = code OR data
-
-data - נתונים
-מצד אחד משתמשים כדי לתאר משפטי הוראה של מספרים שלמים המתחילות ב
-.data
-מצד שני משתמשים כדי לתאר באופן כללי משפטי הוראה המכילים נתונים, גם מספרים שלמים וגם מחרוזות, כלומר
-.data and .string
-בכל פעם שנשתמש בפירוש השני - הכללי, נציין בהערה
-// DATA = data OR string
-
-*/
+void addCmdToList(struct cmd *c, struct list *t);
+void addDataToList(struct data *d, struct list *t); /* DATA = data OR string*/
+void addExtToList(struct ext *e, struct list *t);
+int addCmd(char *cmd, int address);
+int addData(char *cmd, int address);
+int addStr(char *cmd, int address);
+void addExt(char *cmd);
+int addSymbol(char *name, int type, int address);
 
 
-#define two_operands 2
-#define register_addressing 3
-enum encode {NUMBER, ADDRESS, INDEX_REGISTER, ONE_REGISTER, TWO_REGISTER, MAIN_COMMAND};
-enum encodeType {A, E, R};
-enum regType {SOURCE, DEST};
-enum operandNumber {CMD, FIRST, LAST}; /* FIRST - 1/2, LAST - 1/1 or 2/2 */
+void fixAddresses(int add)
+void buildSymbolTable()
+void earlyBuild(struct cmd *c, char *reg)
+	
+
+int isSymbol(char *cmd); /* CMD = code OR data*/
+char *getSymbol(char *cmd); /* CMD = code OR data*/
+int checkSymbol(char *cmd);
+int getCmdStart(char *cmd); /* CMD = code OR data*/
+int isBlankOrComment(char *cmd)
+int isCode(char *cmd);
+int isData(char *cmd); /* CMD = code OR data*/
+int isStr(char *cmd); /* CMD = code OR data*/
+int isExt(char *cmd);
+int isEnt(char *cmd)
+int getOpcode(char *op);
+int getGroup(char *op);
+char *getFirstOperand(char *cmd);
+char *getSecndOperand(char *cmd);
+int getAddressing(char *operand);
+int countWords(char *cmd);
+int skipSpaces(int i,char *str);
+
 
 struct cmd {
 	int encode;
@@ -74,18 +80,6 @@ struct list {
 	struct data *dataHead;
 	struct ext *extHead;
 };
-
-void addCmdToList(struct cmd *c, struct list *t);
-void addDataToList(struct data *d, struct list *t); /* DATA = data OR string*/
-void addExtToList(struct ext *e, struct list *t);
-int addCmd(char *cmd, int address);
-int addData(char *cmd, int address);
-int addStr(char *cmd, int address);
-void addExt(char *cmd);
-int countWords(char *cmd);
-int addSymbol(char *name, int type, int address);
-enum symbolType {CODE , DtSt , EXT};
-
 
 struct symbol {
         char *name;
