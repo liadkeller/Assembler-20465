@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -11,17 +12,11 @@
 
 enum BOOL {FALSE , TRUE};
 
-int isSymbol(char *cmd); /* CMD = code OR data*/
-char *getSymbol(char *cmd); /* CMD = code OR data*/
-int checkSymbol(char *cmd);
-int getCmdStart(char *cmd); /* CMD = code OR data*/
-int isCode(char *cmd);
-int isData(char *cmd); /* CMD = code OR data*/
-int isStr(char *cmd); /* CMD = code OR data*/
-int isExt(char *cmd);
-int getOpcode(char *op);
-int getGroup(char *op);
-char *getFirstOperand(char *cmd);
-char *getSecndOperand(char *cmd);
-int getAddressing(char *operand);
-int skipSpaces(int i,char *str);
+
+#define two_operands 2
+#define register_addressing 3
+enum encode {NUMBER, ADDRESS, INDEX_REGISTER, ONE_REGISTER, TWO_REGISTER, MAIN_COMMAND};
+enum encodeType {A, E, R};
+enum regType {SOURCE, DEST};
+enum operandNumber {CMD, FIRST, LAST}; /* FIRST - 1/2, LAST - 1/1 or 2/2 */
+enum symbolType {CODE , DtSt , EXT};
