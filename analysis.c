@@ -249,13 +249,14 @@ int getAddressing(char *operand)
 	struct symbol *symbolCur = symbolTable;
 	if(operand[0] == '#')
 	{
-		if(strlen(operand) == 2 && operand[1] == '0')
-			return NUMBER;
+		if(strlen(operand) == 2 && operand[1] == '0');
 		
 		else if(atoi(operand+1) == 0)
-			/* ERROR - operand isnt "#0" but atoi returns 0 - isnt a number*/	;	
-		else
-			return NUMBER;
+			fprintf(stderr, "Error - Operand is not a number"); 
+			/* operand isnt "#0" but atoi returns 0
+			-> the operand isnt a number */		
+		
+		return NUMBER;
 	}
 	
 	
@@ -263,17 +264,13 @@ int getAddressing(char *operand)
 	{
 		if(operand[1] >= '0' && operand[1] <= '7')
 			return ONE_REGISTER;
-		
-		else
-			;/* no such register - might be a label*/;
 	}
 	
 	if(strlen(operand) == 6 && operand[0] == 'r' && operand[2] == '[' && operand[3] == 'r' && operand[5] == ']')
 	{
-		if(operand[1] >= '0' && operand[1] <= '7' && operand[4] >= '0' && operand[4] <= '7')
-			return INDEX_REGISTER;
-		
-			;/* Error - one of the registers "r%c, r%c" is not exist*/
+		if(!(operand[1] >= '0' && operand[1] <= '7' && operand[4] >= '0' && operand[4] <= '7'))
+			fprintf(stderr, "Error - Operand is not an exist lable/illegal operand"); 
+		return INDEX_REGISTER;
 	}
 				
 	while(symbolCur && symbolCur->next)
@@ -283,8 +280,9 @@ int getAddressing(char *operand)
 					
 		symbolCur = symbolCur->next;
 	}
-	return 0;/*!!!Temporary */
-	/* error - isnt an exist lable or anything else*/
+	/* label wasnt found */
+	fprintf(stderr, "Error - Operand is not an exist lable/illegal operand"); 
+	return ADDRESS;
 }
 
 int countWords(char *cmd)
