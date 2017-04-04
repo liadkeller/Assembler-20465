@@ -23,7 +23,7 @@ data - נתונים
 #define two_operands 2
 #define register_addressing 3
 enum encode {NUMBER, ADDRESS, INDEX_REGISTER, ONE_REGISTER, TWO_REGISTER, MAIN_COMMAND};
-enum encodeType {A, R, E};
+enum encodeType {A, E, R};
 enum regType {SOURCE, DEST};
 enum operandNumber {CMD, FIRST, LAST}; /* FIRST - 1/2, LAST - 1/1 or 2/2 */
 
