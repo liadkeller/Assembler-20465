@@ -8,7 +8,6 @@ int addStr(char *cmd, int address);
 void addExt(char *cmd);
 int addSymbol(char *name, int type, int address);
 
-
 void fixAddresses(int add)
 void buildSymbolTable()
 void earlyBuild(struct cmd *c, char *reg)
