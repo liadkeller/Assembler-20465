@@ -1,3 +1,6 @@
+#include "utils.h"
+#include "binary.h"
+
 char *encode(struct cmd *code, int encode)
 {
         char bin[BINARY_WORD]; /* malloc */
