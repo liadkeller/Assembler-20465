@@ -172,7 +172,7 @@ int addCmd(char *cmd, int address)
 	free(new);
 	free(nextWord);
 	free(nextNextWord);
-	return new->wordsNum;
+	return (new->wordsNum) + 1; /* including the main command word */
 }
 
 int addData(char *cmd, int address)
