@@ -319,7 +319,7 @@ int addStr(char *cmd, int address)
 		
 	while(i < len && cmd[i] != '"')
 	{
-		new->address++;
+		(new->address)++;
 		new->content = cmd[i];
 		addDataToList(new);
 		i++;
