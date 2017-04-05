@@ -18,6 +18,8 @@ void buildSymbolTable(void);
 void firstLoop(FILE *);
 void secondLoop();
 
+void deleteEnter(char *assemblyCommand);
+
 #define FILE_ERROR(x)  							  \
 if(!f)									  \
 {								          \
