@@ -83,3 +83,13 @@ void firstLoop(FILE *f)
 	
 	fixAddresses(IC);
 }
+
+void deleteEnter(char *assemblyCommand)
+{
+	int i = 0;
+	while(assemblyCommand[i] != '\0')
+		i++;
+	if(assemblyCommand[--i] == '\n')
+		assemblyCommand[i] = '\0';
+
+}
