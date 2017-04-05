@@ -121,7 +121,7 @@ int isCode(char *cmd)
 	int i = getCmdStart(cmd);
 	int j = i;
 	
-	while(j < strlen(cmd) && cmd[j] != '\0' && cmd[j] != ' ' && cmd[j] != '\t' && cmd[j] != '\t')
+	while(j < strlen(cmd) && cmd[j] != '\0' && cmd[j] != ' ' && cmd[j] != '\t' && cmd[j] != '\n')
 		j++;
 	
 	if(j-i > op_name_max) /* the first word (op) is bigger than an op */
@@ -138,14 +138,16 @@ int isCode(char *cmd)
 
 int isData(char *cmd) /* CMD = code OR data*/
 {
-	if(strncmp(cmd, ".data", data_length) == 0)
+	int i = getCmdStart(cmd);
+	if(strncmp(cmd+i, ".data", data_length) == 0)
 		return TRUE;
 	return FALSE;
 }
 
 int isStr(char *cmd) /* CMD = code OR data*/
 {
-	if(strncmp(cmd, ".string", string_length) == 0)
+	int i = getCmdStart(cmd);
+	if(strncmp(cmd+i, ".string", string_length) == 0)
 		return TRUE;
 	return FALSE;
 }
@@ -187,7 +189,7 @@ char *getFirstOperand(char *cmd)
 {
 	int i = getCmdStart(cmd), len = strlen(cmd);
 	int start, end, size;
-	char operand[100]; /* !!! temp, until a proper allocation */
+	char *operand;
 	
 	while(i < len && cmd[i] != ' ' && cmd[i] != '\t') /* skip the first word (opr) until the first space*/
 		i++;
@@ -196,7 +198,7 @@ char *getFirstOperand(char *cmd)
 		i++;
 	
 	if(i == len || cmd[i] == '\0')
-		/* error - cmd is too short*/
+		/* error - cmd is too short*/;
 	
 	start = i;
 	
@@ -205,7 +207,7 @@ char *getFirstOperand(char *cmd)
 	
 	end = i;
 	size = end-start;
-	/* operand = (char *) malloc ((size+1)*sizeof(char)); */
+	 operand = (char *) malloc ((size+1)*sizeof(char)); 
         strncpy(operand, cmd+start, size);
         operand[size] = '\0';
 
@@ -304,24 +306,30 @@ int countWords(char *cmd)
  		if(cmd[i] != '"')
  			return num;
  		i++;
- 		
- 		while(cmd[i] != '\0')
- 			num++;
+		while(i<len && cmd[i]!='"')
+		{
+			num++;
+			i++;
+		}/* !!!possibly error*/
+		return num+1;/* includes 0*/
+			
  	}
  	
- 	if(isData(cmd))
+ 	else if(isData(cmd))
  	{
  		i += data_length;
  		
- 		while(i < len && (cmd[i] == ' ' || cmd[i] == '\t' || cmd[i] == ','))
+ 		while(i < len && (cmd[i] == ' ' || cmd[i] == '\t'))
  			      i++;
  		/* skips first space*/
  		
- 		while(i < len && cmd[i] != '\0')
+ 		while(i < len)
  		{
  			while(i < len && cmd[i] != ' ' && cmd[i] != '\t' && cmd[i] != ',')
  			      i++;
  			num++;
+			while(i < len && (cmd[i] == ' ' || cmd[i] == '\t' || cmd[i] == ',' || cmd[i]=='\n'))
+				i++;
  		}
 	}
  		return num;
