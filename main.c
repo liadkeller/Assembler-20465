@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 	
 	if(argc == 1)
 	{
-		fprintf(stderr, "Error - No files entered");
+		fprintf(stderr, "\n Error - No files entered");
 		return 0;
 	}
 
@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 		
 		if(!f)
 		{
-        		fprintf(stderr, "Error - File %s doesn't exist", fileName);
+        		fprintf(stderr, "\n Error - File %s doesn't exist", fileName);
 			continue;
 		}
 		
@@ -70,9 +70,9 @@ void firstLoop(FILE *f)
 		  	addExt(assemblyCommand);
 		
 		else
-			fprintf(stderr, "Error - Illegal Command");
+			fprintf(stderr, "\n Error - Illegal Command");
 	}
-	printf("\n %d,%d",IC,DC);
+	printf("\n %d,%d",IC,DC); /* !!! TEMP ONLY */
 	
 	fixAddresses(IC);
 }
