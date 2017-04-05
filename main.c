@@ -1,5 +1,7 @@
 #include "main.h"
 
+int isError = FALSE;
+
 int main(int argc, char *argv[])
 {
 	int i;
