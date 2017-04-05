@@ -1,6 +1,6 @@
 #include "main.h"
 
-int isError = FALSE;
+int isError;
 
 int main(int argc, char *argv[])
 {
@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
 
 	for(i = 1; i < argc; i++)
 	{	
+		isError = FALSE;
 		fileName = argv[i];
 		f = fopen(strcat(fileName, ".as") , "r");
 		
@@ -72,7 +73,10 @@ void firstLoop(FILE *f)
 		  	addExt(assemblyCommand);
 		
 		else
+		{
 			fprintf(stderr, "\n Error - Illegal Command");
+			isError = TRUE;
+		}
 	}
 	printf("\n %d,%d",IC,DC); /* !!! TEMP ONLY */
 	
