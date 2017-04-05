@@ -258,7 +258,9 @@ char *getSecndOperand(char *cmd)
 
 int getAddressing(char *operand)
 {
-	struct symbol *symbolCur = symbolTable;
+	/*if(strlen(operand) == 0)
+		return ADDRESS; // in case of no operand - we will put a 0 in the operand word like an extern label */
+ 
 	if(operand[0] == '#')
 	{
 		if(strlen(operand) == 2 && operand[1] == '0');
@@ -270,6 +272,7 @@ int getAddressing(char *operand)
 		
 		return NUMBER;
 	}
+	
 	
 	if(strlen(operand) == 2 && operand[0] == 'r')
 	{
@@ -284,15 +287,6 @@ int getAddressing(char *operand)
 		return INDEX_REGISTER;
 	}
 				
-	while(symbolCur && symbolCur->next)
-	{
-		if(strcmp(symbolCur->name, operand))
-			return ADDRESS;
-					
-		symbolCur = symbolCur->next;
-	}
-	/* label wasnt found */
-	fprintf(stderr, "\n Error - Operand is not an exist lable/illegal operand"); 
 	return ADDRESS;
 }
 
