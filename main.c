@@ -56,7 +56,7 @@ void firstLoop(FILE *f)
 	
 	while(fgets(assemblyCommand,assembly_line_max,f))
 	{		
-		if(isBlankOrComment(assemblyCommand)||isEnt(assemblyCommand))
+		if(isBlankOrComment(assemblyCommand) || isEnt(assemblyCommand))
 			continue;
 
 		else if(isCode(assemblyCommand))
