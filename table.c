@@ -57,6 +57,7 @@ void addDataToList(struct data *d) /* DATA = data OR string */
 	n->content = d->content;
 	n->isSymbol = d->isSymbol;
 	n->symbol = d->symbol;
+	n->next=NULL;	
 	
 	if(table.dataHead == NULL)
 		table.dataHead = n;
