@@ -91,8 +91,11 @@ int getCmdStart(char *cmd) /* CMD = code OR data*/
 	        while(i < strlen(cmd))
                 {
 		        if(cmd[i] == ':')
+			{
+				i++;
 			        break;
-		        i++;
+			}
+			i++;
                 }
 	i = skipSpaces(i,cmd);
 	      
@@ -184,12 +187,13 @@ char *getFirstOperand(char *cmd)
 {
 	int i = getCmdStart(cmd), len = strlen(cmd);
 	int start, end, size;
-	char *operand;
+	char operand[100]; /* !!! temp, until a proper allocation */
 	
 	while(i < len && cmd[i] != ' ' && cmd[i] != '\t') /* skip the first word (opr) until the first space*/
 		i++;
 	
-	i=skipSpaces(i,cmd);
+	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces until the comma*/
+		i++;
 	
 	if(i == len || cmd[i] == '\0')
 		/* error - cmd is too short*/
@@ -199,12 +203,12 @@ char *getFirstOperand(char *cmd)
 	while(i < len && cmd[i] != ' ' && cmd[i] != '\t' && cmd[i] != ',') /* skip first operand until the first space/comma*/
 		i++;
 	
-	end = i-1;
-	size = end-start+1;
-	operand = (char *) malloc ((size+1)*sizeof(char));
+	end = i;
+	size = end-start;
+	/* operand = (char *) malloc ((size+1)*sizeof(char)); */
         strncpy(operand, cmd+start, size);
         operand[size] = '\0';
-	/* !!! to free the allocation*/
+
 	return operand;
 }
 
@@ -217,7 +221,8 @@ char *getSecndOperand(char *cmd)
 	while(i < len && cmd[i] != ' ' && cmd[i] != '\t') /* skip the first word (opr) until the first space*/
 		i++;
 	
-	i=skipSpaces(i,cmd);
+	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces until the comma*/
+		i++;
 	
 	if(i == len || cmd[i] == '\0')
 		/* error - cmd is too short*/;
@@ -265,7 +270,6 @@ int getAddressing(char *operand)
 		
 		return NUMBER;
 	}
-	
 	
 	if(strlen(operand) == 2 && operand[0] == 'r')
 	{
