@@ -78,6 +78,7 @@ void addExtToList(struct ext *e)
 	n = (struct ext*) malloc(sizeof(struct ext));
 	/* !!! malloc - to make sure to free the pointer */
 	n->symbol = e->symbol;
+	n->next = NULL;
 	
 	if(table.extHead == NULL)
 		table.extHead = n;
@@ -355,6 +356,28 @@ void addExt(char *cmd)
 	new->symbol = symbol;
 	addExtToList(new);
 	free(new);
+}
+
+void addEnt(char *symbol, int address)
+{
+	struct ent *n;
+	n = (struct ent*) malloc(sizeof(struct ent));
+	/* !!! malloc - to make sure to free the pointer */
+	n->symbol = symbol;
+	n->address = address;
+	n->next = NULL;
+	
+	if(table.entHead == NULL)
+		table.entHead = n;
+
+	else
+	{
+		struct ent *cur;
+		cur = table.entHead;
+		while(cur->next)
+			cur = cur->next;
+		cur->next = n;
+	}
 }
 
 int addSymbol(char *name, int type, int address)
