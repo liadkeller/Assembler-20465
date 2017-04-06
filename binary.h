@@ -16,6 +16,6 @@ void copyBinary(char *dest, char *src);
 struct binarycode
 {
         int address;
-        char binary[BINARY_WORD];
+        char binary[binary_word];
         struct binarycode *next;
 };
