@@ -93,6 +93,27 @@ void addExtToList(struct ext *e)
 	}
 }
 
+void addEntToList(struct ent e)
+{
+	struct ent *n;
+	n = (struct ent*) malloc(sizeof(struct ent));
+	/* !!! malloc - to make sure to free the pointer */
+	n->symbol = e->symbol;
+	n->next = NULL;
+	
+	if(table.entHead == NULL)
+		table.entHead = n;
+
+	else
+	{
+		struct ent *cur;
+		cur = table.entHead;
+		while(cur->next)
+			cur = cur->next;
+		cur->next = n;
+	}
+}
+
 int addCmd(char *cmd, int address)
 {	
 	int i;	
@@ -358,26 +379,23 @@ void addExt(char *cmd)
 	free(new);
 }
 
-void addEnt(char *symbol, int address)
+void addEnt(char *cmd)
 {
-	struct ent *n;
-	n = (struct ent*) malloc(sizeof(struct ent));
-	/* !!! malloc - to make sure to free the pointer */
-	n->symbol = symbol;
-	n->address = address;
-	n->next = NULL;
-	
-	if(table.entHead == NULL)
-		table.entHead = n;
+	struct ent *new;
+	char *symbol;
+	int i = getCmdStart(cmd) + entry_length;
+	int len = strlen(cmd);
 
-	else
-	{
-		struct ent *cur;
-		cur = table.entHead;
-		while(cur->next)
-			cur = cur->next;
-		cur->next = n;
-	}
+	new = (struct ent *) malloc (sizeof (struct ent)); 
+	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces */
+		i++;
+	
+	symbol = (char *)malloc((len-i) * sizeof(char));
+
+	strncpy(symbol, cmd+i, len-i);
+	new->symbol = symbol;
+	addEntToList(new);
+	free(new);
 }
 
 int addSymbol(char *name, int type, int address)
