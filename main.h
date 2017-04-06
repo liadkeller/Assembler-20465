@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "table.h"
 
 int isBlankOrComment(char *cmd);
 int isCode(char *cmd);
@@ -17,6 +18,10 @@ void buildSymbolTable(void);
 
 void firstLoop(FILE *);
 void secondLoop();
+
+void createObject(FILE *f);
+void createEntry(FILE *f);
+void createExtern(FILE *f);
 
 void deleteEnter(char *assemblyCommand);
 
