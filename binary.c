@@ -3,7 +3,7 @@
 
 char *encode(struct cmd *code, int encode)
 {
-        char bin[BINARY_WORD]; /* malloc */
+	char *bin= (char *) malloc ((binary_word)*sizeof(char));
         
         switch(encode)
         {        
@@ -53,10 +53,11 @@ char *encode(struct cmd *code, int encode)
 
 char *intToBinary(int num, int size) /* returns the binary presentation of the first "size" digits of num */
 {
-        int arr[BINARY_WORD];
-        char bin[size];  /* malloc */
+        int arr[binary_word];
+        char *bin= (char *) malloc ((binary_word)*sizeof(char));
         int i, sign;
-        
+        	
+
 	if(num > power(2, size-1) - 1 || num < -1 * power(2, size-1)) /* i is not in the range 2^(size-1) <= i <= 2^(size-1) - 1 */
                 fprintf(stderr, "Error - number is too large");
 
@@ -128,11 +129,11 @@ char *binaryToHexa(char *bin)
 {
         int i, j;
         char fixedBin[16]; /* bin has 15 bits, we will fix it to 16 bits */
-        char hexa[4]; /* !!! requires malloc */
+        char *hexa = (char *) malloc (4*sizeof(char)); /* !!! to change*/
         
-        for(i = 0; i < BINARY_WORD; i++)
+        for(i = 0; i < binary_word; i++)
                 fixedBin[i] = bin[i];
-        /* i = BINARY_WORD = 15 */
+        /* i = binary_word = 15 */
         fixedBin[i] = fixedBin[i-1];
         
         for(i = 0; i < 4; i++)
