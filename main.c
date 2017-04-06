@@ -1,6 +1,8 @@
 #include "main.h"
 
 int isError;
+extern struct list table;
+
 int main(int argc, char *argv[])
 {
 	int i;
