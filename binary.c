@@ -94,6 +94,7 @@ char *intToBinary(int num, int size) /* returns the binary presentation of the f
                         
                         if(bin[i] == '0')
                                 bin[i] = '1';
+			i++;
                 } 
         }
         
