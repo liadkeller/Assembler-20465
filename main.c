@@ -53,11 +53,14 @@ void firstLoop(FILE *f)
 {
 	char assemblyCommand[assembly_line_max+1];
 	int IC = IC_start, DC = 0;
-	int i=1;
+	int i=1; /* temp index */
 	while(fgets(assemblyCommand,assembly_line_max,f))
 	{	
-		printf("\n line: %d",i);
-		i++;	
+		printf("\n line: %d",i); /* temp */
+		i++;	/* temp*/
+		
+		deleteEnter(assemblyCommand);
+		
 		if(isBlankOrComment(assemblyCommand)||isEnt(assemblyCommand))
 			continue;
 
