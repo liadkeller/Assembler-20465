@@ -1,5 +1,4 @@
 #include "utils.h"
-#include "table.h"
 
 int isBlankOrComment(char *cmd);
 int isCode(char *cmd);
