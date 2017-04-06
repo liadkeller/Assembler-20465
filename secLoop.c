@@ -11,12 +11,10 @@ void addBinary(int address, char *bin)
 	n = (struct binarycode*) malloc(sizeof(struct binarycode));
 	/* !!! malloc - to make sure to free the pointer*/
 	n->address = address;
-        copyBinary(n->binary, bin);
-        n->next = NULL;
-	
+    copyBinary(n->binary, bin);
+    n->next = NULL;
 	if(binaryTable == NULL)
 		binaryTable = n;
-
 	else
 	{
 		struct binarycode *cur;
@@ -41,27 +39,30 @@ void secondLoop()
         int curWords;
         int curAddress;
         char *bin;
+		int i=1;
         
         codeCur = table.cmdHead;
         dataCur = table.dataHead;
         
-        while(codeCur->next)
+        while(codeCur && codeCur->next)
         {
+			printf("\n line: %d",i); /* temp */
+			i++;	/* temp*/
                 if(codeCur->encode == MAIN_COMMAND)
                 {
-                        curWords = codeCur->wordsNum;
+                        curWords = codeCur->group;
                         curAddress = codeCur->address;
                         
                         bin = encode(codeCur, codeCur->encode);
                         addBinary(curAddress, bin);
-			free(bin);
+						free(bin);
                         
                         if(curWords > 0)
                         {
                                 buildOperand(codeCur->next, codeCur->firstOperand);
                                 bin = encode(codeCur->next, codeCur->next->encode);
                                 addBinary(curAddress+1, bin);
-				free(bin);
+								free(bin);
                         }
                         
                         if(curWords > 1)
@@ -69,18 +70,22 @@ void secondLoop()
                                 buildOperand(codeCur->next->next, codeCur->secndOperand);
                                 bin = encode(codeCur->next->next, codeCur->next->next->encode);
                                 addBinary(curAddress+2, bin);
-				free(bin);
+								free(bin);
                         }
                 }
                 codeCur = codeCur->next;
+				if(curWords > 0)
+					  codeCur = codeCur->next;
+				if(curWords > 1)
+					  codeCur = codeCur->next;					
         }
         
-        while(dataCur->next)
+        while(dataCur && dataCur->next)
         {
                 curAddress = dataCur->address;
                 bin = intToBinary(dataCur->content, binary_word);
                 addBinary(curAddress, bin);
-		free(bin);
+			free(bin);
         }
 
 }
@@ -95,7 +100,7 @@ void buildOperand(struct cmd *c, char *operand)
 			break;
 			
 		case ADDRESS: /* LABEL */
-			{
+		{
 				struct symbol *symbolCur = symbolTable;
 				int isFound = FALSE;
 			
@@ -109,8 +114,8 @@ void buildOperand(struct cmd *c, char *operand)
 					}
 					symbolCur = symbolCur->next;
 				}
-			}
 			break;
+		}
 			
 		case INDEX_REGISTER: /* ra[rb] */
 			c->encodeType = A;
