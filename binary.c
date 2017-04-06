@@ -3,8 +3,13 @@
 
 char *encode(struct cmd *code, int encode)
 {
-	char *bin= (char *) malloc ((binary_word)*sizeof(char));
+	int i;
+	char *bin; 
+	bin = (char *) malloc ((binary_word)*sizeof(char));
         
+	for(i=0;i<binary_word;i++)
+		bin[i]='0';
+
         switch(encode)
         {        
                 case NUMBER:
