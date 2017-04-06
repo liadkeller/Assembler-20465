@@ -62,9 +62,15 @@ void firstLoop(FILE *f)
 		
 		deleteEnter(assemblyCommand);
 		
-		if(isBlankOrComment(assemblyCommand)||isEnt(assemblyCommand))
+		if(isBlankOrComment(assemblyCommand))
 			continue;
 
+		else if(isExt(assemblyCommand))
+		  	addExt(assemblyCommand);
+		
+		else if(isEnt(assemblyCommand))
+		  	addEnt(assemblyCommand);
+		
 		else if(isCode(assemblyCommand))
 			IC += addCmd(assemblyCommand, IC);	
 
@@ -73,9 +79,6 @@ void firstLoop(FILE *f)
 		
 		else if(isStr(assemblyCommand))
 		  	DC += addStr(assemblyCommand,DC);
-	
-		else if(isExt(assemblyCommand))
-		  	addExt(assemblyCommand);
 		
 		else
 		{
