@@ -12,7 +12,19 @@ void createObject(FILE *f)
 
 void createEntry(FILE *f)
 {
-
+        struct ent cur = table.entHead;
+        while(ent && ent->next)
+        {
+                struct symbol symbolCur = symbolTable;
+                while(symbolCur && symbolCur->next)
+                {
+                        if(strcmp(symbolCur->name, cur->symbol) == 0)
+                                fprintf("%s   %X", cur->symbol, symbolCur->address);
+                        symbolCur = symbolCur->next;
+                }
+                ent = ent->next;
+        }
+        
 }
 
 void createExtern(FILE *f)
@@ -48,8 +60,7 @@ void createExtern(FILE *f)
                                         symbolCur = symbolCur->next;
                                 }
                         }
-                }
-                
+                }  
                 cur = cur->next;
         }
 }
