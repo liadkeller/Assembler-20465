@@ -30,7 +30,7 @@ void addBinary(int address, char *bin)
 void copyBinary(char *dest, char *src)
 {
 	int i;
-	for(i = 0; i < BINARY_WORD; i++)
+	for(i = 0; i < binary_word; i++)
 		dest[i] = src[i];
 }
 
@@ -78,7 +78,7 @@ void secondLoop()
         while(dataCur->next)
         {
                 curAddress = dataCur->address;
-                bin = intToBinary(dataCur->content, BINARY_WORD);
+                bin = intToBinary(dataCur->content, binary_word);
                 addBinary(curAddress, bin);
 		free(bin);
         }
