@@ -22,3 +22,5 @@ enum encodeType {A, E, R};
 enum regType {SOURCE, DEST};
 enum operandNumber {CMD, FIRST, LAST}; /* FIRST - 1/2, LAST - 1/1 or 2/2 */
 enum symbolType {CODE , DtSt , EXT};
+
+#define BINARY_WORD 15
