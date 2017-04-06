@@ -58,7 +58,7 @@ char *intToBinary(int num, int size) /* returns the binary presentation of the f
         int i, sign;
         	
 
-	if(num > power(2, size-1) - 1 || num < -1 * power(2, size-1)) /* i is not in the range 2^(size-1) <= i <= 2^(size-1) - 1 */
+	if(num > power(2, size) - 1 || num < -1 * power(2, size)) /* i is not in the range 2^(size-1) <= i <= 2^(size-1) - 1 */
                 fprintf(stderr, "Error - number is too large");
 
         sign = (num >= 0)? 1 : -1;
