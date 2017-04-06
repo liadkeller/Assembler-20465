@@ -24,7 +24,6 @@ void createEntry(FILE *f)
                 }
                 ent = ent->next;
         }
-        
 }
 
 void createExtern(FILE *f)
