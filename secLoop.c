@@ -1,16 +1,9 @@
 #include "utils.h"
 #include "binary.h"
 
-#define BINARY_WORD 15
-
-struct binarycode
-{
-        int address;
-        char binary[BINARY_WORD];
-        struct binarycode *next;
-}
-
-struct binarycode binaryTable = NULL;
+extern struct symbol *symbolTable;
+extern struct list table;
+struct binarycode *binaryTable = NULL;
 
 void addBinary(int address, char *bin)
 {
@@ -18,7 +11,7 @@ void addBinary(int address, char *bin)
 	n = (struct binarycode*) malloc(sizeof(struct binarycode));
 	/* !!! malloc - to make sure to free the pointer*/
 	n->address = address;
-        n->binary = bin;
+        copyBinary(n->binary, bin);
         n->next = NULL;
 	
 	if(binaryTable == NULL)
@@ -34,6 +27,12 @@ void addBinary(int address, char *bin)
 	}
 }
 
+void copyBinary(char *dest, char *src)
+{
+	int i;
+	for(i = 0; i < BINARY_WORD; i++)
+		dest[i] = src[i];
+}
 
 void secondLoop()
 {
@@ -43,8 +42,8 @@ void secondLoop()
         int curAddress;
         char *bin;
         
-        codeCur = table->cmdHead;
-        dataCur = table->dataHead;
+        codeCur = table.cmdHead;
+        dataCur = table.dataHead;
         
         while(codeCur->next)
         {
@@ -59,7 +58,7 @@ void secondLoop()
                         
                         if(curWords > 0)
                         {
-                                buildOperand(codeCur->next, codeCur->firstOperand)
+                                buildOperand(codeCur->next, codeCur->firstOperand);
                                 bin = encode(codeCur->next, codeCur->next->encode);
                                 addBinary(curAddress+1, bin);
 				free(bin);
@@ -67,7 +66,7 @@ void secondLoop()
                         
                         if(curWords > 1)
                         {
-                                buildOperand(codeCur->next->next, codeCur->secndOperand)
+                                buildOperand(codeCur->next->next, codeCur->secndOperand);
                                 bin = encode(codeCur->next->next, codeCur->next->next->encode);
                                 addBinary(curAddress+2, bin);
 				free(bin);

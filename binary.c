@@ -48,18 +48,18 @@ char *encode(struct cmd *code, int encode)
                         addBin(bin, "111", 12, 3);
                         break;
         }
-        
+        return bin;
 }
 
 char *intToBinary(int num, int size) /* returns the binary presentation of the first "size" digits of num */
 {
-        if(num > pow(2, size-1) - 1 || num < -1 * pow(2, size-1)) /* i is not in the range 2^(size-1) <= i <= 2^(size-1) - 1 */
-                fprintf(stderr, "Error - number is too large");
-        
-        int arr[size];
+        int arr[BINARY_WORD];
         char bin[size];  /* malloc */
         int i, sign;
         
+	if(num > power(2, size-1) - 1 || num < -1 * power(2, size-1)) /* i is not in the range 2^(size-1) <= i <= 2^(size-1) - 1 */
+                fprintf(stderr, "Error - number is too large");
+
         sign = (num >= 0)? 1 : -1;
         num = sign * num; /* num = |num| */
         
@@ -117,7 +117,7 @@ void addBin(char *bin, char *num, int start, int size)
         }
 }
 
-int pow(int a, int b)
+int power(int a, int b)
 {
         int i, pow;
         for(i = 0, pow = 1; i < b; i++, pow *= a);
@@ -126,7 +126,7 @@ int pow(int a, int b)
 
 char *binaryToHexa(char *bin)
 {
-        int i;
+        int i, j;
         char fixedBin[16]; /* bin has 15 bits, we will fix it to 16 bits */
         char hexa[4]; /* !!! requires malloc */
         
@@ -141,7 +141,7 @@ char *binaryToHexa(char *bin)
                 for(j = 0; j < 4; j++)
                 {
                         if(fixedBin[4*i+j])
-                                sum += pow(2, j);
+                                sum += power(2, j);
                 }
                 
                 hexa[i] = getHexa(sum);
