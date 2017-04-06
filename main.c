@@ -27,8 +27,9 @@ int main(int argc, char *argv[])
 		
 		firstLoop(f);
 		buildSymbolTable();
-		/*
+		
 		secondLoop();
+		/*
 		if there is no error
 
 		f = fopen(strcat(fileName, ".ob") , "w");
