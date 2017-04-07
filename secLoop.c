@@ -31,7 +31,7 @@ void addBinary(int address, char *bin)
 void copyBinary(char *dest, char *src)
 {
 	int i;
-	for(i = 0; i < binary_word; i++)
+	for(i = 0; i <= binary_word; i++)
 		dest[i] = src[i];
 }
 
@@ -46,7 +46,7 @@ void secondLoop()
         codeCur = table.cmdHead;
         dataCur = table.dataHead;
         
-        while(codeCur && codeCur->next)
+        while(codeCur)
         {
                 if(codeCur->encode == MAIN_COMMAND)
                 {
@@ -80,7 +80,7 @@ void secondLoop()
 			codeCur = codeCur->next;					
         }
         
-        while(dataCur && dataCur->next)
+        while(dataCur)
         {
                 curAddress = dataCur->address;
                 bin = intToBinary(dataCur->content, binary_word);
