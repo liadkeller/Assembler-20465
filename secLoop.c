@@ -107,7 +107,7 @@ void buildOperand(struct cmd *c, char *operand)
 			
 				while(symbolCur->next && (!isFound))
 				{
-					if(strcmp(symbolCur->name, operand))
+					if(strcmp(symbolCur->name, operand)==0)
 					{
 						isFound = TRUE;
 						c->addressNumber = symbolCur->address;
