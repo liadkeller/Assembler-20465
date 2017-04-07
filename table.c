@@ -223,7 +223,7 @@ int addData(char *cmd, int address)
 	
 	if(i == len || cmd[i] == '\0')
 	{
-		fprintf(stderr, "\n Error - No number entered");
+		fprintf(stderr, "Error - No number entered \n");
 		isError = TRUE;
 		return 0;
 	}
@@ -241,7 +241,7 @@ int addData(char *cmd, int address)
 		/* num is 0 */
 	else if(num == 0)
 	{
-		fprintf(stderr, "\n Error - %s isn't a number", tempNum);
+		fprintf(stderr, "Error - %s isn't a number \n", tempNum);
 		isError = TRUE;
 		return 0;
 		/* tempNum is not "0" but atoi returns 0
@@ -260,7 +260,7 @@ int addData(char *cmd, int address)
 	{
 		if(cmd[i] != ',')
 		{
-			fprintf(stderr, "\n Error - No comma");
+			fprintf(stderr, "Error - No comma \n");
 			isError = TRUE;
 		}
 		
@@ -269,7 +269,7 @@ int addData(char *cmd, int address)
 		
 		if(i == len || cmd[i] == '\0')
 		{
-			fprintf(stderr, "\n Error - Number Expected");
+			fprintf(stderr, "Error - Number Expected \n");
 			isError = TRUE;
 		}
 			
@@ -284,7 +284,7 @@ int addData(char *cmd, int address)
 			/* num is 0*/
 		else if(num == 0)
 		{
-			fprintf(stderr, "\n Error - %s isn't a number", tempNum);
+			fprintf(stderr, "Error - %s isn't a number \n", tempNum);
 			isError = TRUE;
 			return count;
 			/* tempNum is not "0" but atoi returns 0
@@ -328,7 +328,7 @@ int addStr(char *cmd, int address)
 	
 	if(cmd[i] != '"')
 	{
-		fprintf(stderr, "\n Error - String without quotation marks");
+		fprintf(stderr, "Error - String without quotation marks \n");
 		isError = TRUE;
 		return 0;
 	}	
@@ -353,7 +353,7 @@ int addStr(char *cmd, int address)
 	
 	if(i == len)
 	{
-		fprintf(stderr, "\n Error - No quotation marks at the end");
+		fprintf(stderr, "Error - No quotation marks at the end \n");
 		isError = TRUE;
 	}
 	
