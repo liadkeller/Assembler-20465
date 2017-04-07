@@ -34,7 +34,6 @@ int main(int argc, char *argv[])
 		}
 		
 		firstLoop(f, &IC, &DC); /* we send IC and DC to the first loop and the first loop will put in it the right values */
-		/*buildSymbolTable();*/
 		secondLoop();
 		
 		if(!isError)
@@ -60,11 +59,10 @@ int main(int argc, char *argv[])
 				createEntry(f);
 			}
 		}
-
+		
 		freeAll();
 		fclose(f);
 	}
-	
 	return 0;
 }
 
@@ -101,7 +99,6 @@ void firstLoop(FILE *f, int *ICp, int *DCp)
  			isError = TRUE;
  		}
 	}
-	
 	fixAddresses(IC);
 	
 	*ICp = IC;
