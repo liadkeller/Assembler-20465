@@ -152,20 +152,7 @@ void reverse(char *s)
 	}
 }
 
-char *binToDec(char *bin)
-{
-        int i, num;
-        
-	for(i = 0; i < binary_word; i++)
-	{
-		if(bin[i] == '1')
-			num += power(2, binary_word - i - 1);
-	}
-	
-        return num;
-}
-
-char *binToDec2(char *bin)
+int binToDec(char *bin)
 {
         char *a = bin;
 	int num = 0;
@@ -177,4 +164,3 @@ char *binToDec2(char *bin)
 	
         return num;
 }
-
