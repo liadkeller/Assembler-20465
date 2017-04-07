@@ -98,18 +98,18 @@ char *intToBinary(int num, int size) /* returns the binary presentation of the f
         
         if(sign < 0)
         {
-                i = 0;
-                while(i < size && bin[i] != '1')
-                        i++;
-                i++;
-                while(i < size)
+                i = size-1;
+                while(i >= 0 && bin[i] != '1')
+                        i--;
+                i--;
+                while(i >= 0)
                 {
                         if(bin[i] == '1')
                                 bin[i] = '0';
                         
-                        if(bin[i] == '0')
+                        else if(bin[i] == '0')
                                 bin[i] = '1';
-			i++;
+			i--;
                 } 
         }
         
