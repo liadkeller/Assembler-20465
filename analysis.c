@@ -52,7 +52,6 @@ char *getSymbol(char *cmd) /* CMD = code OR data*/
         strncpy(new, cmd, i); /* copy i chars from 0 to i-1 */
         new[i] = '\0'; /* the ':' sign*/	
 				
-	/* !!! to free the allocation */
 	if(!checkSymbol(new))
 	{
 		fprintf(stderr, "Error - Illegal symbol \n");
@@ -289,7 +288,7 @@ char *getSecndOperand(char *cmd)
 	operand = (char *) malloc ((size+1)*sizeof(char));
         strncpy(operand, cmd+start, size);
         operand[size] = '\0';
-	/* !!! to free the allocation*/
+
 	return operand;
 }
 
@@ -370,10 +369,4 @@ int countWords(char *cmd)
 	}
  	
 	return num;
-}
-
-int skipSpaces(int i, char *str)
-{
-	for(; (str[i] != 0) && (str[i] == ' ' || str[i] == '\t' ); i++);
-	return i;
 }
