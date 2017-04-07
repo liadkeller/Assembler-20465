@@ -62,7 +62,7 @@ char *encode(struct cmd *code, int encode)
 char *intToBinary(int num, int size) /* returns the binary presentation of the first "size" digits of num */
 {
         int arr[binary_word];
-        char *bin= (char *) malloc ((binary_word)*sizeof(char));
+        char *bin = (char *) malloc ((binary_word)*sizeof(char));
         int i, j, sign;
 
 	for(i = 0; i < size; i++)
@@ -77,7 +77,7 @@ char *intToBinary(int num, int size) /* returns the binary presentation of the f
 		isError = TRUE;
 	}
 
-        sign = (num >= 0)? 1 : -1;
+        sign = (num >= 0) ? 1 : -1;
         num = sign * num; /* num = |num| */
         
         for(i = 0; num > 0 && i < size; i++)
@@ -128,7 +128,6 @@ void addBin(char *bin, char *num, int start, int size)
         {
                 if(num[j] == '1')
                         bin[i] = '1';
-
                 i--;
                 j++;
         }
