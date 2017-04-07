@@ -298,9 +298,13 @@ int getAddressing(char *operand)
 		if(strlen(operand) == 2 && operand[1] == '0');
 		
 		else if(atoi(operand+1) == 0)
-			fprintf(stderr, "\n Error - Operand is not a number"); 
+		{
+			fprintf(stderr, "Error - Operand is not a number \n"); 
 			/* operand isnt "#0" but atoi returns 0
-			-> the operand isnt a number */		
+			-> the operand isnt a number */	
+			isError = TRUE;
+			return ADDRESS;
+		}
 		
 		return NUMBER;
 	}
@@ -313,9 +317,8 @@ int getAddressing(char *operand)
 	
 	if(strlen(operand) == 6 && operand[0] == 'r' && operand[2] == '[' && operand[3] == 'r' && operand[5] == ']')
 	{
-		if(!(operand[1] >= '0' && operand[1] <= '7' && operand[4] >= '0' && operand[4] <= '7'))
-			fprintf(stderr, "\n Error - Operand is not an exist lable/illegal operand"); 
-		return INDEX_REGISTER;
+		if(operand[1] >= '0' && operand[1] <= '7' && operand[4] >= '0' && operand[4] <= '7')
+			return INDEX_REGISTER;
 	}
 				
 	return ADDRESS;
@@ -359,7 +362,7 @@ int countWords(char *cmd)
  				i++;
 			num++;
 			
-			while(i < len && (cmd[i] == ' ' || cmd[i] == '\t' || cmd[i] == ',' || cmd[i]=='\n'))
+			while(i < len && (cmd[i] == ' ' || cmd[i] == '\t' || cmd[i] == ','))
 				i++;
  		}
 	}
