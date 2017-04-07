@@ -164,3 +164,17 @@ char *binToDec(char *bin)
 	
         return num;
 }
+
+char *binToDec2(char *bin)
+{
+        char *a = bin;
+	int num = 0;
+	do {
+   	int b = (*a=='1') ? 1 : 0;
+    	num = (num << 1) | b;
+    	a++;
+	} while (*a);
+	
+        return num;
+}
+
