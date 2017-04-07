@@ -1,6 +1,8 @@
 #include "utils.h"
 #include "binary.h"
 
+extern int isError;
+
 char *encode(struct cmd *code, int encode)
 {
 	int i;
@@ -70,7 +72,10 @@ char *intToBinary(int num, int size) /* returns the binary presentation of the f
 		return bin;
 
 	if(num > power(2, size) - 1 || num < -1 * power(2, size)) /* i is not in the range 2^(size-1) <= i <= 2^(size-1) - 1 */
-                fprintf(stderr, "Error - number is too large");
+	{
+		fprintf(stderr, "Error - number is too large \n");
+		isError = TRUE;
+	}
 
         sign = (num >= 0)? 1 : -1;
         num = sign * num; /* num = |num| */
