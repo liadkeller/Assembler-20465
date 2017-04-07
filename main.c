@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 	
 	if(argc == 1)
 	{
-		fprintf(stderr, "\n Error - No files entered");
+		fprintf(stderr, "Error - No files entered \n");
 		return 0;
 	}
 
@@ -24,11 +24,11 @@ int main(int argc, char *argv[])
 		len=strlen(fileName);
 		
 		f = fopen(strcat(fileName, ".as") , "r");
-		fileName[len]=0;
+		fileName[len] = 0;
 		
 		if(!f)
 		{
-        		fprintf(stderr, "\n Error - File %s doesn't exist", fileName);
+        		fprintf(stderr, "Error - File %s doesn't exist \n", fileName);
 			continue;
 		}
 		
@@ -39,14 +39,14 @@ int main(int argc, char *argv[])
 		if(!isError)
 		{
 			f = fopen(strcat(fileName, ".ob") , "w");
-			fileName[len]=0;
+			fileName[len] = 0;
 			FILE_ERROR(object)
 			createObject(f,IC,DC);
 		 
 			if(table.extHead)
 			{
 				f = fopen(strcat(fileName, ".ext") , "w"); 
-				fileName[len]=0;
+				fileName[len] = 0;
 				FILE_ERROR(extern)
 				createExtern(f);
 			}
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 			if(table.entHead)
 			{
 				f = fopen(strcat(fileName, ".ent") , "w");  
-				fileName[len]=0;
+				fileName[len] = 0;
 				FILE_ERROR(entry)
 				createEntry(f);
 			}
@@ -69,10 +69,10 @@ void firstLoop(FILE *f,int *ICp,int *DCp)
 {
 	char assemblyCommand[assembly_line_max+1];
 	int IC = IC_start, DC = 0;
-	int i=1; /* temp index */
+	int i = 1; /* temp index */
 	while(fgets(assemblyCommand,assembly_line_max,f))
 	{	
-		printf("\n line: %d",i); /* temp */
+		printf("\n line: %d \n", i); /* temp */
 		i++;	/* temp*/
 		
 		deleteEnter(assemblyCommand);
@@ -97,15 +97,15 @@ void firstLoop(FILE *f,int *ICp,int *DCp)
 		
 		else
 		{
-  			fprintf(stderr, "\n Error - Illegal Command");
+  			fprintf(stderr, "Error - Illegal Command \n");
  			isError = TRUE;
  		}
 	}
 	printf("\n %d,%d \n",IC,DC); /* !!! TEMP ONLY */
 	
 	fixAddresses(IC);
-	*ICp=IC;
-	*DCp=DC;
+	*ICp = IC;
+	*DCp = DC;
 }
 
 void deleteEnter(char *assemblyCommand)
@@ -113,15 +113,15 @@ void deleteEnter(char *assemblyCommand)
 	int i = 0;
 	while(assemblyCommand[i] != '\0')
 		i++;
+	
 	if(assemblyCommand[--i] == '\n')
 		assemblyCommand[i] = '\0';
-
 }
 
 void createObject(FILE *f,int IC, int DC)
 {
 	struct binarycode *cur = binaryTable;
-        fprintf(f, "%X   %X\n", IC - IC_start, DC);
+        fprintf(f, "%X   %X \n", IC - IC_start, DC);
         
         while(cur)
         {
