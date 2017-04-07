@@ -139,7 +139,7 @@ void createEntry(FILE *f)
                 while(symbolCur)
                 {
                     if(strcmp(symbolCur->name, cur->symbol) == 0)
-                        fprintf(f,"%s   %X \n ", symbolCur->name, symbolCur->address);
+                        fprintf(f,"%s   %X \n", symbolCur->name, symbolCur->address);
                         symbolCur = symbolCur->next;
                 }
                 cur = cur->next;
