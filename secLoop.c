@@ -46,7 +46,7 @@ void secondLoop()
         codeCur = table.cmdHead;
         dataCur = table.dataHead;
         
-        while(codeCur)
+        while(codeCur && codeCur->next)
         {
                 if(codeCur->encode == MAIN_COMMAND)
                 {
@@ -80,7 +80,7 @@ void secondLoop()
 			codeCur = codeCur->next;					
         }
         
-        while(dataCur)
+        while(dataCur && dataCur->next)
         {
                 curAddress = dataCur->address;
                 bin = intToBinary(dataCur->content, binary_word);
