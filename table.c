@@ -93,7 +93,7 @@ void addExtToList(struct ext *e)
 	}
 }
 
-void addEntToList(struct ent e)
+void addEntToList(struct ent *e)
 {
 	struct ent *n;
 	n = (struct ent*) malloc(sizeof(struct ent));
@@ -398,7 +398,7 @@ void addEnt(char *cmd)
 	free(new);
 }
 
-int addSymbol(char *name, int type, int address)
+void addSymbol(char *name, int type, int address)
 {
         struct symbol *new;
         new = (struct symbol *) malloc (sizeof (struct symbol)); /* malloc - requires to free the allocation*/
@@ -411,15 +411,11 @@ int addSymbol(char *name, int type, int address)
                 symbolTable = new;                
         else
         {
-                struct symbol *cur;
-                for(cur=symbolTable; cur->next; cur = cur->next)
-                        if(strcmp(cur->name, new->name) == 0)
-				return FALSE;
-                if(strcmp(cur->name, new->name) == 0)
-			return FALSE;		
-                cur->next = new;
+            struct symbol *cur=symbolTable;
+			while(cur->next)	
+                	cur=cur->next;
+			cur->next=new;
         }
-	return TRUE;
 }
 
 void fixAddresses(int add) /* fix so the data addresses will come right after the cmd addresses */
@@ -443,8 +439,9 @@ void buildSymbolTable()
 	while(cCur)
 	{
 		if(cCur->isSymbol)
-			if(addSymbol(cCur->symbol, CODE, cCur->address) == FALSE)
-				/* error */;
+			addSymbol(cCur->symbol, CODE, cCur->address);
+		else	
+			/*error*/;
 		cCur = cCur->next;
 	}
 
@@ -452,17 +449,17 @@ void buildSymbolTable()
 	while(dCur)
 	{
 		if(dCur->isSymbol)
-			if(addSymbol(dCur->symbol, DtSt, dCur->address) == FALSE)
-				/* error */;
+			addSymbol(dCur->symbol, DtSt, dCur->address);
+		else
+			/* error */;
 		dCur = dCur->next;
 	}
 	
 	eCur = table.extHead;
 	while(eCur)
 	{
-		if(addSymbol(eCur->symbol, EXT, 0) == FALSE)
-			/* error */;
-		eCur = eCur->next;
+			addSymbol(eCur->symbol, EXT,0);
+			eCur = eCur->next;
 	}
 	
 }
