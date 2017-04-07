@@ -6,22 +6,22 @@ extern int isError;
 struct opcode {
         char *name;
         int group;
-} opr[] = {{"mov", 2},
-           {"cmp", 2},
-           {"add", 2},
-           {"sub", 2},
-           {"not", 1},
-           {"clr", 1},
-           {"lea", 2},
-           {"inc", 1},
-           {"dec", 1},
-           {"jmp", 1},
-           {"bne", 1},
-           {"red", 1},
-           {"prn", 1},
-           {"jsr", 1},
-           {"rts", 0},
-           {"stop", 0}};
+} opr[] = {{"mov", TWO_OPERANDS},
+           {"cmp", TWO_OPERANDS},
+           {"add", TWO_OPERANDS},
+           {"sub", TWO_OPERANDS},
+           {"not", ONE_OPERAND},
+           {"clr", ONE_OPERAND},
+           {"lea", TWO_OPERANDS},
+           {"inc", ONE_OPERAND},
+           {"dec", ONE_OPERAND},
+           {"jmp", ONE_OPERAND},
+           {"bne", ONE_OPERAND},
+           {"red", ONE_OPERAND},
+           {"prn", ONE_OPERAND},
+           {"jsr", ONE_OPERAND},
+           {"rts", ZERO_OPERANDS},
+           {"stop", ZERO_OPERANDS}};
      
 
 int isSymbol(char *cmd) /* CMD = code OR data*/
