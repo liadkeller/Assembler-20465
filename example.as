@@ -12,6 +12,6 @@ LOOP: jmp W
  mov r7[r6],r3
  bne L3
 END: stop
-STR: .string "abcdef"
-LENGTH: .data 6,-9,15
-K: .data 22 
+;STR: .string "abcdef"
+;LENGTH: .data 6,-9,15
+;K: .data 22 
