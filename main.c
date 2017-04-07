@@ -160,7 +160,7 @@ void createExtern(FILE *f)
                                 {
                                         if(strcmp(symbolCur->name, cur->firstOperand) == 0)
                                                 if(symbolCur->type == EXT)
-                                                        fprintf(f,"%s   %X \n", symbolCur->name, cur->address);
+                                                        fprintf(f,"%s   %X \n", symbolCur->name, cur->address+1);
                                         symbolCur = symbolCur->next;
                                 }
                         }
@@ -175,7 +175,7 @@ void createExtern(FILE *f)
                                 {
                                         if(strcmp(symbolCur->name, cur->secndOperand) == 0)
                                                 if(symbolCur->type == EXT)
-                                                        fprintf(f,"%s   %X \n", symbolCur->name, cur->address);
+                                                        fprintf(f,"%s   %X \n", symbolCur->name, cur->address+2);
                                         symbolCur = symbolCur->next;
                                 }
                         }
