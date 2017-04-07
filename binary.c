@@ -48,9 +48,9 @@ char *encode(struct cmd *code, int encode)
                 case MAIN_COMMAND:
                         addBin(bin, intToBinary(code->encodeType, 2), 0, 2);
                         if(code->group > 0)
-                                addBin(bin, intToBinary(code->firstAddressing, 2), 2, 2);
+                                addBin(bin, intToBinary(code->firstAddressing, 2), 4, 2);
                         if(code->group > 1)
-                                addBin(bin, intToBinary(code->secndAddressing, 2), 4, 2);
+                                addBin(bin, intToBinary(code->secndAddressing, 2), 2, 2);
                         addBin(bin, intToBinary(code->opcode, 4), 6, 4);
                         addBin(bin, intToBinary(code->group, 2), 10, 2);
                         addBin(bin, "111", 12, 3);
