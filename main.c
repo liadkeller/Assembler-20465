@@ -61,6 +61,7 @@ int main(int argc, char *argv[])
 			}
 		}
 		fclose(f);
+		freeAll();
 	}
 	
 	return 0;
@@ -108,6 +109,85 @@ void firstLoop(FILE *f, int *ICp, int *DCp)
 	*DCp = DC;
 }
 
+void freeAll()
+{
+	struct binarycode *binaryCur = binaryTable;
+        struct ent *entCur = table.entHead;  
+	struct ext *extCur = table.extHead;
+	struct cmd *cmdCur = table.cmdHead; 
+	struct data *dataCur = table.dataHead;
+        struct symbol *symbolCur = symbolTable; 
+	void *temp;
+
+	while(binaryCur)
+	{
+	   ((struct binarycode*)temp)= binaryCur;
+		binaryCur=(struct *binarycode)temp->next;
+		free(temp);
+	}
+	binaryTable=NULL;
+	
+
+	while(extCur)
+	{
+		free(extCur->Symbol;
+		(struct ext*)temp=extCur;
+		extCur=(struct ext*)temp->next;
+		free(temp);
+	}
+	table.extHead=NULL;
+
+	while(entCur)
+	{
+		free(entCur->Symbol;
+		(struct ent*)temp=entCur;
+		entCur=(struct ent*)temp->next;
+		free(temp);
+	}
+	table.entHead=NULL;
+
+	while(cmdCur)
+	{
+		if(cmdCur->firstOperand)
+			free(cmdCur->firstOperand);
+		if(cmdCur->secndOperand)
+			free(cmdCur->secndOperand);
+		if(cmdCur->symbol)
+			free(cmdCur->symbol);
+		(struct cmd*)temp=cmdCur;
+		cmdCur=(struct cmd*)temp->next;
+		free(temp);
+	}
+	table.cmdHead=NULL;
+
+	while(dataCur)
+	{
+		if(dataCur->symbol)
+			free(dataCur->symbol);
+		(struct data*)temp=dataCur;
+		dataCur=(struct data*)temp->next;
+		free(temp);
+	}
+	symbolCur=NULL;
+	
+	while(symbolCur)
+	{
+		if(symbolCur->name)
+			free(symbolCur->name);
+		(struct symbol*)temp=symbolCur;
+		symbolCur=(struct symbol*)temp->next;
+		free(temp);
+	}
+	table.dataHead=NULL;
+	/*
+	                        node = head              # start at the head.
+while node != null:      # traverse entire list.
+    temp = node          # save node pointer.
+    node = node.next     # advance to next.
+    free temp            # free the saved one.
+head = null              # finally, mark as empty list.
+*/	
+}
 void deleteEnter(char *assemblyCommand)
 {
 	int i = 0;
