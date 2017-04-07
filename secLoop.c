@@ -42,7 +42,6 @@ void secondLoop()
         int curWords;
         int curAddress;
         char *bin;
-		int i=1;
         
         codeCur = table.cmdHead;
         dataCur = table.dataHead;
