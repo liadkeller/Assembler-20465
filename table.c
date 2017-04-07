@@ -442,7 +442,7 @@ int getSymbolAddress(char *label)
 	return 0;
 }
 
-int getEntryAdress(char *label)
+int getEntryAddress(char *label)
 {
 	struct cmd *cCur;
 	struct data *dCur;
