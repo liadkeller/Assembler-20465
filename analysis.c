@@ -1,7 +1,6 @@
 #include "utils.h"
 #include "table.h"
 
-extern struct symbol *symbolTable;
 struct opcode {
         char *name;
         int group;
@@ -207,7 +206,7 @@ char *getFirstOperand(char *cmd)
 	
 	end = i;
 	size = end-start;
-	 operand = (char *) malloc ((size+1)*sizeof(char)); 
+	operand = (char *) malloc ((size+1)*sizeof(char)); 
         strncpy(operand, cmd+start, size);
         operand[size] = '\0';
 
