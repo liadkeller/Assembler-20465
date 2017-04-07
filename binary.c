@@ -88,12 +88,12 @@ char *intToBinary(int num, int size) /* returns the binary presentation of the f
         
 	j = i-1;
 
-        for(i = 0; i <= j; i++)
+        for(i = 0; i < j+1; i++)
         {
                 if(arr[j-i])
-                        bin[i] = '1';
+                        bin[i + size-1-j] = '1';
                 else
-                        bin[i] = '0';
+                        bin[i + size-1-j] = '0';
         }
         
         if(sign < 0)
