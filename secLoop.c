@@ -101,7 +101,7 @@ void buildOperand(struct cmd *c, char *operand)
 			break;
 			
 		case ADDRESS: /* LABEL */
-		{
+			{
 				struct symbol *symbolCur = symbolTable;
 				int isFound = FALSE;
 			
@@ -115,9 +115,18 @@ void buildOperand(struct cmd *c, char *operand)
 					}
 					symbolCur = symbolCur->next;
 				}
-			break;
-		}
-			
+				
+				if(!isFound)
+				{
+					fprintf(stderr, "Error - Label %s is not exist \n", operand);
+					isError = TRUE;
+					
+					c->addressNumber = 0;
+					c->encodeType = R;
+				}
+			}
+		break;
+		
 		case INDEX_REGISTER: /* ra[rb] */
 			c->encodeType = A;
 			c->reg1 = operand[1]-'0';
