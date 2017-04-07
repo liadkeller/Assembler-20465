@@ -106,7 +106,7 @@ char *intToBinary(int num, int size) /* returns the binary presentation of the f
         return bin;
 }
 
-/* adds num to bin from the start bit
+/* adds num to bin from the start bit 
 if bin = 011100000 and num = 11 and start = 2
 then bin will be 011101100 */
 void addBin(char *bin, char *num, int start, int size)
