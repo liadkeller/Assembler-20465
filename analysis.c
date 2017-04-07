@@ -51,10 +51,13 @@ char *getSymbol(char *cmd) /* CMD = code OR data*/
         new[i] = '\0'; /* the ':' sign*/	
 				
 	/* !!! to free the allocation */
-	if(checkSymbol(new))
-      		return new;
-	else
-		/* error */return new;/*Temporary! */
+	if(!checkSymbol(new))
+	{
+		fprintf(stderr, "Error - Illegal symbol \n");
+		isError = TRUE;
+	}
+	
+	return new;
 }
 
 int checkSymbol(char *cmd)
@@ -77,16 +80,17 @@ int checkSymbol(char *cmd)
 			return FALSE;
 	
 	for(i = 0; i < op_num; i++)
-	    if(strcmp(opr[i].name, cmd) == 0)
+		if(strcmp(opr[i].name, cmd) == 0)
 			return FALSE;
 	return TRUE;
-	
 }
+
 int getCmdStart(char *cmd) /* CMD = code OR data*/
 {
         int i = 0;
 	
         if(isSymbol(cmd))
+	{
 	        while(i < strlen(cmd))
                 {
 		        if(cmd[i] == ':')
@@ -96,20 +100,26 @@ int getCmdStart(char *cmd) /* CMD = code OR data*/
 			}
 			i++;
                 }
-	i = skipSpaces(i,cmd);
+	}
+	
+	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t'))
+		i++;
 	      
 	return i;
 }
+
 int isBlankOrComment(char *cmd)
 {
-	int i=0;
-	if(cmd[i]==';')
+	int i = 0;
+	
+	if(cmd[i] == ';')
 		return TRUE;
-	while(i<strlen(cmd))
+	
+	while(i < strlen(cmd))
 	{  
-		if(cmd[i]!=' ' && cmd[i]!='\t' && cmd[i]!='\n')
+		if(cmd[i] != ' ' && cmd[i] != '\t' && cmd[i] != '\n')
 			return FALSE;
-	    i++;
+		i++;
  	}
 	return TRUE;
 }
@@ -157,6 +167,7 @@ int isExt(char *cmd)
 		return TRUE;
 	return FALSE;
 }
+
 int isEnt(char *cmd)
 {
 	if(strncmp(cmd, ".entry", entry_length) == 0)
@@ -170,8 +181,10 @@ int getOpcode(char *op)
         for(i = 0; i < op_num; i++)
                 if(strncmp(op, opr[i].name, strlen(opr[i].name)) == 0)
                         return i;
-        /* error*/
-        return -1;
+        /* opcode wasnt found */
+	fprintf(stderr, "Error - Illegal opcode \n");
+	isError = TRUE;
+	return 0;
 }
 
 int getGroup(char *op)
@@ -180,8 +193,9 @@ int getGroup(char *op)
         for(i = 0; i < op_num; i++)
                 if(strncmp(op, opr[i].name, strlen(opr[i].name)) == 0)
                         return opr[i].group;
-        /* error*/
-        return -1;
+        /* opcode wasnt found, error already printed */
+	isError = TRUE;
+	return 0;
 }          
 
 char *getFirstOperand(char *cmd)
@@ -197,7 +211,11 @@ char *getFirstOperand(char *cmd)
 		i++;
 	
 	if(i == len || cmd[i] == '\0')
-		/* error - cmd is too short*/;
+	{
+		fprintf(stderr, "Error - No operands \n");
+		isError = TRUE;
+		return NULL;
+	}
 	
 	start = i;
 	
@@ -206,7 +224,7 @@ char *getFirstOperand(char *cmd)
 	
 	end = i;
 	size = end-start;
-	operand = (char *) malloc ((size+1)*sizeof(char)); 
+	operand = (char *) malloc ((size+1) * sizeof(char)); 
         strncpy(operand, cmd+start, size);
         operand[size] = '\0';
 
@@ -226,7 +244,11 @@ char *getSecndOperand(char *cmd)
 		i++;
 	
 	if(i == len || cmd[i] == '\0')
-		/* error - cmd is too short*/;
+	{
+		fprintf(stderr, "Error - No operands \n");
+		isError = TRUE;
+		return NULL;
+	}
 	
 	while(i < len && cmd[i] != ' ' && cmd[i] != '\t' && cmd[i] != ',') /* skip first operand until the first space/comma*/
 		i++;
@@ -235,17 +257,29 @@ char *getSecndOperand(char *cmd)
 		i++;
 	
 	if(i == len || cmd[i] == '\0')
-		/* error - cmd is too short*/;
+	{
+		fprintf(stderr, "Error - Only one operand \n");
+		isError = TRUE;
+		return NULL;
+	}
 	
 	if(cmd[i] != ',')
-		/* error - no comma*/;
+	{
+		fprintf(stderr, "Error - No comma \n");
+		isError = TRUE;
+		return NULL;
+	}
 	i++;
 	
 	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces until the second operand*/
 		i++;
 	
 	if(i == len || cmd[i] == '\0')
-		/* error - cmd is too short*/;
+	{
+		fprintf(stderr, "Error - Only one operand \n");
+		isError = TRUE;
+		return NULL;
+	}
 	
 	start = i;
 	end = len - 1;
@@ -259,9 +293,6 @@ char *getSecndOperand(char *cmd)
 
 int getAddressing(char *operand)
 {
-	/*if(strlen(operand) == 0)
-		return ADDRESS; // in case of no operand - we will put a 0 in the operand word like an extern label */
- 
 	if(operand[0] == '#')
 	{
 		if(strlen(operand) == 2 && operand[1] == '0');
@@ -273,7 +304,6 @@ int getAddressing(char *operand)
 		
 		return NUMBER;
 	}
-	
 	
 	if(strlen(operand) == 2 && operand[0] == 'r')
 	{
@@ -289,6 +319,7 @@ int getAddressing(char *operand)
 	}
 				
 	return ADDRESS;
+	/* Address is the default addressing since it has the largest amount of legal operands */
 }
 
 int countWords(char *cmd)
@@ -299,39 +330,41 @@ int countWords(char *cmd)
  	{
  		i += string_length;
  	
- 		while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces*/
+ 		while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skip spaces */
  			i++;
  	
  		if(cmd[i] != '"')
  			return num;
  		i++;
-		while(i<len && cmd[i]!='"')
+		
+		while(i < len && cmd[i] != '"')
 		{
 			num++;
 			i++;
-		}/* !!!possibly error*/
-		return num+1;/* includes 0*/
-			
+		}
+		
+		num++; /* include 0 */
  	}
  	
  	else if(isData(cmd))
  	{
  		i += data_length;
  		
- 		while(i < len && (cmd[i] == ' ' || cmd[i] == '\t'))
+ 		while(i < len && (cmd[i] == ' ' || cmd[i] == '\t')) /* skips first space */
  			      i++;
- 		/* skips first space*/
  		
  		while(i < len)
  		{
  			while(i < len && cmd[i] != ' ' && cmd[i] != '\t' && cmd[i] != ',')
- 			      i++;
- 			num++;
+ 				i++;
+			num++;
+			
 			while(i < len && (cmd[i] == ' ' || cmd[i] == '\t' || cmd[i] == ',' || cmd[i]=='\n'))
 				i++;
  		}
 	}
- 		return num;
+ 	
+	return num;
 }
 
 int skipSpaces(int i, char *str)
