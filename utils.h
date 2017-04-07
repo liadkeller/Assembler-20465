@@ -7,6 +7,7 @@
 #define extern_length 7 /* .extern*/
 #define entry_length 6 /* .entry*/
 
+enum op {ZERO_OPERANDS, ONE_OPERAND, TWO_OPERANDS};
 #define op_name_max 4 /* maximum is 'stop' - 4 */
 #define op_num 16
 
