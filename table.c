@@ -169,10 +169,10 @@ int addCmd(char *cmd, int address)
 			in the first loop with the function earlyBuild
 		*/
 		addCmdToList(nextWord);
+		return (new->wordsNum) + 1; /* including the main command word */
 	}
 
-	else
-		new->wordsNum = new->group;
+	new->wordsNum = new->group;
 	
 	if(new->wordsNum == 1)
 	{
