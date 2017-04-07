@@ -42,7 +42,7 @@ struct ext {
 
 struct ent {
 	char *symbol;
-	struct ext *next;
+	struct ent *next;
 };
 
 struct list {
@@ -62,13 +62,13 @@ struct symbol {
 void addCmdToList(struct cmd *c);
 void addDataToList(struct data *d); /* DATA = data OR string*/
 void addExtToList(struct ext *e);
-void addEntToList(struct ext *e);
+void addEntToList(struct ent *e);
 int addCmd(char *cmd, int address);
 int addData(char *cmd, int address);
 int addStr(char *cmd, int address);
 void addExt(char *cmd);
-void addEnt(char *cmd)
-int addSymbol(char *name, int type, int address);
+void addEnt(char *cmd);
+void addSymbol(char *name, int type, int address);
 
 void fixAddresses(int add);
 void buildSymbolTable();
