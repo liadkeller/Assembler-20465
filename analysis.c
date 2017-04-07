@@ -1,6 +1,8 @@
 #include "utils.h"
 #include "table.h"
 
+extern int isError;
+
 struct opcode {
         char *name;
         int group;
