@@ -8,6 +8,7 @@ void createObject(FILE *f,int IC, int DC);
 void createEntry(FILE *f);
 void createExtern(FILE *f);
 
+void freeAll();
 void deleteEnter(char *assemblyCommand);
 
 #define FILE_ERROR(x)  							  \
