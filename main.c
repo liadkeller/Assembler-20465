@@ -71,13 +71,8 @@ void firstLoop(FILE *f, int *ICp, int *DCp)
 	char assemblyCommand[assembly_line_max+1];
 	int IC = IC_start, DC = 0;
 	
-	int i = 1; /* temp index */
-	
 	while(fgets(assemblyCommand,assembly_line_max,f))
-	{	
-		printf("\n line: %d \n", i); /* temp */
-		i++;	/* temp*/
-		
+	{			
 		deleteEnter(assemblyCommand);
 		
 		if(isBlankOrComment(assemblyCommand))
@@ -105,7 +100,7 @@ void firstLoop(FILE *f, int *ICp, int *DCp)
  		}
 	}
 	
-	printf("\n %d,%d \n",IC,DC); /* !!! TEMP ONLY */
+	printf("%d,%d \n", IC, DC); /* !!! TEMP ONLY */
 	
 	fixAddresses(IC);
 	
