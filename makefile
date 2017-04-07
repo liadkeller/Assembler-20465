@@ -15,3 +15,4 @@ secLoop.o: secLoop.c utils.h binary.h table.h
 
 binary.o: binary.c utils.h binary.h table.h
 	gcc -c -g -ansi binary.c -Wall -pedantic -o binary.o
+clean: main.o table.o analysis.o secLoop.o binary.o
