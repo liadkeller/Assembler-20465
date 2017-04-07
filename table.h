@@ -51,13 +51,13 @@ struct list {
 	struct ext *extHead;
 	struct ent *entHead;
 };
-
+/*
 struct symbol {
         char *name;
         int type;
         int address;
         struct symbol *next;
-};
+};*/
 
 void addCmdToList(struct cmd *c);
 void addDataToList(struct data *d); /* DATA = data OR string*/
@@ -68,12 +68,15 @@ int addData(char *cmd, int address);
 int addStr(char *cmd, int address);
 void addExt(char *cmd);
 void addEnt(char *cmd);
-void addSymbol(char *name, int type, int address);
+/*void addSymbol(char *name, int type, int address);*/
 
 void fixAddresses(int add);
-void buildSymbolTable();
+/*void buildSymbolTable();*/
 void earlyBuild(struct cmd *c, char *reg);
 	
+
+int getSymbolTable(char *label);
+
 
 int isSymbol(char *cmd); /* CMD = code OR data*/
 char *getSymbol(char *cmd); /* CMD = code OR data*/
