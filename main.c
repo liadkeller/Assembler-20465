@@ -2,10 +2,12 @@
 
 int isError;
 extern struct list table;
+extern struct binarycode *binaryTable;
+extern struct symbol *symbolTable;
 
 int main(int argc, char *argv[])
 {
-	int i;
+	int i,IC,DC,len;
 	char *fileName;
 	FILE *f;
 	
@@ -19,7 +21,10 @@ int main(int argc, char *argv[])
 	{
 		isError = FALSE;
 		fileName = argv[i];
+		len=strlen(fileName);
+		
 		f = fopen(strcat(fileName, ".as") , "r");
+		fileName[len]=0;
 		
 		if(!f)
 		{
@@ -27,19 +32,21 @@ int main(int argc, char *argv[])
 			continue;
 		}
 		
-		firstLoop(f);
+		firstLoop(f,&IC,&DC);
 		buildSymbolTable();
 		secondLoop();
 		
-		if(!isEroor)
+		if(!isError)
 		{
 			f = fopen(strcat(fileName, ".ob") , "w");
+			fileName[len]=0;
 			FILE_ERROR(object)
-			createObject(f);
+			createObject(f,IC,DC);
 		 
 			if(table.extHead)
 			{
 				f = fopen(strcat(fileName, ".ext") , "w"); 
+				fileName[len]=0;
 				FILE_ERROR(extern)
 				createExtern(f);
 			}
@@ -47,6 +54,7 @@ int main(int argc, char *argv[])
 			if(table.entHead)
 			{
 				f = fopen(strcat(fileName, ".ent") , "w");  
+				fileName[len]=0;
 				FILE_ERROR(entry)
 				createEntry(f);
 			}
@@ -57,7 +65,7 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
-void firstLoop(FILE *f)
+void firstLoop(FILE *f,int *ICp,int *DCp)
 {
 	char assemblyCommand[assembly_line_max+1];
 	int IC = IC_start, DC = 0;
@@ -96,6 +104,8 @@ void firstLoop(FILE *f)
 	printf("\n %d,%d \n",IC,DC); /* !!! TEMP ONLY */
 	
 	fixAddresses(IC);
+	*ICp=IC;
+	*DCp=DC;
 }
 
 void deleteEnter(char *assemblyCommand)
@@ -108,49 +118,49 @@ void deleteEnter(char *assemblyCommand)
 
 }
 
-void createObject(FILE *f)
+void createObject(FILE *f,int IC, int DC)
 {
-        fprintf(f, "%X   %X\n, IC - IC_start, DC);
+	struct binarycode *cur = binaryTable;
+        fprintf(f, "%X   %X\n", IC - IC_start, DC);
         
-        struct binarycode *cur = binaryTable;
-        while(cur && cur->next)
+        while(cur)
         {
-                fprintf("%X   %s", cur->address, cur->binary);
+                fprintf(f,"%X   %s \n", cur->address, cur->binary);
                 cur = cur->next;
         }
 }
 		
 void createEntry(FILE *f)
 {
-        struct ent cur = table.entHead;
-        while(ent && ent->next)
+        struct ent *cur = table.entHead;
+        while(cur)
         {
-                struct symbol symbolCur = symbolTable;
-                while(symbolCur && symbolCur->next)
+                struct symbol *symbolCur = symbolTable;
+                while(symbolCur)
                 {
-                        if(strcmp(symbolCur->name, cur->symbol) == 0)
-                                fprintf("%s   %X", cur->symbol, symbolCur->address);
+                    if(strcmp(symbolCur->name, cur->symbol) == 0)
+                        fprintf(f,"%s   %X \n ", symbolCur->name, symbolCur->address);
                         symbolCur = symbolCur->next;
                 }
-                ent = ent->next;
+                cur = cur->next;
         }
 }
 		
 void createExtern(FILE *f)
 {
-        struct cmd cur = table.cmdHead;
-        while(cur && cur->next)
+        struct cmd *cur = table.cmdHead;
+        while(cur)
         {
                 if(cur->group > 0)
                 {
                         if(cur->firstAddressing == ADDRESS)
                         {
-                                struct symbol symbolCur = symbolTable;
-                                while(symbolCur && symbolCur->next)
+                                struct symbol *symbolCur = symbolTable;
+                                while(symbolCur)
                                 {
                                         if(strcmp(symbolCur->name, cur->firstOperand) == 0)
                                                 if(symbolCur->type == EXT)
-                                                        fprintf("%s   %X", symbolCur->name, cur->address);
+                                                        fprintf(f,"%s   %X \n", symbolCur->name, cur->address);
                                         symbolCur = symbolCur->next;
                                 }
                         }
@@ -160,12 +170,12 @@ void createExtern(FILE *f)
                 {
                         if(cur->secndAddressing == ADDRESS)
                         {
-                                struct symbol symbolCur = symbolTable;
-                                while(symbolCur && symbolCur->next)
+                                struct symbol *symbolCur = symbolTable;
+                                while(symbolCur)
                                 {
                                         if(strcmp(symbolCur->name, cur->secndOperand) == 0)
                                                 if(symbolCur->type == EXT)
-                                                        fprintf("%s   %X", symbolCur->name, cur->address);
+                                                        fprintf(f,"%s   %X \n", symbolCur->name, cur->address);
                                         symbolCur = symbolCur->next;
                                 }
                         }
