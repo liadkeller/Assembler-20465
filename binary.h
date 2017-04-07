@@ -9,6 +9,7 @@ void addBin(char *bin, char *num, int start, int size);
 char *binaryToHexa(char *bin);
 int getHexa(int num);
 int power(int a, int b);
+void reverse(char *s);
 
 void addBinary(int address, char *bin);
 void copyBinary(char *dest, char *src);
