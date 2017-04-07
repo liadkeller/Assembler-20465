@@ -1,6 +1,7 @@
 #include "utils.h"
 #include "binary.h"
 
+extern int isError;
 extern struct symbol *symbolTable;
 extern struct list table;
 struct binarycode *binaryTable = NULL;
