@@ -7,8 +7,8 @@ char *encode(struct cmd *code, int encode)
 	char *bin; 
 	bin = (char *) malloc ((binary_word)*sizeof(char));
         
-	for(i=0;i<binary_word;i++)
-		bin[i]='0';
+	for(i = 0; i < binary_word; i++)
+		bin[i] = '0';
 
         switch(encode)
         {        
@@ -53,6 +53,7 @@ char *encode(struct cmd *code, int encode)
                         addBin(bin, "111", 12, 3);
                         break;
         }
+	reverse(bin);
         return bin;
 }
 
@@ -60,8 +61,13 @@ char *intToBinary(int num, int size) /* returns the binary presentation of the f
 {
         int arr[binary_word];
         char *bin= (char *) malloc ((binary_word)*sizeof(char));
-        int i, sign;
-        	
+        int i, j, sign;
+
+	for(i = 0; i < size; i++)
+		bin[i] = '0';
+	
+	if(num == 0)
+		return bin;
 
 	if(num > power(2, size) - 1 || num < -1 * power(2, size)) /* i is not in the range 2^(size-1) <= i <= 2^(size-1) - 1 */
                 fprintf(stderr, "Error - number is too large");
@@ -75,12 +81,11 @@ char *intToBinary(int num, int size) /* returns the binary presentation of the f
                 num = num / 2;
         }
         
-        if(i == size)
-                i--;
-        
-        for(; i >= 0; i--)
+	j = i-1;
+
+        for(i = 0; i <= j; i++)
         {
-                if(arr[i])
+                if(arr[j-i])
                         bin[i] = '1';
                 else
                         bin[i] = '0';
@@ -111,7 +116,7 @@ if bin = 011100000 and num = 11 and start = 2
 then bin will be 011101100 */
 void addBin(char *bin, char *num, int start, int size)
 {
-        int i = start;
+        int i = start + size - 1;
         int j = 0;
         
         while(j < size)
@@ -119,7 +124,7 @@ void addBin(char *bin, char *num, int start, int size)
                 if(num[j] == '1')
                         bin[i] = '1';
 
-                i++;
+                i--;
                 j++;
         }
 }
@@ -129,6 +134,17 @@ int power(int a, int b)
         int i, pow;
         for(i = 0, pow = 1; i < b; i++, pow *= a);
         return pow;
+}
+
+void reverse(char *s)
+{
+	int c, i, j;
+	for (i = 0, j = binary_word-1; i < j; i++, j--)
+	{
+        	c = s[i];
+        	s[i] = s[j];
+        	s[j] = c;
+	}
 }
 
 char *binaryToHexa(char *bin)
