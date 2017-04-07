@@ -11,6 +11,7 @@ char *encode(struct cmd *code, int encode)
         
 	for(i = 0; i < binary_word; i++)
 		bin[i] = '0';
+	bin[binary_word]=0;
 
         switch(encode)
         {        
@@ -153,33 +154,32 @@ void reverse(char *s)
 
 char *binaryToHexa(char *bin)
 {
-        int i, j;
+        int i, j,sum;
         char fixedBin[16]; /* bin has 15 bits, we will fix it to 16 bits */
         char *hexa = (char *) malloc (4*sizeof(char)); /* !!! to change*/
-        
-        for(i = 0; i < binary_word; i++)
-                fixedBin[i] = bin[i];
-        /* i = binary_word = 15 */
-        fixedBin[i] = fixedBin[i-1];
+	
+     
+        fixedBin[0] = '0';
+        for(i = 1; i < binary_word; i++)
+                fixedBin[i+1] = bin[i];
         
         for(i = 0; i < 4; i++)
         {
-                int sum = 0;
+                sum = 0;
                 for(j = 0; j < 4; j++)
                 {
-                        if(fixedBin[4*i+j])
-                                sum += power(2, j);
+                        if(fixedBin[4*i+j]=='1')
+                                sum += power(2, 3-j);
                 }
                 
                 hexa[i] = getHexa(sum);
         }
-        
         return hexa;
 }
 
 int getHexa(int num)
 {
-        if (num >= 10 || num <= 15)
+        if (num >= 10 && num <= 15)
                 return 'A' + num - 10;
         return '0' + num; /* if num >= 0 || num <= 9 */
 }
