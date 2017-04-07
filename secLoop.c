@@ -86,6 +86,7 @@ void secondLoop()
                 bin = intToBinary(dataCur->content, binary_word);
                 addBinary(curAddress, bin);
 			free(bin);
+		dataCur = dataCur->next;
         }
 
 }
