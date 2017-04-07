@@ -7,9 +7,10 @@ extern struct symbol *symbolTable;
 
 int main(int argc, char *argv[])
 {
-	int i,IC,DC,len;
+	int IC, DC;
 	char *fileName;
 	FILE *f;
+	int i, len;
 	
 	if(argc == 1)
 	{
@@ -21,7 +22,7 @@ int main(int argc, char *argv[])
 	{
 		isError = FALSE;
 		fileName = argv[i];
-		len=strlen(fileName);
+		len = strlen(fileName);
 		
 		f = fopen(strcat(fileName, ".as") , "r");
 		fileName[len] = 0;
@@ -32,7 +33,7 @@ int main(int argc, char *argv[])
 			continue;
 		}
 		
-		firstLoop(f,&IC,&DC);
+		firstLoop(f, &IC, &DC); /* we send IC and DC to the first loop and the first loop will put in it the right values */
 		buildSymbolTable();
 		secondLoop();
 		
@@ -65,11 +66,13 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
-void firstLoop(FILE *f,int *ICp,int *DCp)
+void firstLoop(FILE *f, int *ICp, int *DCp)
 {
 	char assemblyCommand[assembly_line_max+1];
 	int IC = IC_start, DC = 0;
+	
 	int i = 1; /* temp index */
+	
 	while(fgets(assemblyCommand,assembly_line_max,f))
 	{	
 		printf("\n line: %d \n", i); /* temp */
@@ -101,9 +104,11 @@ void firstLoop(FILE *f,int *ICp,int *DCp)
  			isError = TRUE;
  		}
 	}
+	
 	printf("\n %d,%d \n",IC,DC); /* !!! TEMP ONLY */
 	
 	fixAddresses(IC);
+	
 	*ICp = IC;
 	*DCp = DC;
 }
