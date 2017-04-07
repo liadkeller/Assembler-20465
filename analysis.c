@@ -104,7 +104,7 @@ int getCmdStart(char *cmd) /* CMD = code OR data*/
                 }
 	}
 	
-	while(i < len && (cmd[i] == ' ' || cmd[i] == '\t'))
+	while(i < strlen(cmd) && (cmd[i] == ' ' || cmd[i] == '\t'))
 		i++;
 	      
 	return i;
