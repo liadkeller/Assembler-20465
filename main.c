@@ -43,13 +43,13 @@ int main(int argc, char *argv[])
 			FILE_ERROR(object)
 			createObject(f,IC,DC);
 		 
-			/*if(table.extHead)
+			if(table.extHead)
 			{
 				f = fopen(strcat(fileName, ".ext") , "w"); 
 				fileName[len] = 0;
 				FILE_ERROR(extern)
 				createExtern(f);
-			}*/
+			}
 			
 			if(table.entHead)
 			{
@@ -192,7 +192,7 @@ void createEntry(FILE *f)
                 cur = cur->next;
         }
 }
-/*
+
 void createExtern(FILE *f)
 {
         struct cmd *cur = table.cmdHead;
@@ -200,14 +200,14 @@ void createExtern(FILE *f)
         {
                 if(cur->group > 0)
                         if(cur->firstAddressing == ADDRESS)
-                                if(getEntryAddress(cur->secndOperand) == 0)
-                                	fprintf(f,"%s   %X \n", symbolCur->name, cur->address+1);
+                                if(getEntryAddress(cur->firstOperand) == 0)
+                                	fprintf(f,"%s   %X \n", cur->firstOperand, cur->address+1);
         
                 if(cur->group > 1)
-                {
                         if(cur->secndAddressing == ADDRESS)
                                 if(getEntryAddress(cur->secndOperand) == 0)
-                                        fprintf(f,"%s   %X \n", symbolCur->name, cur->address+2);
-                cur = cur->next;
+                                        fprintf(f,"%s   %X \n", cur->secndOperand, cur->address+2);
+		            
+		cur = cur->next;
         }
-}*/
+}
