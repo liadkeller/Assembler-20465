@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 				fileName[len] = 0;
 				FILE_ERROR(extern)
 				createExtern(f);
-			}
+			}*/
 			
 			if(table.entHead)
 			{
@@ -58,11 +58,11 @@ int main(int argc, char *argv[])
 				fileName[len] = 0;
 				FILE_ERROR(entry)
 				createEntry(f);
-			}*/
+			}
 		}
 
-		/*freeAll();
-		fclose(f);*/
+		freeAll();
+		fclose(f);
 	}
 	
 	return 0;
@@ -102,22 +102,19 @@ void firstLoop(FILE *f, int *ICp, int *DCp)
  		}
 	}
 	
-	printf("%d,%d \n", IC, DC); /* !!! TEMP ONLY */
-	
 	fixAddresses(IC);
 	
 	*ICp = IC;
 	*DCp = DC;
 }
 
-void freeAll()
+void freeAll() /* free all allocations made during the program */
 {
 	struct binarycode *binaryCur = binaryTable;
         struct ent *entCur = table.entHead;  
 	struct ext *extCur = table.extHead;
 	struct cmd *cmdCur = table.cmdHead; 
 	struct data *dataCur = table.dataHead;
-        /*struct symbol *symbolCur = symbolTable; */
 
 	
 	while(binaryCur)
@@ -150,14 +147,7 @@ void freeAll()
 	
 	while(cmdCur)
 	{
-		struct cmd *temp;
-		if(cmdCur->firstOperand)
-			free(cmdCur->firstOperand);
-		if(cmdCur->secndOperand)
-			free(cmdCur->secndOperand);
-		if(cmdCur->symbol)
-			free(cmdCur->symbol);
-		temp = cmdCur;
+		struct cmd *temp = cmdCur;
 		cmdCur = temp->next;
 		free(temp);
 	}
@@ -165,26 +155,11 @@ void freeAll()
 
 	while(dataCur)
 	{
-		struct data *temp;		
-		if(dataCur->symbol);
-			/*free(dataCur->symbol);*/
-		temp = dataCur;
+		struct data *temp = dataCur;
 		dataCur = temp->next;
 		free(temp);
 	}
 	table.dataHead=NULL;
-	
-	/*while(symbolCur)
-	{
-		struct symbol *temp;
-		if(symbolCur->name);
-			/*free(symbolCur->name);*/
-	/*	temp = symbolCur;
-		symbolCur = temp->next;
-		free(temp);
-	}
-	symbolCur=NULL;
-	*/
 }
 
 void deleteEnter(char *assemblyCommand)
@@ -208,23 +183,19 @@ void createObject(FILE *f,int IC, int DC)
                 cur = cur->next;
         }
 }
-/*		
+		
 void createEntry(FILE *f)
 {
         struct ent *cur = table.entHead;
         while(cur)
         {
-                struct symbol *symbolCur = symbolTable;
-                while(symbolCur)
-                {
-                    if(strcmp(symbolCur->name, cur->symbol) == 0)
-                        fprintf(f,"%s   %X \n", symbolCur->name, symbolCur->address);
-                        symbolCur = symbolCur->next;
-                }
+		int ent = getEntryAddress(cur->symbol); /* entry address */
+                if(ent >= 0)
+                        fprintf(f,"%s   %X \n", cur->symbol, ent);
                 cur = cur->next;
         }
 }
-		
+/*
 void createExtern(FILE *f)
 {
         struct cmd *cur = table.cmdHead;
