@@ -176,7 +176,7 @@ void createObject(FILE *f,int IC, int DC)
         
         while(cur)
         {
-                fprintf(f,"%X   %s \n", cur->address, cur->binary);
+                fprintf(f,"%X   %X \n", cur->address, binToDec(cur->binary));
                 cur = cur->next;
         }
 }
