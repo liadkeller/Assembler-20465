@@ -412,9 +412,9 @@ void addSymbol(char *name, int type, int address)
         else
         {
             struct symbol *cur=symbolTable;
-			while(cur->next)	
-                	cur=cur->next;
-			cur->next=new;
+	    while(cur->next)
+		 cur=cur->next;
+	    cur->next=new;
         }
 }
 
