@@ -6,8 +6,8 @@ void buildOperand(struct cmd *c, char *operand);
 char *encode(struct cmd *code, int encode);
 char *intToBinary(int num, int size);
 void addBin(char *bin, char *num, int start, int size);
-char *binaryToHexa(char *bin);
-int getHexa(int num);
+int binToDec(char *bin);
+
 int power(int a, int b);
 void reverse(char *s);
 

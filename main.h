@@ -1,5 +1,5 @@
 #include "utils.h"
-#include "binary.h"/*+table.h */
+#include "binary.h"
 
 void firstLoop(FILE *f,int *ICp,int *DCp);
 void secondLoop();
@@ -10,6 +10,8 @@ void createExtern(FILE *f);
 
 void freeAll();
 void deleteEnter(char *assemblyCommand);
+
+int getEntryAddress(char *label);
 
 #define FILE_ERROR(x)  							  \
 if(!f)									  \

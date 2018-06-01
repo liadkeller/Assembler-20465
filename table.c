@@ -3,14 +3,11 @@
 
 extern int isError;
 struct list table;
-struct symbol *symbolTable = NULL;
 
 void addCmdToList(struct cmd *c)
 {
 	struct cmd *n;
 	n = (struct cmd*) malloc(sizeof(struct cmd));
-	/* !!! malloc - to make sure to free the pointer */
-	/* !!! to check - if a struct field is unintaliize or containing a garbage values - can it be copied? */
 	n->encode = c->encode;
 	n->opcode = c->opcode;
 	n->group = c->group;
@@ -30,7 +27,7 @@ void addCmdToList(struct cmd *c)
 	n->whichReg = c->whichReg;
 	n->encodeType = c->encodeType;
 	n->next = NULL;
-	/* !!! to check - if a struct field is unintaliize or containing a garbage values - can it be copied? */
+
 	
 	if(table.cmdHead == NULL)
 		table.cmdHead = n;
@@ -49,8 +46,6 @@ void addDataToList(struct data *d) /* DATA = data OR string */
 {
 	struct data *n;
 	n = (struct data*) malloc (sizeof(struct data));
-	/* !!! malloc - to make sure to free the pointer */	
-	/* !!! to check - if a struct field is unintaliize or containing a garbage values - can it be copied? */
 	n->isFirst = d->isFirst;
 	n->wordsNum = d->wordsNum;
 	n->address = d->address;
@@ -74,30 +69,32 @@ void addDataToList(struct data *d) /* DATA = data OR string */
 
 void addExtToList(struct ext *e)
 {
+	struct ext *cur;
+
 	struct ext *n;
 	n = (struct ext*) malloc(sizeof(struct ext));
-	/* !!! malloc - to make sure to free the pointer */
 	n->symbol = e->symbol;
-	n->next = NULL;
-	
+	n->next = NULL;	
+
 	if(table.extHead == NULL)
+	{
 		table.extHead = n;
+	}
 
 	else
 	{
-		struct ext *cur;
 		cur = table.extHead;
 		while(cur->next)
 			cur = cur->next;
-		cur->next = n;
+		cur->next = n;	
 	}
+
 }
 
 void addEntToList(struct ent *e)
 {
 	struct ent *n;
 	n = (struct ent*) malloc(sizeof(struct ent));
-	/* !!! malloc - to make sure to free the pointer */
 	n->symbol = e->symbol;
 	n->next = NULL;
 	
@@ -398,26 +395,6 @@ void addEnt(char *cmd)
 	free(new);
 }
 
-void addSymbol(char *name, int type, int address)
-{
-        struct symbol *new;
-        new = (struct symbol *) malloc (sizeof (struct symbol)); /* malloc - requires to free the allocation*/
-        new->name = name;
-        new->type = type;
-        new->address = address;
-        new->next = NULL;
-        
-        if(symbolTable == NULL)
-                symbolTable = new;                
-        else
-        {
-            struct symbol *cur=symbolTable;
-	    while(cur->next)
-		 cur=cur->next;
-	    cur->next=new;
-        }
-}
-
 void fixAddresses(int add) /* fix so the data addresses will come right after the cmd addresses */
 {
 	struct data *cur;
@@ -429,19 +406,18 @@ void fixAddresses(int add) /* fix so the data addresses will come right after th
 	}
 }
 
-void buildSymbolTable()
+int getSymbolAddress(char *label)
 {
 	struct cmd *cCur;
 	struct data *dCur;
 	struct ext *eCur;
-	
+
 	cCur = table.cmdHead;
 	while(cCur)
 	{
 		if(cCur->isSymbol)
-			addSymbol(cCur->symbol, CODE, cCur->address);
-		else	
-			/*error*/;
+			if(strcmp(label, cCur->symbol) == 0)
+				return cCur->address;
 		cCur = cCur->next;
 	}
 
@@ -449,19 +425,55 @@ void buildSymbolTable()
 	while(dCur)
 	{
 		if(dCur->isSymbol)
-			addSymbol(dCur->symbol, DtSt, dCur->address);
-		else
-			/* error */;
+			if(strcmp(label, dCur->symbol) == 0)
+				return dCur->address;
 		dCur = dCur->next;
 	}
 	
 	eCur = table.extHead;
 	while(eCur)
 	{
-			addSymbol(eCur->symbol, EXT,0);
-			eCur = eCur->next;
+		if(strcmp(label, eCur->symbol) == 0)
+			return 0;
+		eCur = eCur->next;	
+	}		
+	fprintf(stderr, "Error - Label %s is not exist \n", label);
+	isError = TRUE;
+	return 0;
+}
+
+int getEntryAddress(char *label)
+{
+	struct cmd *cCur;
+	struct data *dCur;
+	struct ext *eCur;
+
+	cCur = table.cmdHead;
+	while(cCur)
+	{
+		if(cCur->isSymbol)
+			if(strcmp(label, cCur->symbol) == 0)
+				return cCur->address;
+		cCur = cCur->next;
+	}
+
+	dCur = table.dataHead;
+	while(dCur)
+	{
+		if(dCur->isSymbol)
+			if(strcmp(label, dCur->symbol) == 0)
+				return dCur->address;
+		dCur = dCur->next;
 	}
 	
+	eCur = table.extHead;
+	while(eCur)
+	{
+		if(strcmp(label, eCur->symbol) == 0)
+			return 0;
+		eCur = eCur->next;	
+	}		
+	return -1;
 }
 
 /* Build the operand word in case of two register addressing */
