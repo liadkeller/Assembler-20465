@@ -1,12 +1,10 @@
-#include "table.h"
+void secondPass();
+struct cmd buildOperand(char *operand, struct cmd command);
 
-void secondLoop();
-void buildOperand(struct cmd *c, char *operand);
-
-char *encode(struct cmd *code, int encode);
-char *intToBinary(int num, int size);
-void addBin(char *bin, char *num, int start, int size);
-int binToDec(char *bin);
+char *encode(struct cmd code);
+char *intToBinaryStr(int num, int size);
+int binaryStrToInt(char *bin);
+void addToBinStr(char *bin, char *num, int start, int size);
 
 int power(int a, int b);
 void reverse(char *s);
@@ -17,6 +15,6 @@ void copyBinary(char *dest, char *src);
 struct binarycode
 {
         int address;
-        char binary[binary_word+1];
+        char binary[BINARY_WORD+1];
         struct binarycode *next;
 };

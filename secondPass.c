@@ -1,128 +1,111 @@
 #include "utils.h"
+#include "table.h"
 #include "binary.h"
 
 extern int isError;
-extern struct list table;
-struct binarycode *binaryTable = NULL;
+
+struct cmd commandsArray[ARRAY_SIZE];
+struct data dataArray[ARRAY_SIZE];
+struct binarycode binaryArray[ARRAY_SIZE];
+
+extern int cmdSize;
+extern int dataSize;
+extern int binarySize;
+
 
 void addBinary(int address, char *bin)
 {
-	struct binarycode *n;
-	n = (struct binarycode*) malloc(sizeof(struct binarycode));
-	/* !!! malloc - to make sure to free the pointer*/
-	n->address = address;
-  	copyBinary(n->binary, bin);
-    	n->next = NULL;
-	
-	if(binaryTable == NULL)
-		binaryTable = n;
-	
-	else
-	{
-		struct binarycode *cur;
-		cur = binaryTable;
-		while(cur->next)
-			cur = cur->next;
-		cur->next = n;
-	}
+	binaryArray[binarySize].address = address;
+	copyBinary(binaryArray[binarySize++].binary, bin);
 }
 
 void copyBinary(char *dest, char *src)
 {
 	int i;
-	for(i = 0; i <= binary_word; i++)
+	for (i = 0; i <= BINARY_WORD; i++)
 		dest[i] = src[i];
 }
 
-void secondLoop()
+void secondPass()
 {
-        struct cmd *codeCur;
-        struct data *dataCur;
-        int curWords;
-        int curAddress;
-        char *bin;
-        
-        codeCur = table.cmdHead;
-        dataCur = table.dataHead;
-        
-        while(codeCur && codeCur->next)
-        {
-                if(codeCur->encode == MAIN_COMMAND)
-                {
-                        curWords = (codeCur->next->encode == TWO_REGISTER) ? (codeCur->group - 1) : (codeCur->group);
-                        curAddress = codeCur->address;
-                        
-                        bin = encode(codeCur, codeCur->encode);
-                        addBinary(curAddress, bin);
-			free(bin);
-                        
-                        if(curWords > 0)
-                        {
-                                buildOperand(codeCur->next, codeCur->firstOperand);
-                                bin = encode(codeCur->next, codeCur->next->encode);
-                                addBinary(curAddress+1, bin);
-				free(bin);
-                        }
-                        
-                        if(curWords > 1)
-                        {
-                                buildOperand(codeCur->next->next, codeCur->secndOperand);
-                                bin = encode(codeCur->next->next, codeCur->next->next->encode);
-                                addBinary(curAddress+2, bin);
-				free(bin);
-                        }
-                }
-                codeCur = codeCur->next;
-		if(curWords > 0)
-			codeCur = codeCur->next;
-		if(curWords > 1)
-			codeCur = codeCur->next;					
-        }
-        
-        while(dataCur && dataCur->next)
-        {
-                curAddress = dataCur->address;
-                bin = intToBinary(dataCur->content, binary_word);
-                addBinary(curAddress, bin);
-			free(bin);
-		dataCur = dataCur->next;
-        }
+	int i;
+	char *bin;
 
+	for (i = 0; i < cmdSize; i++)
+	{
+
+		if (commandsArray[i].encode == MAIN_COMMAND)
+		{
+			bin = encode(commandsArray[i]);
+			addBinary(commandsArray[i].address, bin);
+
+			if (commandsArray[i].operandsNumber > 0 && commandsArray[i + 1].encode == TWO_REGISTERS)
+			{
+				bin = encode(commandsArray[i + 1]);
+				addBinary(commandsArray[i].address + 1, bin);
+			}
+
+			else if (commandsArray[i].operandsNumber == 1)
+			{
+				commandsArray[i + 1] = buildOperand(commandsArray[i].destOperand, commandsArray[i + 1]);
+				bin = encode(commandsArray[i + 1]);
+				addBinary(commandsArray[i].address + 1, bin);
+			}
+
+			else if (commandsArray[i].operandsNumber == 2)
+			{
+				commandsArray[i + 1] = buildOperand(commandsArray[i].srcOperand, commandsArray[i + 1]);
+				bin = encode(commandsArray[i + 1]);
+				addBinary(commandsArray[i].address + 1, bin);
+
+				commandsArray[i + 2] = buildOperand(commandsArray[i].destOperand, commandsArray[i + 2]);
+				bin = encode(commandsArray[i + 2]);
+				addBinary(commandsArray[i].address + 2, bin);
+			}
+		}
+	}
+
+	for (i = 0; i < dataSize; i++)
+	{
+		bin = intToBinaryStr(dataArray[i].value, BINARY_WORD);
+		addBinary(dataArray[i].address, bin);
+	}
 }
 
-void buildOperand(struct cmd *c, char *operand)
+/* returns a cmd structure built and suited to the given operand */
+struct cmd buildOperand(char *operand, struct cmd command)
 {
-	switch(c->encode)
+	struct cmd c;
+	c.encode = command.encode;
+	c.operandRole = command.operandRole;
+	switch (c.encode)
 	{
-		case NUMBER: /* #a */
-			c->encodeType = A;
-			c->number = atoi(++operand); /* copies the number without the # */
-			break;
-			
-		case ADDRESS: /* LABEL */
-			c->addressNumber = getSymbolAddress(operand);
-			c->encodeType = (c->addressNumber > 0) ? R : E;
-			break;
-		
-		case INDEX_REGISTER: /* ra[rb] */
-			c->encodeType = A;
-			c->reg1 = operand[1]-'0';
-			c->reg2 = operand[4]-'0';
-			if((c->reg1) % 2 == 0 || (c->reg2) % 2 == 1)
-				fprintf(stderr, "Error - First register should be odd and second register should be even");
-			break;
-			
-		case ONE_REGISTER: /* ra */
-			c->encodeType = A;
-			c->reg1 = operand[1]-'0';
-			if(c->operandNumber == FIRST)
-				c->whichReg = SOURCE;
-			else
-				c->whichReg = DEST;
-			break;
-			
-		case TWO_REGISTER:
-			/* In the special case of two register addressing we built the operand word in the first loop */
-			break;
+	case NUMBER: /* #a */
+		c.encodeType = A;
+		c.numberVal = atoi(++operand); /* copies the number without the # */
+		break;
+
+	case ADDRESS: /* LABEL */
+		c.addressVal = getSymbolAddress(operand);
+		c.encodeType = (c.addressVal > 0) ? R : E;
+		break;
+
+	case INDEX_REGISTER: /* ra[rb] */
+		c.encodeType = A;
+		c.reg1 = operand[1] - '0';
+		c.reg2 = operand[4] - '0';
+		if ((c.reg1) % 2 == 0 || (c.reg2) % 2 == 1)
+			fprintf(stderr, "Error - First register should be odd and second register should be even");
+		break;
+
+	case REGISTER: /* ra */
+		c.encodeType = A;
+		c.reg1 = operand[1] - '0';
+		break;
+
+	case TWO_REGISTERS:
+		/* In the special case of two register addressing we built the operand word in the first pass */
+		break;
 	}
+	return c;
 }

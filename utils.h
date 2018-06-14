@@ -2,26 +2,46 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define data_length 5 /* .data*/
-#define string_length 7 /* .string*/
-#define extern_length 7 /* .extern*/
-#define entry_length 6 /* .entry*/
-
 enum op {ZERO_OPERANDS, ONE_OPERAND, TWO_OPERANDS};
-#define op_name_max 4 /* maximum is 'stop' - 4 */
-#define op_num 16
+#define OPERATIONS_NUMBER 16
 
-#define assembly_line_max 100
-#define IC_start 100
+#define ASSEMBLY_LINE_MAX 100
+#define IC_START 100
 
 enum BOOL {FALSE , TRUE};
 
-#define two_operands 2
-#define register_addressing 3
-enum encode {NUMBER, ADDRESS, INDEX_REGISTER, ONE_REGISTER, TWO_REGISTER, MAIN_COMMAND};
+enum encode {NUMBER, ADDRESS, INDEX_REGISTER, REGISTER, TWO_REGISTERS, MAIN_COMMAND};
 enum encodeType {A, E, R};
-enum regType {SOURCE, DEST};
-enum operandNumber {CMD, FIRST, LAST}; /* FIRST - 1/2, LAST - 1/1 or 2/2 */
-enum symbolType {CODE , DtSt , EXT};
+enum operandType {SRC, DEST};
 
-#define binary_word 15
+#define BINARY_WORD 15
+#define LINE_WORD 30
+#define MAX_WORDS 60
+/* 60 words is the maximum words number, means .data can have maximum of 29 numbers, 30 chars is the maximum characters number for one word. */
+
+#define ARRAY_SIZE 1000
+#define LABELS_ARRAY_SIZE 100 /* extArray, entArray */
+
+
+#define LABEL_INDEX 0
+#define OPERTATION_NAME_INDEX hasSymbol + 0
+#define FIRST_OPERAND_INDEX hasSymbol + 1
+#define SECOND_OPERAND_INDEX hasSymbol + 3
+#define COMMA_INDEX hasSymbol + 2
+#define CONTENT_INDEX hasSymbol + 1
+
+#define FIRST_NUM_INDEX 1 /* We start from 1 since we skip on '.data' */
+#define FIRST_CHAR_INDEX 1 /* We start from 1 since we skip on the quotes */
+#define LAST_CHAR_INDEX stringLen - 2 /* notice it depends on the var 'stringLen' */
+#define FIRST_QUOTE_INDEX 0
+#define LAST_QUOTE_INDEX stringLen - 1
+
+#define ZERO_OP_WORDS_NUM 1
+#define ONE_OP_WORDS_NUM 2
+#define TWO_OP_WORDS_NUM 4
+#define STRING_CMD_WORDS_NUM 2 /* The .string command words number */
+
+#define REG_VALUE_INDEX 1 /* e.g. r3 */
+
+#define ERROR 0
+#define EXTERN_SYMBOL_ADDRESS 0
