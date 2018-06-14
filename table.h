@@ -2,86 +2,61 @@ struct cmd {
 	int encode;
 	int opcode;
 	int group;
-	char *firstOperand; /* source*/
-	char *secndOperand; /* destniation*/
-	int firstAddressing;
-	int secndAddressing;
-	int wordsNum;	
+	char *srcOperand;
+	char *destOperand;
+	int srcAddressingType;
+	int destAddressingType;
 	int address;
-	int isSymbol;
+	int hasSymbol;
 	char *symbol;
-	
-	int operandNumber;
-	int number;
-	int addressNumber;
-	
-	int reg1;
-	int reg2;
-	int whichReg; /* SOURCE  DEST*/
+	int operandsNumber; /*How many operands*/
+
+	int operandRole; /* Source / Dest */
+	int numberVal; /* When the word represents a number, the number's value */
+	int addressVal; /* When the word represents an address, the address value */
+	char *externSymbol; /* When the word represents and external symbol, the symbol's string */
+	int srcReg; /* for reguler register/two registers */
+	int destReg; /* for reguler register/two registers */
+	int reg1; /* for register indexing*/
+	int reg2; /* for register indexing*/
 
 	int encodeType; /*A R E*/
-
-	struct cmd *next;
 };
 
 struct data {	/* DATA = data OR string*/
-	int isFirst;
-	int wordsNum;
 	int address;
-	int content;
-	int isSymbol;
+	int value;
+	int hasSymbol;
 	char *symbol;
-	
-	struct data *next;
 };
 
 struct ext {
 	char *symbol;
-	struct ext *next;
 };
 
 struct ent {
 	char *symbol;
-	struct ent *next;
 };
 
-struct list {
-	struct cmd *cmdHead;
-	struct data *dataHead;
-	struct ext *extHead;
-	struct ent *entHead;
-};
 
-void addCmdToList(struct cmd *c);
-void addDataToList(struct data *d); /* DATA = data OR string*/
-void addExtToList(struct ext *e);
-void addEntToList(struct ent *e);
-int addCmd(char *cmd, int address);
-int addData(char *cmd, int address);
-int addStr(char *cmd, int address);
-void addExt(char *cmd);
-void addEnt(char *cmd);
-
-void fixAddresses(int add);
-void earlyBuild(struct cmd *c, char *reg);
-	
+void addCommand(char **line);
+void addData(char **line);
+void addStr(char **line);
+void addExt(char **line);
+void addEnt(char **line);
+void incAddresses();
 int getSymbolAddress(char *label);
-int getEntryAddress(char *label);
 
-int isSymbol(char *cmd); /* CMD = code OR data*/
-char *getSymbol(char *cmd); /* CMD = code OR data*/
-int checkSymbol(char *cmd);
-int getCmdStart(char *cmd); /* CMD = code OR data*/
-int isBlankOrComment(char *cmd);
-int isCode(char *cmd);
-int isData(char *cmd); /* CMD = code OR data*/
-int isStr(char *cmd); /* CMD = code OR data*/
-int isExt(char *cmd);
-int isEnt(char *cmd);
+char **getCleanArray(char *cmd);
+char *getCleanLabel(char *label);
+int hasLabel(char **line);
+int getArraySize(char **array);
+int isOperation(char *op);
 int getOpcode(char *op);
 int getGroup(char *op);
-char *getFirstOperand(char *cmd);
-char *getSecndOperand(char *cmd);
-int getAddressing(char *operand);
-int countWords(char *cmd);
-int skipSpaces(int i,char *str);
+int checkOperand(char *operand);
+int checkSymbol(char *cmd);
+int getAddressingType(char *operand);
+
+int isNumber(char *);
+int isOperand(char *);

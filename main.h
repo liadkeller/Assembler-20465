@@ -1,17 +1,13 @@
 #include "utils.h"
+#include "table.h"
 #include "binary.h"
 
-void firstLoop(FILE *f,int *ICp,int *DCp);
-void secondLoop();
+void firstPass(FILE *f);
+void secondPass();
 
-void createObject(FILE *f,int IC, int DC);
+void createObject(FILE *f);
 void createEntry(FILE *f);
 void createExtern(FILE *f);
-
-void freeAll();
-void deleteEnter(char *assemblyCommand);
-
-int getEntryAddress(char *label);
 
 #define FILE_ERROR(x)  							  \
 if(!f)									  \
